@@ -1,8 +1,8 @@
 //
 //  ViewController.h
-//  thesapp
+//  ThesApp
 //
-//  Created by Paolo Burzacca on 04/06/15.
+//  Created by Paolo Burzacca on 28/04/15.
 //  Copyright (c) 2015 IIT Cnr. All rights reserved.
 //
 

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" ambiguous="YES" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="jiN-zA-AcB" customClass="TermCard">
+            <rect key="frame" x="0.0" y="0.0" width="300" height="720"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GLq-HL-gEy" userLabel="Wrapper">
+                    <rect key="frame" x="0.0" y="0.0" width="300" height="720"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bvv-zt-y2X">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Word AAA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDU-qu-Dek">
+                                    <rect key="frame" x="20" y="42" width="179" height="65"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                                    <color key="textColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ro0-Q1-c4U">
+                                    <rect key="frame" x="497" y="87" width="46" height="30"/>
+                                    <color key="backgroundColor" red="0.87985821740000003" green="0.91398540299999997" blue="0.05853493555" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="46" id="IMu-Tf-KXN"/>
+                                        <constraint firstAttribute="height" constant="30" id="lfr-Og-kZN"/>
+                                    </constraints>
+                                    <state key="normal" title="Button">
+                                        <color key="titleColor" red="0.031372549020000001" green="0.20000000000000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="ro0-Q1-c4U" secondAttribute="trailing" constant="10" id="lr2-90-mdE"/>
+                                <constraint firstAttribute="height" constant="150" id="o1G-sb-iES"/>
+                                <constraint firstItem="ro0-Q1-c4U" firstAttribute="top" secondItem="bvv-zt-y2X" secondAttribute="top" constant="10" id="xyd-0b-PPN"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="bvv-zt-y2X" secondAttribute="trailing" id="9Fr-O8-ITG"/>
+                        <constraint firstItem="bvv-zt-y2X" firstAttribute="top" secondItem="GLq-HL-gEy" secondAttribute="top" id="IFt-YQ-a3e"/>
+                        <constraint firstItem="bvv-zt-y2X" firstAttribute="leading" secondItem="GLq-HL-gEy" secondAttribute="leading" id="dpp-nF-NX4"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.87985821740000003" green="0.91398540299999997" blue="0.05853493555" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="GLq-HL-gEy" firstAttribute="leading" secondItem="jiN-zA-AcB" secondAttribute="leading" id="3tX-3g-4JV"/>
+                <constraint firstAttribute="trailing" secondItem="GLq-HL-gEy" secondAttribute="trailing" id="CGA-jY-a4l"/>
+                <constraint firstItem="GLq-HL-gEy" firstAttribute="top" secondItem="jiN-zA-AcB" secondAttribute="top" id="Iun-7O-tLI"/>
+                <constraint firstAttribute="bottom" secondItem="GLq-HL-gEy" secondAttribute="bottom" id="PZ6-EW-mDQ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="parolaLbl" destination="jDU-qu-Dek" id="Jbw-zh-P08"/>
+            </connections>
+            <point key="canvasLocation" x="696" y="357"/>
+        </scrollView>
+    </objects>
+</document>

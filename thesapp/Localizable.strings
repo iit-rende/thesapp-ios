@@ -1,0 +1,16 @@
+/* 
+  strings.strings
+  ThesApp
+
+  Created by Paolo Burzacca on 18/05/15.
+  Copyright (c) 2015 IIT Cnr. All rights reserved.
+*/
+
+
+"NARROWER_TERMS" = "Termini più specifici";
+"BROADER_TERMS" = "Termini più generici";
+"RELATED_TERMS" = "Termini correlati";
+"LOCALIZATIONS" = "In altre lingue";
+"CATEGORIES" = "Categorie";
+"CHOSE_CAT" = "Scegli una categoria";
+"CHOSE_DOMAIN" = "Scegli un dominio";

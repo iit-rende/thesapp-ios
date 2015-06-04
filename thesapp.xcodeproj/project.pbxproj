@@ -7,10 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63ADC5281D052028D05A4B1E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3819954E89B38082E6374B6A /* libPods.a */; };
+		CDA071811B20659100BD6CCF /* CustomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */; };
+		CDA071821B20659100BD6CCF /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA071801B20659100BD6CCF /* CustomCollectionViewCell.xib */; };
+		CDA071841B20659B00BD6CCF /* TermCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA071831B20659B00BD6CCF /* TermCard.xib */; };
+		CDA0719D1B2065B700BD6CCF /* Categoria.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071861B2065B700BD6CCF /* Categoria.m */; };
+		CDA0719E1B2065B700BD6CCF /* CategoryCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071881B2065B700BD6CCF /* CategoryCard.m */; };
+		CDA0719F1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0718A1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m */; };
+		CDA071A01B2065B700BD6CCF /* DEMODataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0718C1B2065B700BD6CCF /* DEMODataSource.m */; };
+		CDA071A11B2065B700BD6CCF /* Descriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0718E1B2065B700BD6CCF /* Descriptor.m */; };
+		CDA071A21B2065B700BD6CCF /* Domain.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071901B2065B700BD6CCF /* Domain.m */; };
+		CDA071A31B2065B700BD6CCF /* DomainCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071921B2065B700BD6CCF /* DomainCard.m */; };
+		CDA071A41B2065B700BD6CCF /* DomainCategoryCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071941B2065B700BD6CCF /* DomainCategoryCard.m */; };
+		CDA071A51B2065B700BD6CCF /* Etichetta.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071961B2065B700BD6CCF /* Etichetta.m */; };
+		CDA071A61B2065B700BD6CCF /* GenericCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071981B2065B700BD6CCF /* GenericCard.m */; };
+		CDA071A71B2065B700BD6CCF /* GenericScrollCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0719A1B2065B700BD6CCF /* GenericScrollCard.m */; };
+		CDA071A81B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0719C1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m */; };
+		CDA071AB1B2065D000BD6CCF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071AA1B2065D000BD6CCF /* AppDelegate.m */; };
+		CDA071C81B20661500BD6CCF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDA071AC1B20661400BD6CCF /* Main.storyboard */; };
+		CDA071C91B20661500BD6CCF /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071AE1B20661500BD6CCF /* MainViewController.m */; };
+		CDA071CA1B20661500BD6CCF /* MLPAutoCompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071B01B20661500BD6CCF /* MLPAutoCompleteTextField.m */; };
+		CDA071CB1B20661500BD6CCF /* NSString+Levenshtein.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071B51B20661500BD6CCF /* NSString+Levenshtein.m */; };
+		CDA071CC1B20661500BD6CCF /* PageRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071B71B20661500BD6CCF /* PageRootViewController.m */; };
+		CDA071CD1B20661500BD6CCF /* ScrollerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071B91B20661500BD6CCF /* ScrollerViewController.m */; };
+		CDA071CE1B20661500BD6CCF /* SideMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071BB1B20661500BD6CCF /* SideMenuTableViewController.m */; };
+		CDA071CF1B20661500BD6CCF /* SingleWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071BD1B20661500BD6CCF /* SingleWordViewController.m */; };
+		CDA071D01B20661500BD6CCF /* Term.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071BF1B20661500BD6CCF /* Term.m */; };
+		CDA071D11B20661500BD6CCF /* TermCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C11B20661500BD6CCF /* TermCard.m */; };
+		CDA071D21B20661500BD6CCF /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C31B20661500BD6CCF /* Utils.m */; };
+		CDA071D31B20661500BD6CCF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C51B20661500BD6CCF /* ViewController.m */; };
+		CDA071D41B20661500BD6CCF /* WordButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C71B20661500BD6CCF /* WordButton.m */; };
+		CDA071D61B20664C00BD6CCF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDA071D51B20664C00BD6CCF /* Localizable.strings */; };
 		CDCB24971B2064850087A5BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB24961B2064850087A5BE /* main.m */; };
-		CDCB249A1B2064850087A5BE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB24991B2064850087A5BE /* AppDelegate.m */; };
-		CDCB249D1B2064850087A5BE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB249C1B2064850087A5BE /* ViewController.m */; };
-		CDCB24A01B2064850087A5BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDCB249E1B2064850087A5BE /* Main.storyboard */; };
 		CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCB24A11B2064850087A5BE /* Images.xcassets */; };
 		CDCB24A51B2064850087A5BE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDCB24A31B2064850087A5BE /* LaunchScreen.xib */; };
 		CDCB24B11B2064850087A5BE /* thesappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB24B01B2064850087A5BE /* thesappTests.m */; };
@@ -27,19 +55,76 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3819954E89B38082E6374B6A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDA0717E1B20659100BD6CCF /* CustomCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCollectionViewCell.h; sourceTree = "<group>"; };
+		CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCollectionViewCell.m; sourceTree = "<group>"; };
+		CDA071801B20659100BD6CCF /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
+		CDA071831B20659B00BD6CCF /* TermCard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TermCard.xib; sourceTree = "<group>"; };
+		CDA071851B2065B700BD6CCF /* Categoria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Categoria.h; sourceTree = "<group>"; };
+		CDA071861B2065B700BD6CCF /* Categoria.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Categoria.m; sourceTree = "<group>"; };
+		CDA071871B2065B700BD6CCF /* CategoryCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryCard.h; sourceTree = "<group>"; };
+		CDA071881B2065B700BD6CCF /* CategoryCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryCard.m; sourceTree = "<group>"; };
+		CDA071891B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEMOCustomAutoCompleteObject.h; sourceTree = "<group>"; };
+		CDA0718A1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEMOCustomAutoCompleteObject.m; sourceTree = "<group>"; };
+		CDA0718B1B2065B700BD6CCF /* DEMODataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEMODataSource.h; sourceTree = "<group>"; };
+		CDA0718C1B2065B700BD6CCF /* DEMODataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEMODataSource.m; sourceTree = "<group>"; };
+		CDA0718D1B2065B700BD6CCF /* Descriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Descriptor.h; sourceTree = "<group>"; };
+		CDA0718E1B2065B700BD6CCF /* Descriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Descriptor.m; sourceTree = "<group>"; };
+		CDA0718F1B2065B700BD6CCF /* Domain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Domain.h; sourceTree = "<group>"; };
+		CDA071901B2065B700BD6CCF /* Domain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Domain.m; sourceTree = "<group>"; };
+		CDA071911B2065B700BD6CCF /* DomainCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainCard.h; sourceTree = "<group>"; };
+		CDA071921B2065B700BD6CCF /* DomainCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainCard.m; sourceTree = "<group>"; };
+		CDA071931B2065B700BD6CCF /* DomainCategoryCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomainCategoryCard.h; sourceTree = "<group>"; };
+		CDA071941B2065B700BD6CCF /* DomainCategoryCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainCategoryCard.m; sourceTree = "<group>"; };
+		CDA071951B2065B700BD6CCF /* Etichetta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Etichetta.h; sourceTree = "<group>"; };
+		CDA071961B2065B700BD6CCF /* Etichetta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Etichetta.m; sourceTree = "<group>"; };
+		CDA071971B2065B700BD6CCF /* GenericCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericCard.h; sourceTree = "<group>"; };
+		CDA071981B2065B700BD6CCF /* GenericCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericCard.m; sourceTree = "<group>"; };
+		CDA071991B2065B700BD6CCF /* GenericScrollCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericScrollCard.h; sourceTree = "<group>"; };
+		CDA0719A1B2065B700BD6CCF /* GenericScrollCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericScrollCard.m; sourceTree = "<group>"; };
+		CDA0719B1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPCMLPAutoCompleteDemoViewController.h; sourceTree = "<group>"; };
+		CDA0719C1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPCMLPAutoCompleteDemoViewController.m; sourceTree = "<group>"; };
+		CDA071A91B2065D000BD6CCF /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CDA071AA1B2065D000BD6CCF /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CDA071AC1B20661400BD6CCF /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		CDA071AD1B20661500BD6CCF /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		CDA071AE1B20661500BD6CCF /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		CDA071AF1B20661500BD6CCF /* MLPAutoCompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompleteTextField.h; sourceTree = "<group>"; };
+		CDA071B01B20661500BD6CCF /* MLPAutoCompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLPAutoCompleteTextField.m; sourceTree = "<group>"; };
+		CDA071B11B20661500BD6CCF /* MLPAutoCompleteTextFieldDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompleteTextFieldDataSource.h; sourceTree = "<group>"; };
+		CDA071B21B20661500BD6CCF /* MLPAutoCompleteTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompleteTextFieldDelegate.h; sourceTree = "<group>"; };
+		CDA071B31B20661500BD6CCF /* MLPAutoCompletionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompletionObject.h; sourceTree = "<group>"; };
+		CDA071B41B20661500BD6CCF /* NSString+Levenshtein.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Levenshtein.h"; sourceTree = "<group>"; };
+		CDA071B51B20661500BD6CCF /* NSString+Levenshtein.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Levenshtein.m"; sourceTree = "<group>"; };
+		CDA071B61B20661500BD6CCF /* PageRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageRootViewController.h; sourceTree = "<group>"; };
+		CDA071B71B20661500BD6CCF /* PageRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageRootViewController.m; sourceTree = "<group>"; };
+		CDA071B81B20661500BD6CCF /* ScrollerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollerViewController.h; sourceTree = "<group>"; };
+		CDA071B91B20661500BD6CCF /* ScrollerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollerViewController.m; sourceTree = "<group>"; };
+		CDA071BA1B20661500BD6CCF /* SideMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuTableViewController.h; sourceTree = "<group>"; };
+		CDA071BB1B20661500BD6CCF /* SideMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuTableViewController.m; sourceTree = "<group>"; };
+		CDA071BC1B20661500BD6CCF /* SingleWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleWordViewController.h; sourceTree = "<group>"; };
+		CDA071BD1B20661500BD6CCF /* SingleWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleWordViewController.m; sourceTree = "<group>"; };
+		CDA071BE1B20661500BD6CCF /* Term.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Term.h; sourceTree = "<group>"; };
+		CDA071BF1B20661500BD6CCF /* Term.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Term.m; sourceTree = "<group>"; };
+		CDA071C01B20661500BD6CCF /* TermCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermCard.h; sourceTree = "<group>"; };
+		CDA071C11B20661500BD6CCF /* TermCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermCard.m; sourceTree = "<group>"; };
+		CDA071C21B20661500BD6CCF /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		CDA071C31B20661500BD6CCF /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		CDA071C41B20661500BD6CCF /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		CDA071C51B20661500BD6CCF /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		CDA071C61B20661500BD6CCF /* WordButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordButton.h; sourceTree = "<group>"; };
+		CDA071C71B20661500BD6CCF /* WordButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordButton.m; sourceTree = "<group>"; };
+		CDA071D51B20664C00BD6CCF /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		CDCB24911B2064850087A5BE /* thesapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thesapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDCB24951B2064850087A5BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDCB24961B2064850087A5BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		CDCB24981B2064850087A5BE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		CDCB24991B2064850087A5BE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		CDCB249B1B2064850087A5BE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		CDCB249C1B2064850087A5BE /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		CDCB249F1B2064850087A5BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CDCB24A11B2064850087A5BE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CDCB24A41B2064850087A5BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		CDCB24AA1B2064850087A5BE /* thesappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thesappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDCB24AF1B2064850087A5BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDCB24B01B2064850087A5BE /* thesappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = thesappTests.m; sourceTree = "<group>"; };
+		ECA7F9158DA319590B1CA5F3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F05FC7612CD92CF1739E44C4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63ADC5281D052028D05A4B1E /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,12 +146,125 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C3E5A679AD81211149CDEB23 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3819954E89B38082E6374B6A /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CDA071D71B20669200BD6CCF /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				CDA071C01B20661500BD6CCF /* TermCard.h */,
+				CDA071C11B20661500BD6CCF /* TermCard.m */,
+				CDA071871B2065B700BD6CCF /* CategoryCard.h */,
+				CDA071881B2065B700BD6CCF /* CategoryCard.m */,
+				CDA071911B2065B700BD6CCF /* DomainCard.h */,
+				CDA071921B2065B700BD6CCF /* DomainCard.m */,
+				CDA071931B2065B700BD6CCF /* DomainCategoryCard.h */,
+				CDA071941B2065B700BD6CCF /* DomainCategoryCard.m */,
+				CDA071971B2065B700BD6CCF /* GenericCard.h */,
+				CDA071981B2065B700BD6CCF /* GenericCard.m */,
+				CDA071991B2065B700BD6CCF /* GenericScrollCard.h */,
+				CDA0719A1B2065B700BD6CCF /* GenericScrollCard.m */,
+				CDA071831B20659B00BD6CCF /* TermCard.xib */,
+			);
+			name = Card;
+			sourceTree = "<group>";
+		};
+		CDA071D81B2066A400BD6CCF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CDA071BE1B20661500BD6CCF /* Term.h */,
+				CDA071BF1B20661500BD6CCF /* Term.m */,
+				CDA071C61B20661500BD6CCF /* WordButton.h */,
+				CDA071C71B20661500BD6CCF /* WordButton.m */,
+				CDA071851B2065B700BD6CCF /* Categoria.h */,
+				CDA071861B2065B700BD6CCF /* Categoria.m */,
+				CDA0718D1B2065B700BD6CCF /* Descriptor.h */,
+				CDA0718E1B2065B700BD6CCF /* Descriptor.m */,
+				CDA0718F1B2065B700BD6CCF /* Domain.h */,
+				CDA071901B2065B700BD6CCF /* Domain.m */,
+				CDA071951B2065B700BD6CCF /* Etichetta.h */,
+				CDA071961B2065B700BD6CCF /* Etichetta.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		CDA071D91B2066B300BD6CCF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CDA071AD1B20661500BD6CCF /* MainViewController.h */,
+				CDA071AE1B20661500BD6CCF /* MainViewController.m */,
+				CDA071B61B20661500BD6CCF /* PageRootViewController.h */,
+				CDA071B71B20661500BD6CCF /* PageRootViewController.m */,
+				CDA071B81B20661500BD6CCF /* ScrollerViewController.h */,
+				CDA071B91B20661500BD6CCF /* ScrollerViewController.m */,
+				CDA071BA1B20661500BD6CCF /* SideMenuTableViewController.h */,
+				CDA071BB1B20661500BD6CCF /* SideMenuTableViewController.m */,
+				CDA071BC1B20661500BD6CCF /* SingleWordViewController.h */,
+				CDA071BD1B20661500BD6CCF /* SingleWordViewController.m */,
+				CDA071C41B20661500BD6CCF /* ViewController.h */,
+				CDA071C51B20661500BD6CCF /* ViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		CDA071DA1B2066D700BD6CCF /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				CDA071D51B20664C00BD6CCF /* Localizable.strings */,
+				CDA071B41B20661500BD6CCF /* NSString+Levenshtein.h */,
+				CDA071B51B20661500BD6CCF /* NSString+Levenshtein.m */,
+				CDA071C21B20661500BD6CCF /* Utils.h */,
+				CDA071C31B20661500BD6CCF /* Utils.m */,
+				CDA071A91B2065D000BD6CCF /* AppDelegate.h */,
+				CDA071AA1B2065D000BD6CCF /* AppDelegate.m */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
+		CDA071DB1B2066EB00BD6CCF /* Custom Controls */ = {
+			isa = PBXGroup;
+			children = (
+				CDA071AF1B20661500BD6CCF /* MLPAutoCompleteTextField.h */,
+				CDA071B01B20661500BD6CCF /* MLPAutoCompleteTextField.m */,
+				CDA071B11B20661500BD6CCF /* MLPAutoCompleteTextFieldDataSource.h */,
+				CDA071B21B20661500BD6CCF /* MLPAutoCompleteTextFieldDelegate.h */,
+				CDA071B31B20661500BD6CCF /* MLPAutoCompletionObject.h */,
+				CDA071891B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.h */,
+				CDA0718A1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m */,
+				CDA0718B1B2065B700BD6CCF /* DEMODataSource.h */,
+				CDA0718C1B2065B700BD6CCF /* DEMODataSource.m */,
+				CDA0719B1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.h */,
+				CDA0719C1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m */,
+				CDA0717E1B20659100BD6CCF /* CustomCollectionViewCell.h */,
+				CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */,
+				CDA071801B20659100BD6CCF /* CustomCollectionViewCell.xib */,
+			);
+			name = "Custom Controls";
+			sourceTree = "<group>";
+		};
+		CDA071DC1B2066F300BD6CCF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CDA071AC1B20661400BD6CCF /* Main.storyboard */,
+				CDCB24A11B2064850087A5BE /* Images.xcassets */,
+				CDCB24A31B2064850087A5BE /* LaunchScreen.xib */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		CDCB24881B2064850087A5BE = {
 			isa = PBXGroup;
 			children = (
 				CDCB24931B2064850087A5BE /* thesapp */,
 				CDCB24AD1B2064850087A5BE /* thesappTests */,
 				CDCB24921B2064850087A5BE /* Products */,
+				DAF817C5BB007A51371C687F /* Pods */,
+				C3E5A679AD81211149CDEB23 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -81,13 +280,12 @@
 		CDCB24931B2064850087A5BE /* thesapp */ = {
 			isa = PBXGroup;
 			children = (
-				CDCB24981B2064850087A5BE /* AppDelegate.h */,
-				CDCB24991B2064850087A5BE /* AppDelegate.m */,
-				CDCB249B1B2064850087A5BE /* ViewController.h */,
-				CDCB249C1B2064850087A5BE /* ViewController.m */,
-				CDCB249E1B2064850087A5BE /* Main.storyboard */,
-				CDCB24A11B2064850087A5BE /* Images.xcassets */,
-				CDCB24A31B2064850087A5BE /* LaunchScreen.xib */,
+				CDA071DC1B2066F300BD6CCF /* View */,
+				CDA071DB1B2066EB00BD6CCF /* Custom Controls */,
+				CDA071DA1B2066D700BD6CCF /* Utility */,
+				CDA071D91B2066B300BD6CCF /* Controller */,
+				CDA071D81B2066A400BD6CCF /* Model */,
+				CDA071D71B20669200BD6CCF /* Card */,
 				CDCB24941B2064850087A5BE /* Supporting Files */,
 			);
 			path = thesapp;
@@ -119,6 +317,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		DAF817C5BB007A51371C687F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ECA7F9158DA319590B1CA5F3 /* Pods.debug.xcconfig */,
+				F05FC7612CD92CF1739E44C4 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -126,9 +333,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CDCB24B41B2064850087A5BE /* Build configuration list for PBXNativeTarget "thesapp" */;
 			buildPhases = (
+				298CD23FA8F4BA821CE73EF1 /* Check Pods Manifest.lock */,
 				CDCB248D1B2064850087A5BE /* Sources */,
 				CDCB248E1B2064850087A5BE /* Frameworks */,
 				CDCB248F1B2064850087A5BE /* Resources */,
+				7224C50187ED13178C97EF5F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -199,9 +408,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDCB24A01B2064850087A5BE /* Main.storyboard in Resources */,
+				CDA071841B20659B00BD6CCF /* TermCard.xib in Resources */,
+				CDA071D61B20664C00BD6CCF /* Localizable.strings in Resources */,
+				CDA071C81B20661500BD6CCF /* Main.storyboard in Resources */,
 				CDCB24A51B2064850087A5BE /* LaunchScreen.xib in Resources */,
 				CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */,
+				CDA071821B20659100BD6CCF /* CustomCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,14 +426,71 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		298CD23FA8F4BA821CE73EF1 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7224C50187ED13178C97EF5F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CDCB248D1B2064850087A5BE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDCB249D1B2064850087A5BE /* ViewController.m in Sources */,
-				CDCB249A1B2064850087A5BE /* AppDelegate.m in Sources */,
+				CDA071CD1B20661500BD6CCF /* ScrollerViewController.m in Sources */,
+				CDA071A21B2065B700BD6CCF /* Domain.m in Sources */,
+				CDA071A51B2065B700BD6CCF /* Etichetta.m in Sources */,
+				CDA071D01B20661500BD6CCF /* Term.m in Sources */,
+				CDA071A61B2065B700BD6CCF /* GenericCard.m in Sources */,
+				CDA071CB1B20661500BD6CCF /* NSString+Levenshtein.m in Sources */,
+				CDA071D31B20661500BD6CCF /* ViewController.m in Sources */,
+				CDA071C91B20661500BD6CCF /* MainViewController.m in Sources */,
+				CDA071D11B20661500BD6CCF /* TermCard.m in Sources */,
+				CDA071AB1B2065D000BD6CCF /* AppDelegate.m in Sources */,
+				CDA0719E1B2065B700BD6CCF /* CategoryCard.m in Sources */,
+				CDA071A71B2065B700BD6CCF /* GenericScrollCard.m in Sources */,
+				CDA071D41B20661500BD6CCF /* WordButton.m in Sources */,
+				CDA0719D1B2065B700BD6CCF /* Categoria.m in Sources */,
+				CDA071A11B2065B700BD6CCF /* Descriptor.m in Sources */,
+				CDA071D21B20661500BD6CCF /* Utils.m in Sources */,
+				CDA071A01B2065B700BD6CCF /* DEMODataSource.m in Sources */,
+				CDA071CE1B20661500BD6CCF /* SideMenuTableViewController.m in Sources */,
+				CDA071A81B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m in Sources */,
+				CDA071A41B2065B700BD6CCF /* DomainCategoryCard.m in Sources */,
+				CDA071CA1B20661500BD6CCF /* MLPAutoCompleteTextField.m in Sources */,
+				CDA071A31B2065B700BD6CCF /* DomainCard.m in Sources */,
 				CDCB24971B2064850087A5BE /* main.m in Sources */,
+				CDA071CF1B20661500BD6CCF /* SingleWordViewController.m in Sources */,
+				CDA0719F1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m in Sources */,
+				CDA071811B20659100BD6CCF /* CustomCollectionViewCell.m in Sources */,
+				CDA071CC1B20661500BD6CCF /* PageRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,14 +513,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		CDCB249E1B2064850087A5BE /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CDCB249F1B2064850087A5BE /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		CDCB24A31B2064850087A5BE /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -347,6 +608,7 @@
 		};
 		CDCB24B51B2064850087A5BE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ECA7F9158DA319590B1CA5F3 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = thesapp/Info.plist;
@@ -357,6 +619,7 @@
 		};
 		CDCB24B61B2064850087A5BE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F05FC7612CD92CF1739E44C4 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = thesapp/Info.plist;
@@ -418,6 +681,7 @@
 				CDCB24B61B2064850087A5BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CDCB24B71B2064850087A5BE /* Build configuration list for PBXNativeTarget "thesappTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +690,7 @@
 				CDCB24B91B2064850087A5BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
