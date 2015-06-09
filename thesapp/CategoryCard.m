@@ -28,9 +28,17 @@
     
     NSLog(@"[CategoryCard] render");
     
-    [back addTarget:self action:@selector(dietro:) forControlEvents:UIControlEventTouchUpInside];
+    self.layer.cornerRadius = 3;
+    self.layer.shadowOffset = CGSizeMake(2, 2);
+    self.layer.shadowRadius = 4.0;
+    self.layer.shadowColor = [UIColor grayColor].CGColor;
+    self.layer.shadowOpacity = 1.0;
+    self.layer.masksToBounds = NO;
     
     self.backgroundColor = [UIColor cyanColor];
+    self.clipsToBounds = NO;
+    
+    //self.scrollView.clipsToBounds = NO;
     
     //////////////////////////////////////////////////////////////
     //title label
@@ -40,8 +48,6 @@
     
     //////////////////////////////////////////////////////////////
     //categorie
-    
-    self.clipsToBounds = YES;
     
     top = [self getHeaderHeightAndPadding];
     
@@ -111,9 +117,12 @@
         NSLog(@"altezza finale = %f", finalHeight);
         
         //cambio contentsize alla fine
-        //CGRect newFrame = CGRectMake(0, 0, wrapper.frame.size.width, finalHeight);
-        //wrapper.frame = newFrame;
-        //self.contentSize = CGSizeMake(wrapper.frame.size.width, finalHeight);
+        CGRect newFrame = CGRectMake(0, 0, wrapper.frame.size.width, finalHeight);
+        CGRect newScrollViewFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, wrapper.frame.size.width, finalHeight);
+        wrapper.frame = newFrame;
+        self.contentSize = CGSizeMake(wrapper.frame.size.width, finalHeight);
+        //self.frame = newScrollViewFrame;
+        
     }
 }
 

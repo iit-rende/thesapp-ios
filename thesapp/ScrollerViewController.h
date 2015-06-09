@@ -17,12 +17,13 @@
 
 @interface ScrollerViewController : UIViewController<UIScrollViewDelegate, UISearchBarDelegate, CardController>
 {
-    int pageIndex, xOffset, numSchede, scrollWidth;
+    int pageIndex, totPages, xOffset, numSchede, scrollWidth;
     float larghezza, altezza, padding;
     AFHTTPRequestOperationManager *manager;
     MMDrawerController *parent;
     NSMutableArray *listaDomini;
     NSMutableDictionary *cards;
+    UIBarButtonItem *backButtonItem;
 }
 
 -(void) getSingleTerm:(NSString *)term;

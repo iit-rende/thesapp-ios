@@ -65,7 +65,7 @@
 +(Etichetta *) createAltraLinguaLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
     [lbl setFrame:frame];
-    [lbl setColor:[UIColor orangeColor]];
+    [lbl setColor:[UIColor redColor]];
     
     [lbl setTitle:title forState:UIControlStateNormal];
     [lbl sizeToFit];

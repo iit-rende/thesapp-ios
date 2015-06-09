@@ -8,12 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "Domain.h"
 
 @interface Utils : NSObject
 
 +(NSString *) getServerBaseAddress;
 
 +(NSString *) getChosenDomain;
++(UIColor *) getChosenDomainColor;
+
++ (void) setCurrentDomain:(Domain *) dominio;
 
 + (NSString*)WWWFormEncoded:(NSString *) string;
 

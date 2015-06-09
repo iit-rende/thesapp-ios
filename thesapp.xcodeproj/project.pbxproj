@@ -38,10 +38,14 @@
 		CDA071D31B20661500BD6CCF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C51B20661500BD6CCF /* ViewController.m */; };
 		CDA071D41B20661500BD6CCF /* WordButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C71B20661500BD6CCF /* WordButton.m */; };
 		CDA071D61B20664C00BD6CCF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDA071D51B20664C00BD6CCF /* Localizable.strings */; };
+		CDA071DF1B2074CA00BD6CCF /* UILabel+FormattedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071DE1B2074CA00BD6CCF /* UILabel+FormattedText.m */; };
+		CDC02E141B26E35F00C7C15E /* down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = CDC02E131B26E35F00C7C15E /* down_arrow.png */; };
+		CDC02E181B26E5A500C7C15E /* left_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = CDC02E171B26E5A500C7C15E /* left_arrow_white.png */; };
 		CDCB24971B2064850087A5BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB24961B2064850087A5BE /* main.m */; };
 		CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCB24A11B2064850087A5BE /* Images.xcassets */; };
 		CDCB24A51B2064850087A5BE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDCB24A31B2064850087A5BE /* LaunchScreen.xib */; };
 		CDCB24B11B2064850087A5BE /* thesappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB24B01B2064850087A5BE /* thesappTests.m */; };
+		CDFF70AF1B219E7200B5FD3D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CDFF70AE1B219E7200B5FD3D /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +119,10 @@
 		CDA071C61B20661500BD6CCF /* WordButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordButton.h; sourceTree = "<group>"; };
 		CDA071C71B20661500BD6CCF /* WordButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordButton.m; sourceTree = "<group>"; };
 		CDA071D51B20664C00BD6CCF /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		CDA071DD1B2074CA00BD6CCF /* UILabel+FormattedText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+FormattedText.h"; sourceTree = "<group>"; };
+		CDA071DE1B2074CA00BD6CCF /* UILabel+FormattedText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+FormattedText.m"; sourceTree = "<group>"; };
+		CDC02E131B26E35F00C7C15E /* down_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_arrow.png; sourceTree = "<group>"; };
+		CDC02E171B26E5A500C7C15E /* left_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_arrow_white.png; sourceTree = "<group>"; };
 		CDCB24911B2064850087A5BE /* thesapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thesapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDCB24951B2064850087A5BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDCB24961B2064850087A5BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -123,6 +131,7 @@
 		CDCB24AA1B2064850087A5BE /* thesappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thesappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDCB24AF1B2064850087A5BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDCB24B01B2064850087A5BE /* thesappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = thesappTests.m; sourceTree = "<group>"; };
+		CDFF70AE1B219E7200B5FD3D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		ECA7F9158DA319590B1CA5F3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F05FC7612CD92CF1739E44C4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -204,6 +213,7 @@
 				CDA071B91B20661500BD6CCF /* ScrollerViewController.m */,
 				CDA071BA1B20661500BD6CCF /* SideMenuTableViewController.h */,
 				CDA071BB1B20661500BD6CCF /* SideMenuTableViewController.m */,
+				CDFF70AE1B219E7200B5FD3D /* Settings.bundle */,
 				CDA071BC1B20661500BD6CCF /* SingleWordViewController.h */,
 				CDA071BD1B20661500BD6CCF /* SingleWordViewController.m */,
 				CDA071C41B20661500BD6CCF /* ViewController.h */,
@@ -229,6 +239,8 @@
 		CDA071DB1B2066EB00BD6CCF /* Custom Controls */ = {
 			isa = PBXGroup;
 			children = (
+				CDA071DD1B2074CA00BD6CCF /* UILabel+FormattedText.h */,
+				CDA071DE1B2074CA00BD6CCF /* UILabel+FormattedText.m */,
 				CDA071AF1B20661500BD6CCF /* MLPAutoCompleteTextField.h */,
 				CDA071B01B20661500BD6CCF /* MLPAutoCompleteTextField.m */,
 				CDA071B11B20661500BD6CCF /* MLPAutoCompleteTextFieldDataSource.h */,
@@ -250,6 +262,8 @@
 		CDA071DC1B2066F300BD6CCF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CDC02E131B26E35F00C7C15E /* down_arrow.png */,
+				CDC02E171B26E5A500C7C15E /* left_arrow_white.png */,
 				CDA071AC1B20661400BD6CCF /* Main.storyboard */,
 				CDCB24A11B2064850087A5BE /* Images.xcassets */,
 				CDCB24A31B2064850087A5BE /* LaunchScreen.xib */,
@@ -411,9 +425,12 @@
 				CDA071841B20659B00BD6CCF /* TermCard.xib in Resources */,
 				CDA071D61B20664C00BD6CCF /* Localizable.strings in Resources */,
 				CDA071C81B20661500BD6CCF /* Main.storyboard in Resources */,
+				CDC02E141B26E35F00C7C15E /* down_arrow.png in Resources */,
+				CDC02E181B26E5A500C7C15E /* left_arrow_white.png in Resources */,
 				CDCB24A51B2064850087A5BE /* LaunchScreen.xib in Resources */,
 				CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */,
 				CDA071821B20659100BD6CCF /* CustomCollectionViewCell.xib in Resources */,
+				CDFF70AF1B219E7200B5FD3D /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,6 +495,7 @@
 				CDA071A71B2065B700BD6CCF /* GenericScrollCard.m in Sources */,
 				CDA071D41B20661500BD6CCF /* WordButton.m in Sources */,
 				CDA0719D1B2065B700BD6CCF /* Categoria.m in Sources */,
+				CDA071DF1B2074CA00BD6CCF /* UILabel+FormattedText.m in Sources */,
 				CDA071A11B2065B700BD6CCF /* Descriptor.m in Sources */,
 				CDA071D21B20661500BD6CCF /* Utils.m in Sources */,
 				CDA071A01B2065B700BD6CCF /* DEMODataSource.m in Sources */,

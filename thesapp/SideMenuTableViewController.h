@@ -11,23 +11,28 @@
 #import <MMDrawerController.h>
 #import <AFHTTPRequestOperationManager.h>
 
-@interface SideMenuTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
+@interface SideMenuTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate, UITextFieldDelegate>
 {
-    NSArray *array;
-    NSArray *icons;
-    NSArray *views;
+    NSArray *array, *icons, *views, *filters;
     NSTimer *timer;
+    BOOL expanded;
     int intervallo, indice;
+    float filterHeight;
     AFHTTPRequestOperationManager *manager;    
     MMDrawerController *parent;
+    UIActivityIndicatorView *loader;
+    UIButton *xbtn, *toggleFilter;
+    UIView *container;
 }
 
 @property (strong, nonatomic) NSArray *filteredList;
-@property (nonatomic, strong) NSMutableArray *navigationControllerArray;
-@property (nonatomic, strong) UISearchDisplayController *controller;
-@property (nonatomic, strong) UISearchController *mySearchController;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) UITableView *filterTableView;
+@property (nonatomic, strong) IBOutlet UITextField *searchBar;
 @property (nonatomic, strong) IBOutlet UIView *barContainer;
+@property (nonatomic, strong) UIView *filter;
+@property (nonatomic, strong) UIButton *filterBtn;
+
+-(IBAction)expandFilter:(id)sender;
 
 @end

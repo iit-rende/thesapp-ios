@@ -27,7 +27,6 @@
     CategoryCard *card = [[CategoryCard alloc] initWithFrame:frame];
     card.categoria = self;
     [card render];
-    
     return card;
 }
 

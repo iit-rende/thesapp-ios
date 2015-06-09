@@ -14,8 +14,25 @@
     return @"http://146.48.65.88";
 }
 
++(UIColor *) getChosenDomainColor {
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    NSString *color = [def valueForKey:@"chosen_domain_color"];
+    if (color != nil) return [Utils colorFromHexString:color];
+    return nil;
+}
+
 +(NSString *) getChosenDomain {
-    return @"Turismo";
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    NSString *name = [def valueForKey:@"chosen_domain_name"];
+    return name;
+}
+
++ (void) setCurrentDomain:(Domain *) dominio {
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    [def setValue:dominio.descriptor forKey:@"chosen_domain_name"];
+    [def setValue:dominio.color forKey:@"chosen_domain_color"];
+    NSLog(@"salvo colore %@", dominio.color);
+    [def synchronize];
 }
 
 + (NSString*)WWWFormEncoded:(NSString *) string {

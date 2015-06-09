@@ -20,6 +20,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    pageIndex = 0; //pagina corrente
+    totPages = 0;
+    
+    backButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"<" style:UIBarButtonItemStylePlain target:self action:@selector(goToPrevCard:)];
+    
+    self.navigationItem.leftBarButtonItem = backButtonItem;
+    
+    //self.navigationItem.leftBarButtonItem = doneBtn;
     
     manager = [AFHTTPRequestOperationManager manager];
 
@@ -36,10 +45,9 @@
     //self.topView.layer.shadowOpacity = 1.0;
     //self.topView.layer.masksToBounds = NO;
     
-    pageIndex = 0;
     //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 200);
     
-    self.scrollView.backgroundColor = [UIColor lightGrayColor];
+    self.scrollView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.scrollView.delegate = self;
     self.scrollView.clipsToBounds = NO;
     self.scrollView.contentInset = UIEdgeInsetsZero;
@@ -154,6 +162,8 @@
     if (dominio == nil) return;
     
     if (dominio.descriptor == nil) return;
+    
+    [Utils setCurrentDomain:dominio];
     
     NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/hierarchy?domain="];
     NSString *termine = [Utils WWWFormEncoded:dominio.descriptor];
@@ -281,19 +291,23 @@
     
     if (cards != nil) {
         int cardIndex = [[cards objectForKey:riferimento] intValue];
+        
+        NSLog(@"[Indice = %d]", cardIndex);
+        
         if (cardIndex > 0) {
             NSLog(@"Trovata card con indice = %d", cardIndex);
             [self scrollToIndex:cardIndex];
         }
         else {
-            pageIndex++;
-            NSLog(@"Card non trovata, creo con indice = %d", pageIndex);
+            //pageIndex++;
+            totPages++;
+            NSLog(@"[Card non trovata] Creo card Num %d", totPages);
             [cards setValue:[NSNumber numberWithInt:pageIndex] forKey:riferimento];
             [self.scrollView addSubview:scheda];
             self.scrollView.contentSize = CGSizeMake(5 + scrollWidth + xOffset, CONTENT_SIZE_HEIGHT);
             xOffset += self.view.frame.size.width;
             scheda.controller = self;
-            [self scrollRight];
+            [self scrollToIndex:totPages - 1];
         }
     }
     
@@ -301,23 +315,53 @@
 }
 
 -(void) scrollLeft {
-    [self scrollToPoint:CGPointMake(xOffset - 2 * scrollWidth, 0)];
+    if (pageIndex >= 1) {
+        [self scrollToIndex:pageIndex-1];
+    }
 }
 
 -(void) scrollToIndex:(int) indice {
-    float offset = (indice - 1) * scrollWidth;
+    float offset = (indice) * scrollWidth;
     NSLog(@"vado a offset = %f", offset);
     [self scrollToPoint:CGPointMake(offset, 0)];
 }
 
 -(void) scrollRight {
-    [self scrollToPoint:CGPointMake(xOffset - scrollWidth, 0)];
+    //[self scrollToPoint:CGPointMake(xOffset - scrollWidth, 0)];
+   [self scrollToIndex:pageIndex+1];
 }
 
 -(void) scrollToPoint:(CGPoint) punto {
     [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         self.scrollView.contentOffset = punto;
+        
+        pageIndex = punto.x / scrollWidth;
+        NSLog(@"PAGINA [1] = %d", pageIndex);
+        
+        if (pageIndex == 0) {
+            backButtonItem.style = UIBarButtonItemStylePlain;
+            backButtonItem.enabled = false;
+            backButtonItem.title = nil;
+        }
+        else {
+            backButtonItem.style = UIBarButtonItemStylePlain;
+            backButtonItem.enabled = true;
+            UIImage *img = [UIImage imageNamed:@"left_arrow_white"];
+            backButtonItem.image = img;
+            
+            //UIImage *backButtonImage = [UIImage imageNamed:@"left_arrow_white"];
+            //CGRect frameimg = CGRectMake(0, 0, 24, 24);
+            //UIButton *someButton = [[UIButton alloc] initWithFrame:frameimg];
+            //[someButton setBackgroundImage:backButtonImage forState:UIControlStateNormal];
+            //[backButtonItem setCustomView:someButton];
+        }
+        
     } completion:NULL];
+}
+
+-(void) goToPrevCard:(UIBarButtonItem *) item {
+    NSLog(@"goToPrevCard");
+    [self scrollLeft];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
@@ -326,8 +370,11 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     NSLog(@"scrollViewDidEndDecelerating");
+    float nuovaX = self.scrollView.contentOffset.x;
+    NSLog(@"X = %f", nuovaX);
     
-    //
+    pageIndex = nuovaX / scrollWidth;
+    NSLog(@"PAGINA [2] = %d", pageIndex);
 }
 
 -(void) addCard:(UIButton *) btn {
@@ -344,11 +391,6 @@
 }
 
 #pragma mark - Card Controller methods
-
-- (void) goBack {
-    NSLog(@"[ScrollView] goBack");
-    [self scrollLeft];
-}
 
 - (void) addCategoryCard:(NSString *) catName withDomain:(Domain *) dom {
     NSLog(@"[ScrollView] addCard con cat = %@", catName);

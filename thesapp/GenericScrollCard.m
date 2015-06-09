@@ -9,7 +9,7 @@
 #import "GenericScrollCard.h"
 
 #define PADDING_BTN 8
-#define HEADER_HEIGHT 150
+#define HEADER_HEIGHT 100
 #define HEADER_BOTTOM_PADDING 15
 
 #define TITOLI_FONT_SIZE 13.0f
@@ -37,7 +37,6 @@
 }
 
 -(void) initVars {
-    btnHeight = 30;
     paddingLeft = 10;
     titleLabelHeight = 20;
 }
@@ -66,7 +65,7 @@
     if (fullWidth < 1) fullWidth = [[UIScreen mainScreen] bounds].size.width;
     fullWithPadding = fullWidth; // - 2 * PADDING_BTN;
 
-    float titleHeight = 30;
+    float titleHeight = 35;
     float btnWidth = 30;
     float titleFontSize = 30.0f;
     
@@ -76,6 +75,7 @@
     wrapper.backgroundColor = [UIColor whiteColor];
     wrapper.clipsToBounds = YES;
     wrapper.layer.cornerRadius = 3;
+    
     self.layer.cornerRadius = 3;
     self.layer.shadowOffset = CGSizeMake(2, 2);
     self.layer.shadowRadius = 4.0;
@@ -83,15 +83,16 @@
     self.layer.shadowOpacity = 1.0;
     self.layer.masksToBounds = NO;
     
-    
     //////////////////////////////////////////////////////////////
     //disegno header
     CGRect headerFrame = CGRectMake(0, 0, fullWithPadding, HEADER_HEIGHT);
     header = [[UIView alloc] initWithFrame:headerFrame];
-    header.backgroundColor = [UIColor darkGrayColor];
+    header.backgroundColor = [UIColor lightGrayColor];
     [wrapper addSubview:header];
     
     //////////////////////////////////////////////////////////////
+    
+    /*
     //back button
     CGRect buttonFrame = CGRectMake(PADDING_BTN, PADDING_BTN, btnWidth, btnHeight);
     back = [[UIButton alloc] initWithFrame:buttonFrame];
@@ -99,10 +100,11 @@
     [back setTitle:@"<" forState:UIControlStateNormal];
     [back setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [header addSubview:back];
+    */
     
     //////////////////////////////////////////////////////////////
     //title label
-    float title_padding_top = PADDING_BTN + btnHeight + TITLE_PADDING_TOP;
+    float title_padding_top = PADDING_BTN + TITLE_PADDING_TOP;
     CGRect titleFrame = CGRectMake(PADDING_BTN, title_padding_top, fullWithPadding, titleHeight);
     titolo = [[UILabel alloc] initWithFrame:titleFrame];
     titolo.backgroundColor = [UIColor clearColor];
