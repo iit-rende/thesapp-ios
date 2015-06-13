@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <MMDrawerController.h>
+#import <Google/CloudMessaging.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, GGLInstanceIDDelegate, GCMReceiverDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property(nonatomic, readonly, strong) NSString *registrationKey;
+@property(nonatomic, readonly, strong) NSString *messageKey;
+@property(nonatomic, readonly, strong) NSString *gcmSenderID;
+@property(nonatomic, readonly, strong) NSDictionary *registrationOptions;
+
++(CGFloat) getSidemenuWidth;
 
 @end
 

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		63ADC5281D052028D05A4B1E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3819954E89B38082E6374B6A /* libPods.a */; };
+		CD25C3341B29B82F00C0EE91 /* filter_list.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3331B29B82F00C0EE91 /* filter_list.png */; };
+		CD25C3361B29BA3600C0EE91 /* up_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */; };
 		CDA071811B20659100BD6CCF /* CustomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */; };
 		CDA071821B20659100BD6CCF /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA071801B20659100BD6CCF /* CustomCollectionViewCell.xib */; };
 		CDA071841B20659B00BD6CCF /* TermCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA071831B20659B00BD6CCF /* TermCard.xib */; };
@@ -60,6 +62,8 @@
 
 /* Begin PBXFileReference section */
 		3819954E89B38082E6374B6A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD25C3331B29B82F00C0EE91 /* filter_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter_list.png; sourceTree = "<group>"; };
+		CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up_arrow_white.png; sourceTree = "<group>"; };
 		CDA0717E1B20659100BD6CCF /* CustomCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCollectionViewCell.h; sourceTree = "<group>"; };
 		CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCollectionViewCell.m; sourceTree = "<group>"; };
 		CDA071801B20659100BD6CCF /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -262,7 +266,9 @@
 		CDA071DC1B2066F300BD6CCF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CD25C3331B29B82F00C0EE91 /* filter_list.png */,
 				CDC02E131B26E35F00C7C15E /* down_arrow.png */,
+				CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */,
 				CDC02E171B26E5A500C7C15E /* left_arrow_white.png */,
 				CDA071AC1B20661400BD6CCF /* Main.storyboard */,
 				CDCB24A11B2064850087A5BE /* Images.xcassets */,
@@ -391,6 +397,11 @@
 				TargetAttributes = {
 					CDCB24901B2064850087A5BE = {
 						CreatedOnToolsVersion = 6.3.2;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					CDCB24A91B2064850087A5BE = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -427,9 +438,11 @@
 				CDA071C81B20661500BD6CCF /* Main.storyboard in Resources */,
 				CDC02E141B26E35F00C7C15E /* down_arrow.png in Resources */,
 				CDC02E181B26E5A500C7C15E /* left_arrow_white.png in Resources */,
+				CD25C3361B29BA3600C0EE91 /* up_arrow_white.png in Resources */,
 				CDCB24A51B2064850087A5BE /* LaunchScreen.xib in Resources */,
 				CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */,
 				CDA071821B20659100BD6CCF /* CustomCollectionViewCell.xib in Resources */,
+				CD25C3341B29B82F00C0EE91 /* filter_list.png in Resources */,
 				CDFF70AF1B219E7200B5FD3D /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

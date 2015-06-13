@@ -24,7 +24,7 @@
 +(NSString *) getChosenDomain {
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     NSString *name = [def valueForKey:@"chosen_domain_name"];
-    return name;
+    return [Utils WWWFormEncoded:name];
 }
 
 + (void) setCurrentDomain:(Domain *) dominio {

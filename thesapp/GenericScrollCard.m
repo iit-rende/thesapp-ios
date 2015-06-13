@@ -12,8 +12,8 @@
 #define HEADER_HEIGHT 100
 #define HEADER_BOTTOM_PADDING 15
 
-#define TITOLI_FONT_SIZE 13.0f
-#define TITLE_PADDING_BOTTOM 10
+#define TITOLI_FONT_SIZE 11.0f
+#define TITLE_PADDING_BOTTOM 5
 #define TITLE_PADDING_TOP 25
 
 @implementation GenericScrollCard

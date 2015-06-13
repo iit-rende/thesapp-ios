@@ -27,7 +27,7 @@
 @property (nonatomic, strong) NSArray *relatedTerms;
 @property (nonatomic, strong) NSArray *broaderTerms;
 @property (nonatomic, strong) NSArray *narrowerTerms;
-@property (nonatomic, strong) NSArray *localitazions;
+@property (nonatomic, strong) NSArray *localizations;
 @property (nonatomic, strong) NSArray *hierarchy;
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *usedFor;

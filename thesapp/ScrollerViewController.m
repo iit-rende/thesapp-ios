@@ -479,7 +479,14 @@
     
     NSLog(@"getSingleTerm = %@", term);
     
-    NSString *domain = [@"&domain=" stringByAppendingString:[Utils getChosenDomain]];
+    NSString *dominio = [Utils getChosenDomain];
+    
+    if (dominio == nil) {
+        NSLog(@"Dominio non impostato");
+        return;
+    }
+    
+    NSString *domain = [@"&domain=" stringByAppendingString:dominio];
     NSString *prefix = @"/terms?descriptor=";
     
     NSString *termRequest = [[[[Utils getServerBaseAddress] stringByAppendingString:prefix] stringByAppendingString:term] stringByAppendingString:domain];

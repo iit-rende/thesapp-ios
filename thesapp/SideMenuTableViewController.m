@@ -10,23 +10,52 @@
 #import "ScrollerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UILabel+FormattedText.h"
+#import "AppDelegate.h"
 
 #define TIMER_INTERVAL 1.5
 #define FILTER_HEIGHT 35
 #define CATEGORIES_ROW_HEIGHT 30
 #define RESULTS_ROW_HEIGHT 40
+#define LOADER_SIZE 37
 
 @interface SideMenuTableViewController ()
 
 @end
 
 @implementation SideMenuTableViewController
-@synthesize filter, filterBtn, filterTableView;
+@synthesize filter, filterTableView, domainChosen, suggestionTableView, suggestionTitle;
 
 //     [self.searchBar becomeFirstResponder];
 
+-(void)hideKeyBoard {
+    [self.searchBar endEditing:YES];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    domainChosen = @"Turismo";
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
+                                           initWithTarget:self
+                                           action:@selector(hideKeyBoard)];
+    
+
+    filter_list = [UIImage imageNamed:@"filter_list"];
+    up_arrow = [UIImage imageNamed:@"up_arrow_white"];
+    
+    //misure
+    float totalWidth = [AppDelegate getSidemenuWidth];
+    NSLog(@"width = %f", totalWidth );
+    float sidePadding = 5;
+    float xSize = 30;
+    float tendinaWidth = 70;
+    float searchBarWidth = totalWidth - 5 * sidePadding - tendinaWidth - xSize;
+    float loaderLeft = searchBarWidth + tendinaWidth + sidePadding;
+    float wrapperHeight = xSize + 2 * sidePadding;
+    float filter_Y = wrapperHeight + 8 * sidePadding;
+    float containerHeight = wrapperHeight + FILTER_HEIGHT + 2 * sidePadding;
+    
     
     UIColor *domainColor = [Utils getChosenDomainColor];
     if (domainColor != nil) self.barContainer.backgroundColor = domainColor;
@@ -36,29 +65,26 @@
     manager = [AFHTTPRequestOperationManager manager];
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    
+    CGRect tableFrame = CGRectMake(0, containerHeight, totalWidth, self.view.frame.size.height - containerHeight);
+    self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     self.tableView.bounces = NO;
+    self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.tableFooterView = nil;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.view addSubview:self.tableView];
+    
     self.navigationController.navigationBar.translucent = NO;
     
     array = [[NSArray alloc] init];
     
     parent = (MMDrawerController *) self.parentViewController;
     
-    //misure
-    
-    float totalWidth = 280;
-    float sidePadding = 5;
-    float xSize = 30;
-    float loaderSize = 37;
-    float tendinaWidth = 70;
-    float searchBarWidth = totalWidth - 5 * sidePadding - tendinaWidth - xSize;
-    float loaderLeft = searchBarWidth + tendinaWidth + sidePadding;
-    float wrapperHeight = xSize + 2 * sidePadding;
-    float filter_Y = wrapperHeight + 8 * sidePadding;
-    float containerHeight = wrapperHeight + FILTER_HEIGHT + 2 * sidePadding;
 
     //search controller
     
@@ -115,7 +141,7 @@
     [tendina setClipsToBounds:false];
     [tendina setImage:[UIImage imageNamed:@"down_arrow"] forState:UIControlStateNormal];
     [tendina setTitle:@"Turismo" forState:UIControlStateNormal];
-    [tendina.titleLabel setFont:[UIFont systemFontOfSize:16.f]];
+    [tendina.titleLabel setFont:[UIFont systemFontOfSize:14.f]];
     [tendina setTitleColor:[UIColor blackColor] forState:UIControlStateNormal]; // SET the colour for your wishes
     //[tendina setTitleEdgeInsets:UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f)]; // SET the values for your wishes
     //[tendina setImageEdgeInsets:UIEdgeInsetsMake(0.f, 0.f, -40.f, 0.f)];
@@ -124,13 +150,14 @@
     CGSize imageSize = tendina.imageView.frame.size;
     tendina.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
     
-    CGSize titleSize = tendina.titleLabel.frame.size;
-    tendina.imageEdgeInsets = UIEdgeInsetsMake(- (titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
+    //CGSize titleSize = tendina.titleLabel.frame.size;
+    //tendina.imageEdgeInsets = UIEdgeInsetsMake(- (titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
+    tendina.imageEdgeInsets = UIEdgeInsetsMake(10,tendinaWidth - 10, 10, 5);
     
     [wrapper addSubview:tendina];
     
     //activity indicator
-    CGRect loaderFrame = CGRectMake(loaderLeft, sidePadding, loaderSize, loaderSize);
+    CGRect loaderFrame = CGRectMake(loaderLeft, sidePadding, LOADER_SIZE, LOADER_SIZE);
     loader = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [loader setFrame:loaderFrame];
     loader.hidesWhenStopped = YES;
@@ -154,22 +181,34 @@
     UIColor *azure = [Utils colorFromHexString:@"277EFF"];
     filter.backgroundColor = azure;
     
-    CGRect filterBtnFrame = CGRectMake(20, 5, 0, 0);
-    filterBtn = [[UIButton alloc] initWithFrame:filterBtnFrame];
-    [filterBtn setTitle:@"FILTRA PER CATEGORIA" forState:UIControlStateNormal];
-    [filterBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [filterBtn.titleLabel setFont:[UIFont systemFontOfSize:13.f]];
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //CREO PULSANTE DI ESPANSIONE FILTRO
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    CGRect toggleButtonFrame = CGRectMake(0, 5, totalWidth, 35);
+    filterToggleButton = [[UIView alloc] initWithFrame:toggleButtonFrame];
+    
+    CGRect filterBtnFrame = CGRectMake(10, 5, 0, 35);
+    filterBtn = [[UILabel alloc] initWithFrame:filterBtnFrame];
+    [filterBtn setText:@"FILTRA PER CATEGORIA"];
+    [filterBtn setTextColor:[UIColor whiteColor]];
+    [filterBtn setFont:[UIFont systemFontOfSize:13.f]];
     [filterBtn sizeToFit];
-    [filterBtn addTarget:self action:@selector(expandFilter:) forControlEvents:UIControlEventTouchUpInside];
-    [filter addSubview:filterBtn];
+    [filterToggleButton addSubview:filterBtn];
     
     //tasto toggle filtro
-    CGRect toggleFilterBtnFrame = CGRectMake(totalWidth - 2 * sidePadding - xSize, 5, xSize, xSize);
-    toggleFilter = [[UIButton alloc] initWithFrame:toggleFilterBtnFrame];
-    [toggleFilter setTitle:@"X" forState:UIControlStateNormal];
-    [toggleFilter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [toggleFilter.titleLabel setFont:[UIFont systemFontOfSize:13.f]];
-    [filter addSubview:toggleFilter];
+    CGRect toggleFilterBtnFrame = CGRectMake(totalWidth - 2 * sidePadding - xSize, 5, xSize / 3 * 2, xSize / 3 * 2);
+    toggleFilter = [[UIImageView alloc] initWithFrame:toggleFilterBtnFrame];
+    [toggleFilter setImage:filter_list];
+    [filterToggleButton addSubview:toggleFilter];
+    
+    UITapGestureRecognizer *singleFingerTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(expandFilter:)];
+    [filterToggleButton addGestureRecognizer:singleFingerTap];
+    
+    [filter addSubview:filterToggleButton];
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     
     CGRect filterTableFrame = CGRectMake(sidePadding, sidePadding, totalWidth - 2 * sidePadding, 0);
     filterTableView = [[UITableView alloc] initWithFrame:filterTableFrame style:UITableViewStylePlain];
@@ -195,6 +234,39 @@
     
     //self.tableView.tableHeaderView = container;
     [self.view addSubview:container];
+    
+    float suggTabStartY = 360; // self.tableView.frame.size.height + self.tableView.frame.origin.y;
+    
+    NSLog(@"start = %f", suggTabStartY);
+    
+    CGRect suggTabFrame = CGRectMake(0, suggTabStartY + 30, totalWidth, 50);
+    suggestionTableView = [[UITableView alloc] initWithFrame:suggTabFrame style:UITableViewStylePlain];
+    suggestionTableView.backgroundColor = [UIColor clearColor];
+    suggestionTableView.delegate = self;
+    suggestionTableView.dataSource = self;
+    suggestionTableView.bounces = NO;
+    suggestionTableView.bouncesZoom = NO;
+    suggestionTableView.showsVerticalScrollIndicator = NO;
+    suggestionTableView.showsHorizontalScrollIndicator = NO;
+    suggestionTableView.tableHeaderView = nil;
+    suggestionTableView.tableFooterView = nil;
+    suggestionTableView.separatorColor = [UIColor clearColor];
+    suggestionTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    suggestionTableView.hidden = YES;
+    [self.view addSubview:suggestionTableView];
+    
+    CGRect titleFrame = CGRectMake(0, 360, totalWidth, 16);
+    suggestionTitle = [[UILabel alloc] initWithFrame:titleFrame];
+    suggestionTitle.text = @"POTREBBERO INTERESSARTI";
+    suggestionTitle.textColor = [UIColor darkGrayColor];
+    [suggestionTitle setFont:[UIFont systemFontOfSize:13.f]];
+    suggestionTitle.hidden = YES;
+    [self.view addSubview:suggestionTitle];
+    
+    addGestureRecognizer:tapGesture.cancelsTouchesInView = NO;
+    //[self.tableView addGestureRecognizer:tapGesture];
+    //[container addGestureRecognizer:tapGesture];
+    [self.view addGestureRecognizer:tapGesture];
 }
 
 -(void) XBtnClicked:(UIButton *) btn {
@@ -244,6 +316,93 @@
     NSLog(@"textFieldDidBeginEditing %@]", self.searchBar.text);
 }
 
+-(void) filterSearchByCategory:(NSString *)cat {
+    
+    [loader startAnimating];
+    xbtn.hidden = YES;
+
+    NSString *cate = [Utils WWWFormEncoded:cat];
+    NSString *suffix = @"/search?query=";
+    NSString *testo = self.searchBar.text;
+    NSString *domain = [@"&domain=" stringByAppendingString:domainChosen];
+    NSString *category = [@"&category=" stringByAppendingString:cate];
+    NSString *requestString = [[[[[Utils getServerBaseAddress] stringByAppendingString:suffix] stringByAppendingString:testo] stringByAppendingString:domain] stringByAppendingString:category];
+    
+    NSLog(@"[filterSearchByCategory] requestString = %@", requestString);
+
+    [manager GET:requestString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSDictionary *json = (NSDictionary *)responseObject;
+        
+        NSLog(@"[Filter] JSON: %@", json);
+        
+        NSMutableArray *results = [[NSMutableArray alloc] init];
+        suggestions = [[NSMutableArray alloc] init];
+        //suggestions vanno filtrate in base al valore "semantic"
+        NSArray *temp = [json objectForKey:@"suggestions"];
+
+        for (NSDictionary *sugg in temp) {
+            int semantic = [[sugg objectForKey:@"semantic"] intValue];
+
+            if (semantic) {
+                [suggestions addObject:sugg];
+            }
+            else {
+                [results addObject:sugg];
+            }
+        }
+        
+        int suggerimenti = (int) [suggestions count];
+        
+        NSLog(@"trovati %d risultati non sematici", (int) [results count]);
+        NSLog(@"trovati %d risultati sematici", suggerimenti);
+        
+        if (suggerimenti > 0) {
+            suggestionTableView.hidden = NO;
+            suggestionTitle.hidden = NO;
+        }
+        else {
+            suggestionTableView.hidden = YES;
+            suggestionTitle.hidden = YES;
+        }
+        
+        array = [[NSArray alloc] initWithArray:results];
+        
+        //aggiorno tabelle risultati
+        [self.tableView reloadData];
+        
+        float newHeight = array.count * RESULTS_ROW_HEIGHT;
+        self.tableView.frame = CGRectMake(self.tableView.frame.origin.x,
+                                          self.tableView.frame.origin.y,
+                                          self.tableView.frame.size.width,
+                                          newHeight);
+        
+        [suggestionTableView reloadData];
+        
+        float inizioY = self.tableView.frame.size.height + self.tableView.frame.origin.y + 20;
+        
+        suggestionTitle.frame = CGRectMake(suggestionTitle.frame.origin.x,
+                                           inizioY,
+                                           suggestionTitle.frame.size.width,
+                                           suggestionTitle.frame.size.height);
+        
+        float height = suggerimenti * RESULTS_ROW_HEIGHT;
+        suggestionTableView.frame = CGRectMake(suggestionTableView.frame.origin.x, inizioY + 30, suggestionTableView.frame.size.width, height);
+        
+        //[suggestionTableView sizeToFit];
+        //[self.tableView sizeToFit];
+        
+        [loader stopAnimating];
+        xbtn.hidden = NO;
+    }
+    failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             
+        NSLog(@"Error: %@", error);
+        [loader stopAnimating];
+        xbtn.hidden = NO;
+    }];
+}
+
 #pragma mark - metodi ricerca generici
 -(void)aTime {
     NSLog(@"chiamato aTime");
@@ -278,7 +437,7 @@
             
             NSLog(@"intervallo di chiamata = %d", intervallo);
             
-            NSArray *suggestions = [json objectForKey:@"suggestions"];
+            NSArray *suggestionsArray = [json objectForKey:@"suggestions"];
             NSDictionary *facets = [json objectForKey:@"facets"];
             
             NSArray *categories = [facets objectForKey:@"categories"];
@@ -296,7 +455,7 @@
             
             filterTableView.hidden = NO;
             
-            array = suggestions;
+            array = suggestionsArray;
             
             if (totCat > 0) {
                 NSLog(@"array tot = %d", (int) array.count);
@@ -322,8 +481,10 @@
 
 -(IBAction)expandFilter:(id)sender {
     
+    [self.searchBar resignFirstResponder];
+    
     float increment = filterHeight + 50;
-    float height, difference, btnY, tableHeight, containerHeight;
+    float height, difference, btnY, tableHeight, containerHeight, tabellaY;
     NSString *titolo;
     
     if (!expanded) {
@@ -331,18 +492,20 @@
         tableHeight = filterHeight;
         difference = increment;
         btnY = filterHeight + 20;
-        containerHeight = 70 + filterHeight + 60;
+        containerHeight = 80 + increment;
         NSLog(@"espando");
         titolo = @"USA TUTTE LE CATEGORIE";
+        tabellaY = containerHeight;
     }
     else {
         height = FILTER_HEIGHT;
         tableHeight = 0;
-        containerHeight = 105;
+        containerHeight = 115;
         difference = -increment;
         btnY = 5;
         NSLog(@"comprimo");
         titolo = @"FILTRA PER CATEGORIA";
+        tabellaY = containerHeight;
     }
     
     [UIView beginAnimations:nil context:nil];
@@ -353,37 +516,47 @@
     
     container.frame = CGRectMake(container.frame.origin.x, container.frame.origin.y, container.frame.size.width, containerHeight);
     
-    float y = self.tableView.frame.origin.y  + difference;
+    //float y = self.tableView.frame.origin.y  + difference;
 
-    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, y, self.tableView.frame.size.width, self.tableView.frame.size.height);
+    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, tabellaY, self.tableView.frame.size.width, self.tableView.frame.size.height);
     
     filterTableView.frame = CGRectMake(filterTableView.frame.origin.x, filterTableView.frame.origin.y, filterTableView.frame.size.width, tableHeight); //height - 50
     
-    filterBtn.frame = CGRectMake(filterBtn.frame.origin.x, btnY, filterBtn.frame.size.width, filterBtn.frame.size.height);
+    //filterBtn.frame = CGRectMake(filterBtn.frame.origin.x, btnY, filterBtn.frame.size.width, filterBtn.frame.size.height);
     
-    toggleFilter.frame = CGRectMake(toggleFilter.frame.origin.x, btnY, toggleFilter.frame.size.width, toggleFilter.frame.size.height);
+    //toggleFilter.frame = CGRectMake(toggleFilter.frame.origin.x, btnY, toggleFilter.frame.size.width, toggleFilter.frame.size.height);
     
-    [filterBtn setTitle:titolo forState:UIControlStateNormal];
+    filterToggleButton.frame = CGRectMake(filterToggleButton.frame.origin.x, btnY, filterToggleButton.frame.size.width, filterToggleButton.frame.size.height);
+    
+    float suggestionNewY = self.tableView.frame.origin.y + self.tableView.frame.size.height + 10;
+    
+    suggestionTitle.frame = CGRectMake(
+                                           suggestionTitle.frame.origin.x,
+                                           suggestionNewY,
+                                           suggestionTitle.frame.size.width,
+                                           suggestionTitle.frame.size.height
+                                           );
+    
+    suggestionTableView.frame = CGRectMake(
+                                           suggestionTableView.frame.origin.x,
+                                           suggestionNewY + 30,
+                                           suggestionTableView.frame.size.width,
+                                           suggestionTableView.frame.size.height
+                                );
+    
+    if (expanded) {
+        [toggleFilter setImage:filter_list];
+    }
+    else {
+        [toggleFilter setImage:up_arrow];
+    }
+    
+    [filterBtn setText:titolo];
     [filterBtn sizeToFit];
     
     [UIView commitAnimations];
     
     expanded = !expanded;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    
-     NSLog(@"sectionForSectionIndexTitle");
-
-    if (tableView == self.tableView) {
-        //ios 8
-        CGRect searchBarFrame = self.searchBar.frame;
-        [tableView scrollRectToVisible:searchBarFrame animated:NO];
-        return NSNotFound;
-    }
-    else {
-        return NSNotFound;
-    }
 }
 
 #pragma mark - metodi ricerca IOS 8
@@ -452,7 +625,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (tableView == self.tableView) return [array count];
-    NSLog(@"filtri %d", (int) [filters count]);
+    if (tableView == suggestionTableView) return [suggestions count];
     return [filters count];
 }
 
@@ -462,7 +635,13 @@
     
     if (tableView == self.tableView) {
     
-        cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+        static NSString *CellIdentifier = @"cell";
+    
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        }
         
         NSDictionary *json = [array objectAtIndex:indexPath.row];
         
@@ -482,10 +661,26 @@
         cell.detailTextLabel.text = @"";
         
     }
+    else if (tableView == suggestionTableView) {
+        
+        static NSString *CellIdentifier = @"suggCell";
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        }
+        
+        cell.backgroundColor = [UIColor clearColor];
+        NSDictionary *json = [suggestions objectAtIndex:indexPath.row];
+        cell.textLabel.text = [json objectForKey:@"descriptor"];
+        //cell.textLabel.font = [cell.textLabel.font fontWithSize:14.0f];
+        //cell.textLabel.textColor = [UIColor darkGrayColor];
+    }
     else {
         
         static NSString *CellIdentifier = @"newFriendCell";
-        cell = [tableView dequeueReusableCellWithIdentifier:@"newFriendCell"];
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
         if (cell == nil) {
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
@@ -511,14 +706,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (tableView == self.filterTableView) return 0;
-    return RESULTS_ROW_HEIGHT;
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (tableView == self.filterTableView) return 0;
-    return RESULTS_ROW_HEIGHT;
+    return 0;
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -546,17 +739,34 @@
         
         [svc getSingleTerm:value];
         [parent closeDrawerAnimated:YES completion:nil];
+
+        [self.searchBar resignFirstResponder];
+    }
+    else if (tableView == suggestionTableView) {
+    
+        NSDictionary *json = [suggestions objectAtIndex:riga];
+        NSString *value = [json objectForKey:@"descriptor"];
+        NSLog(@"[suggestions] didSelectRowAtIndexPath = %@", value);
+        
+        if (value == nil) return;
+        UINavigationController *navC = (UINavigationController *) parent.centerViewController;
+        
+        ScrollerViewController *svc = (ScrollerViewController *) [navC.viewControllers firstObject];
+        
+        [svc getSingleTerm:value];
+        [parent closeDrawerAnimated:YES completion:nil];
+        
+        [self.searchBar resignFirstResponder];
     }
     else {
         
         NSDictionary *json = [filters objectAtIndex:riga];
-        NSString *titolo = [json objectForKey:@"descriptor"];
-        NSLog(@"titolo = %@", titolo);
+        NSString *catFilter = [json objectForKey:@"descriptor"];
+        NSLog(@"catFilter = %@", catFilter);
         [self expandFilter:nil];
-        [filterBtn setTitle:titolo forState:UIControlStateNormal];
+        [filterBtn setText:catFilter];
         
-        //TODO: filtra risultati
-        
+        [self filterSearchByCategory:catFilter];
     }
     //NSArray *sotto = view.subviews;
     //int cards = (int) view.subviews.count;

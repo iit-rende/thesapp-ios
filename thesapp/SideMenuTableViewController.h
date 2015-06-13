@@ -14,6 +14,7 @@
 @interface SideMenuTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate, UITextFieldDelegate>
 {
     NSArray *array, *icons, *views, *filters;
+    NSMutableArray *suggestions;
     NSTimer *timer;
     BOOL expanded;
     int intervallo, indice;
@@ -21,17 +22,22 @@
     AFHTTPRequestOperationManager *manager;    
     MMDrawerController *parent;
     UIActivityIndicatorView *loader;
-    UIButton *xbtn, *toggleFilter;
-    UIView *container;
+    UIButton *xbtn;
+    UIView *container, *filterToggleButton;
+    UIImage *filter_list, *down_arrow, *up_arrow;
+    UIImageView *toggleFilter;
+    UILabel *filterBtn;
 }
 
+@property (strong, nonatomic) NSString *domainChosen;
 @property (strong, nonatomic) NSArray *filteredList;
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UITableView *filterTableView;
-@property (nonatomic, strong) IBOutlet UITextField *searchBar;
+@property (nonatomic, strong) UITableView *suggestionTableView;
+@property (nonatomic, strong) UITextField *searchBar;
 @property (nonatomic, strong) IBOutlet UIView *barContainer;
 @property (nonatomic, strong) UIView *filter;
-@property (nonatomic, strong) UIButton *filterBtn;
+@property (nonatomic, strong) UILabel *suggestionTitle;
 
 -(IBAction)expandFilter:(id)sender;
 
