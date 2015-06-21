@@ -11,6 +11,7 @@
 @interface Etichetta : UIButton
 
 @property (nonatomic, strong) NSString *lingua;
+@property (nonatomic, strong) NSString *testo;
 
 +(Etichetta *) createCategoriaLabel:(NSString *) title withFrame:(CGRect) frame;
 +(Etichetta *) createAltraLinguaLabel:(NSString *) title withFrame:(CGRect) frame;
@@ -19,5 +20,6 @@
 +(Etichetta *) createTerminePiuSpecificoLabel:(NSString *) title withFrame:(CGRect) frame;
 +(Etichetta *) createTermineSinonimo:(NSString *) title withFrame:(CGRect) frame;
 +(Etichetta *) createTermineLabel:(NSString *) title withFrame:(CGRect) frame;
++(Etichetta *) createTermineGerarchiaLabel:(NSString *) title withFrame:(CGRect) frame;
 
 @end

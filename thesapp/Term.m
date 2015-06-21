@@ -16,7 +16,7 @@
     
     Term *term = [Term new];
 
-    //NSLog(@"termine = %@", [dict description]);
+    NSLog(@"termine = %@", [dict description]);
     
     NSDictionary *domain = [dict valueForKey:@"domain"];
     

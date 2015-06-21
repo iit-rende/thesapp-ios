@@ -113,10 +113,93 @@
     
     colDx.frame = CGRectMake(colDx.frame.origin.x, colDx.frame.origin.y, nuovaSize.width, nuovaSize.height - header_height);
     
-    wrapper.frame = CGRectMake(wrapper.frame.origin.x, wrapper.frame.origin.y, nuovaSize.width, nuovaSize.height);
+    wrapper.frame = CGRectMake(wrapper.frame.origin.x, wrapper.frame.origin.y, wrapper.frame.size.width, nuovaSize.height);
+    
     self.contentSize = nuovaSize;
     
     //colDx.backgroundColor = [UIColor yellowColor];
+}
+
+-(void) drawLefTree {
+
+    float leftTop = paddingLeft;
+    
+    CGRect catTitleFrame = CGRectMake(paddingLeft, leftTop, fullWithPadding - 2 * paddingLeft, titleLabelHeight);
+    UILabel *catTitle = [[UILabel alloc] initWithFrame:catTitleFrame];
+    catTitle.textColor = [UIColor darkGrayColor];
+    catTitle.font = [catTitle.font fontWithSize:TITOLI_FONT_SIZE];
+    catTitle.text = NSLocalizedString(@"BROWSE_THESAURUS", @"naviga thesaurus");
+    
+    [colSx addSubview:catTitle];
+    
+    leftTop += catTitle.frame.size.height + paddingLeft;
+    
+    BOOL drawTree = self.termine.hierarchy.count > 0;
+    
+    NSMutableArray *gerarchia;
+    
+    NSMutableDictionary *lastTermine = [[NSMutableDictionary alloc] initWithObjectsAndKeys:self.termine.descriptor.descriptor, @"descriptor", nil];
+    
+    if (!drawTree) {
+        
+        if (self.termine.narrowerTerms.count > 0) {
+            //non bisogna indentare
+            gerarchia = [[NSMutableArray alloc] initWithArray:self.termine.narrowerTerms];
+        }
+    }
+    else {
+        //bisogna indentare
+        gerarchia = [[NSMutableArray alloc] initWithArray:self.termine.hierarchy];
+        
+        [gerarchia addObject:lastTermine];
+    }
+    
+    if (gerarchia.count > 0) {
+        
+        int i = 0;
+        //float altezzaBtn = 15 + 3 * PADDING_BTN;
+        float btnPaddingLeft = 2;
+        float left = 0;
+        float etichettaHeight = 20;
+        
+        for (NSDictionary *categoria in gerarchia) {
+            
+            CGRect lblFrame = CGRectMake(btnPaddingLeft, leftTop, 50, etichettaHeight);
+
+            NSString *wildcards = @"";
+            for (int c=0; c<=i; c++) {
+                wildcards = [wildcards stringByAppendingString:@" · "];
+            }
+            
+            wildcards = [wildcards stringByAppendingString:@" "];
+            
+            //NSString *catTitle = [wildcards stringByAppendingString:[categoria objectForKey:@"descriptor"]];
+            NSString *catTitle = [categoria objectForKey:@"descriptor"];
+            
+            if (catTitle == nil) continue;
+            
+            Etichetta *lbl = [Etichetta createTermineGerarchiaLabel:catTitle withFrame:lblFrame];
+            [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
+            //lbl.titleLabel.text = [wildcards stringByAppendingString:lbl.titleLabel.text];
+            [lbl setTitle:[wildcards stringByAppendingString:lbl.titleLabel.text] forState:UIControlStateNormal];
+            [lbl sizeToFit];
+            
+            if  (i < gerarchia.count -1) {
+                //[lbl setTintColor:[UIColor brownColor]];
+                //lbl.titleLabel.textColor = [UIColor brownColor];
+                [lbl setTitleColor:[UIColor brownColor] forState:UIControlStateNormal];
+
+            }
+            
+            [colSx addSubview:lbl];
+            left += 20;
+            
+            leftTop += etichettaHeight + 15;
+            i++;
+        }
+        
+    }
+    
 }
 
 -(void) render {
@@ -145,10 +228,15 @@
             NSLog(@"IPAD ORIZZONTALE");
             
             colDx.frame = CGRectMake(size / 2, header.frame.size.height, size / 2, wrapper.frame.size.height);
-            colDx.backgroundColor = [UIColor orangeColor];
+            
+            NSLog(@"x = %f", colDx.frame.origin.x);
+            NSLog(@"y = %f", colDx.frame.origin.y);
+            
             colSx = [[UIView alloc] initWithFrame:CGRectMake(0, header.frame.size.height, size / 2, wrapper.frame.size.height)];
-            colSx.backgroundColor = [UIColor greenColor];
             [wrapper addSubview:colSx];
+            
+            [self drawLefTree];
+            
         }
         else NSLog(@"IPHONE ORIZZONTALE");
         
@@ -170,34 +258,8 @@
     
     lingua = self.termine.language;
     
-
     top = [self getHeaderHeightAndPadding];    
-    
-    //////////////////////////////////////////////////////////////
-    //albero
-    
-    //TODO: Albero tolto
-    if (self.termine.hierarchy.count > 0 && 5==4) {
-        
-        int i = 0;
-        float altezzaBtn = 15 + 3 * PADDING_BTN;
-        float btnPaddingLeft = 2;
-        float left = 0;
-        float etichettaHeight = 20;
-        
-        for (NSDictionary *categoria in self.termine.hierarchy) {
-            
-            CGRect lblFrame = CGRectMake(btnPaddingLeft + left, top, 50, etichettaHeight);
-            NSString *catTitle = [categoria objectForKey:@"descriptor"];
-            if (catTitle == nil) continue;
-            Etichetta *lbl = [Etichetta createCategoriaLabel:catTitle withFrame:lblFrame];
-            [lbl addTarget:self action:@selector(categoryClick:) forControlEvents:UIControlEventTouchUpInside];
-            [colDx addSubview:lbl];
-            left += 20;
-            
-            top += etichettaHeight + 15;
-        }
-    }
+  
     
     //////////////////////////////////////////////////////////////
     //description textview

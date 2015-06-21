@@ -131,12 +131,33 @@
 
 -(void) categoryClick:(Etichetta *) btn {
     NSLog(@"categoryClick su %@", self.dominio.descriptor);
-    NSString *value = [btn titleLabel].text;
-    [self.controller addCategoryCard:value withDomain:self.dominio];
+    
+    if (btn.testo == nil) {
+        NSLog(@"testo nullo, esco");
+        return;
+    }
+    if (btn.testo.length == 0) {
+        NSLog(@"testo 0, esco");
+        return;
+    }
+    
+    NSLog(@"continuo..");
+    
+    [self.controller addCategoryCard:btn.testo withDomain:self.dominio];
 }
 
 -(void) openLocalizedTerm:(Etichetta *) btn {
-    NSString *value = [btn titleLabel].text;
+    
+    if (btn.testo == nil) {
+        NSLog(@"testo nullo, esco");
+        return;
+    }
+    if (btn.testo.length == 0) {
+        NSLog(@"testo 0, esco");
+        return;
+    }
+    
+    NSString *value = btn.testo;
     NSString *lang =  (btn.lingua != nil) ? btn.lingua : lingua;
     NSLog(@"openLocalizedTerm: %@ in lingua %@", value, lang);
     [self.controller getTerm:value inLanguage:lang];

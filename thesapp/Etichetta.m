@@ -64,77 +64,81 @@
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
 }
 
+-(void) initLabel:(NSString *) title withFrame:(CGRect) frame {
+
+    self.testo = title;
+    [self setFrame:frame];
+    [self setTitle:title forState:UIControlStateNormal];
+    [self sizeToFit];
+}
+
 +(Etichetta *) createTermineLabel:(NSString *) title withFrame:(CGRect) frame {
+    
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
-    [lbl setFrame:frame];
     [lbl setColor:[Utils getTerminiColor]];
-    [lbl setTitle:title forState:UIControlStateNormal];
-    [lbl sizeToFit];
+    [lbl initLabel:title withFrame:frame];
+    
+    return lbl;
+}
+
++(Etichetta *) createTermineGerarchiaLabel:(NSString *) title withFrame:(CGRect) frame {
+    
+    Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
+    
+    UIColor *colore = [UIColor grayColor];
+    
+    [lbl setTintColor:colore];
+    [lbl setTitleColor:colore forState:UIControlStateNormal];
+    lbl.titleLabel.textColor = colore;
+    lbl.layer.borderWidth = 0;
+    
+    UIFont* boldFont = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
+    [lbl.titleLabel setFont:boldFont];
+    [lbl setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    
+    [lbl initLabel:title withFrame:frame];
     return lbl;
 }
 
 +(Etichetta *) createCategoriaLabel:(NSString *) title withFrame:(CGRect)frame {
-    
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
-    [lbl setFrame:frame];
     [lbl setColor:[Utils getCategoriaColor]];
-    
-    [lbl setTitle:title forState:UIControlStateNormal];
-    [lbl sizeToFit];
+    [lbl initLabel:title withFrame:frame];
     return lbl;
 }
 
 +(Etichetta *) createAltraLinguaLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
-    [lbl setFrame:frame];
     [lbl setColor:[Utils getTraduzioneColor]];
-    
-    [lbl setTitle:title forState:UIControlStateNormal];
-    [lbl sizeToFit];
-    
+    [lbl initLabel:title withFrame:frame];
     return lbl;
 }
 
 +(Etichetta *) createTermineCorrelatoLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
-    [lbl setFrame:frame];
     [lbl setColor:[Utils getTermineCorrelatoColor]];
-    [lbl setTitle:title forState:UIControlStateNormal];
-    [lbl sizeToFit];
-    
+    [lbl initLabel:title withFrame:frame];
     return lbl;
 }
 
 +(Etichetta *) createTerminePiuGenericoLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
-    [lbl setFrame:frame];
     [lbl setColor:[Utils getPiuGenericoColor]];
-    
-    [lbl setTitle:title forState:UIControlStateNormal];
-    [lbl sizeToFit];
-    
+    [lbl initLabel:title withFrame:frame];
     return lbl;
 }
 
 +(Etichetta *) createTerminePiuSpecificoLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
-    [lbl setFrame:frame];
     [lbl setColor:[Utils getPiuSpecificoColor]];
-    
-    [lbl setTitle:title forState:UIControlStateNormal];
-    [lbl sizeToFit];
-    
+    [lbl initLabel:title withFrame:frame];
     return lbl;
 }
 
 +(Etichetta *) createTermineSinonimo:(NSString *) title withFrame:(CGRect) frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
-    [lbl setFrame:frame];
     [lbl setColor:[UIColor grayColor]];
-    
-    [lbl setTitle:title forState:UIControlStateNormal];
-    [lbl sizeToFit];
-    
+    [lbl initLabel:title withFrame:frame];
     return lbl;
 }
 
