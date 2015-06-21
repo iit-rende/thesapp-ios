@@ -8,6 +8,7 @@
 
 #import "GenericScrollCard.h"
 #import "Categoria.h"
+#import "Utils.h"
 
 @class Categoria;
 

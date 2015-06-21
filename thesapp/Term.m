@@ -16,9 +16,9 @@
     
     Term *term = [Term new];
 
-    NSDictionary *domain = [dict valueForKey:@"domain"];
+    //NSLog(@"termine = %@", [dict description]);
     
-
+    NSDictionary *domain = [dict valueForKey:@"domain"];
     
     Descriptor *desc = [Descriptor new];
     desc.descriptor = [dict valueForKey:@"descriptor"];
@@ -37,11 +37,6 @@
     NSArray *usedFor = [dict valueForKey:@"usedFor"];
     NSArray *useFor = [dict valueForKey:@"useFor"];
     
-    NSLog(@"#############################");
-    NSLog(@"dict = %@", [localizations description]);
-    NSLog(@"classe = %@", [[localizations class] description]);
-    NSLog(@"#############################");
-    
     term.categories = categories;
     term.relatedTerms = relatedTerms;
     term.narrowerTerms = narrowerTerms;
@@ -50,8 +45,6 @@
     term.hierarchy = hierarchy;
     term.usedFor = usedFor;
     term.useFor = useFor;
-    
-    NSLog(@"term = %@", [term.localizations description]);
     
     return term;
 }

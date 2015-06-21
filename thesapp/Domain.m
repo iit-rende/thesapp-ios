@@ -7,6 +7,7 @@
 //
 
 #import "Domain.h"
+#import "Localization.h"
 
 @implementation Domain
 
@@ -20,7 +21,20 @@
     dominio.icon = [json valueForKey:@"icon"]; //UIImage
     dominio.color = [json valueForKey:@"color"]; //UIColor
 
-    dominio.localizations = nil; //todo
+    NSArray *localizations = [json valueForKey:@"localizations"];
+    
+    dominio.localizations = [[NSMutableDictionary alloc] init];
+    
+    for (NSDictionary *loc in localizations) {
+        Localization *localiz = [[Localization alloc] init];
+        localiz.termCount = [[loc objectForKey:@"termCount"] intValue];
+        localiz.descriptor = [loc objectForKey:@"descriptor"];
+        localiz.descrizione = [loc objectForKey:@"description"];
+        NSString *lingua = [loc objectForKey:@"language"];
+        localiz.language = lingua;
+        
+        [dominio.localizations setObject:localiz forKey:lingua];
+    }
     
     return dominio;
 }

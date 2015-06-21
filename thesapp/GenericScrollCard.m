@@ -7,9 +7,10 @@
 //
 
 #import "GenericScrollCard.h"
+#import "Utils.h"
 
 #define PADDING_BTN 8
-#define HEADER_HEIGHT 100
+#define HEADER_HEIGHT 110
 #define HEADER_BOTTOM_PADDING 15
 
 #define TITOLI_FONT_SIZE 11.0f
@@ -87,7 +88,7 @@
     //disegno header
     CGRect headerFrame = CGRectMake(0, 0, fullWithPadding, HEADER_HEIGHT);
     header = [[UIView alloc] initWithFrame:headerFrame];
-    header.backgroundColor = [UIColor lightGrayColor];
+    header.backgroundColor = [Utils getHeaderColor];
     [wrapper addSubview:header];
     
     //////////////////////////////////////////////////////////////
@@ -106,16 +107,18 @@
     //title label
     float title_padding_top = PADDING_BTN + TITLE_PADDING_TOP;
     CGRect titleFrame = CGRectMake(PADDING_BTN, title_padding_top, fullWithPadding, titleHeight);
-    titolo = [[UILabel alloc] initWithFrame:titleFrame];
+    titolo = [[TitoloLabel alloc] initWithFrame:titleFrame];
     titolo.backgroundColor = [UIColor clearColor];
     titolo.font = [titolo.font fontWithSize: titleFontSize];
     titolo.textColor = [UIColor whiteColor];
     titolo.numberOfLines = 0;
-    [header addSubview:titolo];    
+    [header addSubview:titolo];
 }
 
 -(void) addCardTitle:(NSString *) title {
     titolo.text = title;
+    [titolo sizeToFit];
+    [header sizeToFit];
 }
 
 -(float) getHeaderHeightAndPadding {
@@ -132,10 +135,17 @@
     [self.controller addCategoryCard:value withDomain:self.dominio];
 }
 
+-(void) openLocalizedTerm:(Etichetta *) btn {
+    NSString *value = [btn titleLabel].text;
+    NSString *lang =  (btn.lingua != nil) ? btn.lingua : lingua;
+    NSLog(@"openLocalizedTerm: %@ in lingua %@", value, lang);
+    [self.controller getTerm:value inLanguage:lang];
+}
+
 -(void) openTerm:(Etichetta *) btn {
     NSString *value = [btn titleLabel].text;
     NSLog(@"openTerm: %@", value);
-    [self.controller getTerm:value];
+    [self.controller getTerm:value inLanguage:lingua]; //gli passo lingua corrente
 }
 
 -(void) dietro:(UIButton *) btn {

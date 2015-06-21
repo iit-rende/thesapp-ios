@@ -23,7 +23,8 @@
 
 -(NSString *) getName {
     if (dominio != nil) return dominio.descriptor;
-    return [super getName];
+    return @"dominio_categoria_card";
+    //return [super getName];
 }
 
 -(void) render {

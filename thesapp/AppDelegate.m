@@ -23,7 +23,9 @@ NSString *const SubscriptionTopic = @"/topics/paolo";
 @implementation AppDelegate
 
 +(CGFloat) getSidemenuWidth {
-   return [UIScreen mainScreen].applicationFrame.size.width - 50;
+   //return [UIScreen mainScreen].applicationFrame.size.width - 50;
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) return 350;
+    return 270;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

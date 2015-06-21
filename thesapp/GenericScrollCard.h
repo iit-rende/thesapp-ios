@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "Etichetta.h"
 #import "Domain.h"
+#import "TitoloLabel.h"
 
 @protocol CardController
 - (void) goBack;
 - (void) addCategoryCard:(NSString *) catName withDomain:(Domain *) dom;
-- (void) getTerm:(NSString *) term;
+- (void) getTerm:(NSString *) term inLanguage:(NSString *) lang;
 - (void) getDominio:(Domain *) dominio;
 - (void) getDomainCategory:(NSString *) categoria fromDomain:(Domain *) dominio;
 @end
@@ -30,7 +31,8 @@
     float fullWidth, fullWithPadding, top, btnHeight, paddingLeft, titleLabelHeight;
     UIView *header, *wrapper;
     UIButton *back;
-    UILabel *titolo;
+    TitoloLabel *titolo;
+    NSString *lingua;
 }
 
 @property (nonatomic, strong) id<CardController> controller;
@@ -39,6 +41,7 @@
 -(void) addSectionTitle:(NSString *) title;
 -(void) addCardTitle:(NSString *) title;
 -(void) openTerm:(Etichetta *) btn;
+-(void) openLocalizedTerm:(Etichetta *) btn;
 -(void) categoryClick:(Etichetta *) btn;
 -(float) getHeaderHeightAndPadding;
 -(void) prepare;

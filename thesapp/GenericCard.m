@@ -106,7 +106,7 @@
 -(void) openTerm:(Etichetta *) btn {
     NSString *value = [btn titleLabel].text;
     NSLog(@"openTerm: %@", value);
-    [self.controller getTerm:value];
+    [self.controller getTerm:value inLanguage:@"it"]; //TODO
 }
 
 -(void) dietro:(UIButton *) btn {

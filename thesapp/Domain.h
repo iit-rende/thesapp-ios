@@ -13,7 +13,7 @@
 @property (nonatomic, strong) NSString *descriptor;
 @property (nonatomic, strong) NSString *icon;
 @property (nonatomic, strong) NSString *color;
-@property (nonatomic, strong) NSArray *localizations;
+@property (nonatomic, strong) NSMutableDictionary *localizations;
 
 
 +(Domain *) getDomainFromJson:(NSDictionary *) json;

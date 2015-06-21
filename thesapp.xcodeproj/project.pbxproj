@@ -10,6 +10,9 @@
 		63ADC5281D052028D05A4B1E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3819954E89B38082E6374B6A /* libPods.a */; };
 		CD25C3341B29B82F00C0EE91 /* filter_list.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3331B29B82F00C0EE91 /* filter_list.png */; };
 		CD25C3361B29BA3600C0EE91 /* up_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */; };
+		CD3DD1521B3169D20082A337 /* Localization.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3DD1511B3169D20082A337 /* Localization.m */; };
+		CD8936541B32B6410016439D /* DominioTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8936521B32B6410016439D /* DominioTableViewCell.m */; };
+		CD8936551B32B6410016439D /* DominioTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD8936531B32B6410016439D /* DominioTableViewCell.xib */; };
 		CDA071811B20659100BD6CCF /* CustomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */; };
 		CDA071821B20659100BD6CCF /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA071801B20659100BD6CCF /* CustomCollectionViewCell.xib */; };
 		CDA071841B20659B00BD6CCF /* TermCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDA071831B20659B00BD6CCF /* TermCard.xib */; };
@@ -41,6 +44,13 @@
 		CDA071D41B20661500BD6CCF /* WordButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C71B20661500BD6CCF /* WordButton.m */; };
 		CDA071D61B20664C00BD6CCF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDA071D51B20664C00BD6CCF /* Localizable.strings */; };
 		CDA071DF1B2074CA00BD6CCF /* UILabel+FormattedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071DE1B2074CA00BD6CCF /* UILabel+FormattedText.m */; };
+		CDB3F56B1B33FF3E0031182E /* InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB3F56A1B33FF3E0031182E /* InfoViewController.m */; };
+		CDB3F5701B3402CE0031182E /* logoLabdoc.png in Resources */ = {isa = PBXBuildFile; fileRef = CDB3F56D1B3402CE0031182E /* logoLabdoc.png */; };
+		CDB3F5711B3402CE0031182E /* logo iit.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CDB3F56E1B3402CE0031182E /* logo iit.jpg */; };
+		CDB3F5721B3402CE0031182E /* logo cnr.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CDB3F56F1B3402CE0031182E /* logo cnr.jpg */; };
+		CDB3F5741B3415070031182E /* info_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CDB3F5731B3415070031182E /* info_icon.png */; };
+		CDB3F5781B3416B10031182E /* clock_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CDB3F5771B3416B10031182E /* clock_icon.png */; };
+		CDB3F57B1B341A220031182E /* TitoloLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB3F57A1B341A220031182E /* TitoloLabel.m */; };
 		CDC02E141B26E35F00C7C15E /* down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = CDC02E131B26E35F00C7C15E /* down_arrow.png */; };
 		CDC02E181B26E5A500C7C15E /* left_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = CDC02E171B26E5A500C7C15E /* left_arrow_white.png */; };
 		CDCB24971B2064850087A5BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB24961B2064850087A5BE /* main.m */; };
@@ -64,6 +74,11 @@
 		3819954E89B38082E6374B6A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD25C3331B29B82F00C0EE91 /* filter_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter_list.png; sourceTree = "<group>"; };
 		CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up_arrow_white.png; sourceTree = "<group>"; };
+		CD3DD1501B3169D20082A337 /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localization.h; sourceTree = "<group>"; };
+		CD3DD1511B3169D20082A337 /* Localization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Localization.m; sourceTree = "<group>"; };
+		CD8936511B32B6410016439D /* DominioTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DominioTableViewCell.h; sourceTree = "<group>"; };
+		CD8936521B32B6410016439D /* DominioTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DominioTableViewCell.m; sourceTree = "<group>"; };
+		CD8936531B32B6410016439D /* DominioTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DominioTableViewCell.xib; sourceTree = "<group>"; };
 		CDA0717E1B20659100BD6CCF /* CustomCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCollectionViewCell.h; sourceTree = "<group>"; };
 		CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCollectionViewCell.m; sourceTree = "<group>"; };
 		CDA071801B20659100BD6CCF /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -125,6 +140,15 @@
 		CDA071D51B20664C00BD6CCF /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		CDA071DD1B2074CA00BD6CCF /* UILabel+FormattedText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+FormattedText.h"; sourceTree = "<group>"; };
 		CDA071DE1B2074CA00BD6CCF /* UILabel+FormattedText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+FormattedText.m"; sourceTree = "<group>"; };
+		CDB3F5691B33FF3E0031182E /* InfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoViewController.h; sourceTree = "<group>"; };
+		CDB3F56A1B33FF3E0031182E /* InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoViewController.m; sourceTree = "<group>"; };
+		CDB3F56D1B3402CE0031182E /* logoLabdoc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logoLabdoc.png; sourceTree = "<group>"; };
+		CDB3F56E1B3402CE0031182E /* logo iit.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "logo iit.jpg"; sourceTree = "<group>"; };
+		CDB3F56F1B3402CE0031182E /* logo cnr.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "logo cnr.jpg"; sourceTree = "<group>"; };
+		CDB3F5731B3415070031182E /* info_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info_icon.png; sourceTree = "<group>"; };
+		CDB3F5771B3416B10031182E /* clock_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock_icon.png; sourceTree = "<group>"; };
+		CDB3F5791B341A220031182E /* TitoloLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitoloLabel.h; sourceTree = "<group>"; };
+		CDB3F57A1B341A220031182E /* TitoloLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitoloLabel.m; sourceTree = "<group>"; };
 		CDC02E131B26E35F00C7C15E /* down_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_arrow.png; sourceTree = "<group>"; };
 		CDC02E171B26E5A500C7C15E /* left_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left_arrow_white.png; sourceTree = "<group>"; };
 		CDCB24911B2064850087A5BE /* thesapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thesapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -202,6 +226,10 @@
 				CDA071901B2065B700BD6CCF /* Domain.m */,
 				CDA071951B2065B700BD6CCF /* Etichetta.h */,
 				CDA071961B2065B700BD6CCF /* Etichetta.m */,
+				CD3DD1501B3169D20082A337 /* Localization.h */,
+				CD3DD1511B3169D20082A337 /* Localization.m */,
+				CDB3F5791B341A220031182E /* TitoloLabel.h */,
+				CDB3F57A1B341A220031182E /* TitoloLabel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -222,6 +250,8 @@
 				CDA071BD1B20661500BD6CCF /* SingleWordViewController.m */,
 				CDA071C41B20661500BD6CCF /* ViewController.h */,
 				CDA071C51B20661500BD6CCF /* ViewController.m */,
+				CDB3F5691B33FF3E0031182E /* InfoViewController.h */,
+				CDB3F56A1B33FF3E0031182E /* InfoViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -259,6 +289,9 @@
 				CDA0717E1B20659100BD6CCF /* CustomCollectionViewCell.h */,
 				CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */,
 				CDA071801B20659100BD6CCF /* CustomCollectionViewCell.xib */,
+				CD8936511B32B6410016439D /* DominioTableViewCell.h */,
+				CD8936521B32B6410016439D /* DominioTableViewCell.m */,
+				CD8936531B32B6410016439D /* DominioTableViewCell.xib */,
 			);
 			name = "Custom Controls";
 			sourceTree = "<group>";
@@ -266,8 +299,11 @@
 		CDA071DC1B2066F300BD6CCF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CDB3F56C1B3402A60031182E /* images */,
 				CD25C3331B29B82F00C0EE91 /* filter_list.png */,
 				CDC02E131B26E35F00C7C15E /* down_arrow.png */,
+				CDB3F5771B3416B10031182E /* clock_icon.png */,
+				CDB3F5731B3415070031182E /* info_icon.png */,
 				CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */,
 				CDC02E171B26E5A500C7C15E /* left_arrow_white.png */,
 				CDA071AC1B20661400BD6CCF /* Main.storyboard */,
@@ -275,6 +311,16 @@
 				CDCB24A31B2064850087A5BE /* LaunchScreen.xib */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		CDB3F56C1B3402A60031182E /* images */ = {
+			isa = PBXGroup;
+			children = (
+				CDB3F56D1B3402CE0031182E /* logoLabdoc.png */,
+				CDB3F56E1B3402CE0031182E /* logo iit.jpg */,
+				CDB3F56F1B3402CE0031182E /* logo cnr.jpg */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 		CDCB24881B2064850087A5BE = {
@@ -433,17 +479,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDB3F5711B3402CE0031182E /* logo iit.jpg in Resources */,
 				CDA071841B20659B00BD6CCF /* TermCard.xib in Resources */,
+				CDB3F5781B3416B10031182E /* clock_icon.png in Resources */,
 				CDA071D61B20664C00BD6CCF /* Localizable.strings in Resources */,
 				CDA071C81B20661500BD6CCF /* Main.storyboard in Resources */,
+				CDB3F5741B3415070031182E /* info_icon.png in Resources */,
 				CDC02E141B26E35F00C7C15E /* down_arrow.png in Resources */,
 				CDC02E181B26E5A500C7C15E /* left_arrow_white.png in Resources */,
 				CD25C3361B29BA3600C0EE91 /* up_arrow_white.png in Resources */,
 				CDCB24A51B2064850087A5BE /* LaunchScreen.xib in Resources */,
+				CD8936551B32B6410016439D /* DominioTableViewCell.xib in Resources */,
 				CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */,
 				CDA071821B20659100BD6CCF /* CustomCollectionViewCell.xib in Resources */,
 				CD25C3341B29B82F00C0EE91 /* filter_list.png in Resources */,
 				CDFF70AF1B219E7200B5FD3D /* Settings.bundle in Resources */,
+				CDB3F5701B3402CE0031182E /* logoLabdoc.png in Resources */,
+				CDB3F5721B3402CE0031182E /* logo cnr.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,12 +547,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDA071CD1B20661500BD6CCF /* ScrollerViewController.m in Sources */,
+				CDB3F56B1B33FF3E0031182E /* InfoViewController.m in Sources */,
 				CDA071A21B2065B700BD6CCF /* Domain.m in Sources */,
+				CDB3F57B1B341A220031182E /* TitoloLabel.m in Sources */,
 				CDA071A51B2065B700BD6CCF /* Etichetta.m in Sources */,
 				CDA071D01B20661500BD6CCF /* Term.m in Sources */,
 				CDA071A61B2065B700BD6CCF /* GenericCard.m in Sources */,
 				CDA071CB1B20661500BD6CCF /* NSString+Levenshtein.m in Sources */,
 				CDA071D31B20661500BD6CCF /* ViewController.m in Sources */,
+				CD3DD1521B3169D20082A337 /* Localization.m in Sources */,
 				CDA071C91B20661500BD6CCF /* MainViewController.m in Sources */,
 				CDA071D11B20661500BD6CCF /* TermCard.m in Sources */,
 				CDA071AB1B2065D000BD6CCF /* AppDelegate.m in Sources */,
@@ -520,6 +575,7 @@
 				CDCB24971B2064850087A5BE /* main.m in Sources */,
 				CDA071CF1B20661500BD6CCF /* SingleWordViewController.m in Sources */,
 				CDA0719F1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m in Sources */,
+				CD8936541B32B6410016439D /* DominioTableViewCell.m in Sources */,
 				CDA071811B20659100BD6CCF /* CustomCollectionViewCell.m in Sources */,
 				CDA071CC1B20661500BD6CCF /* PageRootViewController.m in Sources */,
 			);
@@ -591,7 +647,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -629,7 +685,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -13,9 +13,16 @@
 @interface Utils : NSObject
 
 +(NSString *) getServerBaseAddress;
-
++(NSString *) getCurrentLanguage;
 +(NSString *) getChosenDomain;
 +(UIColor *) getChosenDomainColor;
++(UIColor *) getTerminiColor;
++(UIColor *) getTermineCorrelatoColor;
++(UIColor *) getCategoriaColor;
++(UIColor *) getPiuSpecificoColor;
++(UIColor *) getPiuGenericoColor;
++(UIColor *) getTraduzioneColor;
++(UIColor *) getHeaderColor;
 
 + (void) setCurrentDomain:(Domain *) dominio;
 

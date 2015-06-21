@@ -10,8 +10,40 @@
 
 @implementation Utils
 
++(NSString *) getCurrentLanguage {
+    return @"it";
+}
+
 +(NSString *) getServerBaseAddress {
     return @"http://146.48.65.88";
+}
+
++(UIColor *) getTermineCorrelatoColor {
+    return [Utils colorFromHexString:@"#009688"];
+}
+
++(UIColor *) getTerminiColor {
+    return [Utils colorFromHexString:@"#5677FC"];
+}
+
++(UIColor *) getCategoriaColor {
+    return [Utils colorFromHexString:@"#1B9C17"];
+}
+
++(UIColor *) getPiuSpecificoColor {
+     return [Utils colorFromHexString:@"#FF5606"];
+}
+
++(UIColor *) getPiuGenericoColor {
+    return [Utils colorFromHexString:@"#FF9800"];
+}
+
++(UIColor *) getTraduzioneColor {
+    return [Utils colorFromHexString:@"#E51C23"];
+}
+
++(UIColor *) getHeaderColor {
+    return [Utils colorFromHexString:@"#9E9E9E"];
 }
 
 +(UIColor *) getChosenDomainColor {

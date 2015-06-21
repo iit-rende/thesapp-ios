@@ -7,6 +7,7 @@
 //
 
 #import "Etichetta.h"
+#import "Utils.h"
 #define PADDING_BTN 5
 #define LBL_BORDER_WIDTH 1
 
@@ -27,11 +28,6 @@
     return button;
 }
 
- /// Make your button have a custom appearance when highlighted here.
- - (void)setHighlighted:(BOOL)highlighted {
-     [super setHighlighted:highlighted];
- }
-
 -(void) postButtonWithTypeInit {
     UIEdgeInsets titleInsets            = UIEdgeInsetsMake(0.0f, PADDING_BTN, 0.0f, -PADDING_BTN);
     UIEdgeInsets contentInsets          = UIEdgeInsetsMake(PADDING_BTN, 0.0f, PADDING_BTN, 0.0f);
@@ -44,18 +40,44 @@
     self.layer.borderWidth = LBL_BORDER_WIDTH;
 }
 
+- (void) setHighlighted:(BOOL)highlighted {
+    
+    [super setHighlighted:highlighted];
+    
+    if (highlighted) {
+        self.backgroundColor = self.tintColor;
+    }
+    else {
+        self.backgroundColor = [UIColor whiteColor];
+    }
+}
+
 -(void) setColor:(UIColor *) color {
     [self setTintColor:color];
     [self setTitleColor:color forState:UIControlStateNormal];
     self.titleLabel.textColor = color;
     self.layer.borderColor = color.CGColor;
+    
+    UIFont* boldFont = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
+    [self.titleLabel setFont:boldFont];
+    
+    [self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+}
+
++(Etichetta *) createTermineLabel:(NSString *) title withFrame:(CGRect) frame {
+    Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
+    [lbl setFrame:frame];
+    [lbl setColor:[Utils getTerminiColor]];
+    [lbl setTitle:title forState:UIControlStateNormal];
+    [lbl sizeToFit];
+    return lbl;
 }
 
 +(Etichetta *) createCategoriaLabel:(NSString *) title withFrame:(CGRect)frame {
     
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
     [lbl setFrame:frame];
-    [lbl setColor:[UIColor blueColor]];
+    [lbl setColor:[Utils getCategoriaColor]];
     
     [lbl setTitle:title forState:UIControlStateNormal];
     [lbl sizeToFit];
@@ -65,7 +87,7 @@
 +(Etichetta *) createAltraLinguaLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
     [lbl setFrame:frame];
-    [lbl setColor:[UIColor redColor]];
+    [lbl setColor:[Utils getTraduzioneColor]];
     
     [lbl setTitle:title forState:UIControlStateNormal];
     [lbl sizeToFit];
@@ -76,7 +98,7 @@
 +(Etichetta *) createTermineCorrelatoLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
     [lbl setFrame:frame];
-    [lbl setColor:[UIColor cyanColor]];
+    [lbl setColor:[Utils getTermineCorrelatoColor]];
     [lbl setTitle:title forState:UIControlStateNormal];
     [lbl sizeToFit];
     
@@ -86,7 +108,7 @@
 +(Etichetta *) createTerminePiuGenericoLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
     [lbl setFrame:frame];
-    [lbl setColor:[UIColor orangeColor]];
+    [lbl setColor:[Utils getPiuGenericoColor]];
     
     [lbl setTitle:title forState:UIControlStateNormal];
     [lbl sizeToFit];
@@ -97,7 +119,18 @@
 +(Etichetta *) createTerminePiuSpecificoLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
     [lbl setFrame:frame];
-    [lbl setColor:[UIColor yellowColor]];
+    [lbl setColor:[Utils getPiuSpecificoColor]];
+    
+    [lbl setTitle:title forState:UIControlStateNormal];
+    [lbl sizeToFit];
+    
+    return lbl;
+}
+
++(Etichetta *) createTermineSinonimo:(NSString *) title withFrame:(CGRect) frame {
+    Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
+    [lbl setFrame:frame];
+    [lbl setColor:[UIColor grayColor]];
     
     [lbl setTitle:title forState:UIControlStateNormal];
     [lbl sizeToFit];

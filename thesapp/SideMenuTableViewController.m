@@ -7,7 +7,6 @@
 //
 
 #import "SideMenuTableViewController.h"
-#import "ScrollerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UILabel+FormattedText.h"
 #import "AppDelegate.h"
@@ -17,24 +16,92 @@
 #define CATEGORIES_ROW_HEIGHT 30
 #define RESULTS_ROW_HEIGHT 40
 #define LOADER_SIZE 37
+#define PICKER_VIEW_HEIGHT 162
 
 @interface SideMenuTableViewController ()
 
 @end
 
 @implementation SideMenuTableViewController
-@synthesize filter, filterTableView, domainChosen, suggestionTableView, suggestionTitle;
-
-//     [self.searchBar becomeFirstResponder];
+@synthesize filter, filterTableView, chosenDomain, suggestionTableView, suggestionTitle;
 
 -(void)hideKeyBoard {
     [self.searchBar endEditing:YES];
 }
 
+-(void) viewWillAppear:(BOOL)animated {
+    NSLog(@"menu apparso");
+    
+    //self.barContainer.backgroundColor = [UIColor orangeColor];
+    
+    UINavigationController *navC = (UINavigationController *) parent.centerViewController;
+    NSLog(@"NAVC = %@", [navC description]);
+    svc = (ScrollerViewController *) [navC.viewControllers firstObject];
+    NSLog(@"svc = %@", [svc description]);
+    
+    /*
+    UIColor *domainColor = [Utils getChosenDomainColor];
+    if (domainColor != nil)
+        self.barContainer.backgroundColor = domainColor;
+    else NSLog(@"SCARTO");
+     */
+
+}
+
+-(void) menuOpen:(NSMutableArray *) domini {
+    
+    //[self.searchBar becomeFirstResponder];
+    
+    NSLog(@"svc.listaDomini = %d", (int) domini.count);
+    
+    //if (svc.listaDomini.count > 0) listaDomini = svc.listaDomini;
+    //else listaDomini = [[NSMutableArray alloc] init];
+    
+    listaDomini = domini;
+    
+    if (listaDomini.count > 0) {
+        chosenDomain = [listaDomini firstObject];
+        [tendina setTitle:chosenDomain.descriptor forState:UIControlStateNormal];
+        
+        if (chosenDomain != nil) {
+            
+            NSLog(@"colore = %@", chosenDomain.color);
+            UIColor *colore = [Utils colorFromHexString:chosenDomain.color];
+            
+            if (colore != nil){
+                self.barContainer.backgroundColor = colore;
+                self.barContainer.tintColor = colore;
+                NSLog(@"colore cambiato");
+            } else NSLog(@"colore non cambiato");
+            
+        } else NSLog(@"dominio nullo");
+    }
+    
+    [myPickerView reloadAllComponents];
+    myPickerView.hidden = YES;
+    
+    NSLog(@"apro menu side");
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    domainChosen = @"Turismo";
+    float totalWidth = [AppDelegate getSidemenuWidth];
+    
+    lingua = [Utils getCurrentLanguage];
+    
+    self.barContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, totalWidth,66)];
+    
+    [self.view addSubview:self.barContainer];
+    
+    advice = [[UILabel alloc] initWithFrame:CGRectMake(10, self.barContainer.frame.size.height + 20, totalWidth - 20, 22)];
+    advice.text = @"Nessun risultato";
+    advice.textColor = [UIColor darkGrayColor];
+    advice.textAlignment = NSTextAlignmentCenter;
+    
+    //if (svc.listaDomini.count > 0) listaDomini = svc.listaDomini;
+    //else listaDomini = [[NSMutableArray alloc] init];
+    
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
@@ -45,28 +112,23 @@
     up_arrow = [UIImage imageNamed:@"up_arrow_white"];
     
     //misure
-    float totalWidth = [AppDelegate getSidemenuWidth];
+
     NSLog(@"width = %f", totalWidth );
     float sidePadding = 5;
     float xSize = 30;
     float tendinaWidth = 70;
     float searchBarWidth = totalWidth - 5 * sidePadding - tendinaWidth - xSize;
-    float loaderLeft = searchBarWidth + tendinaWidth + sidePadding;
+    float loaderLeft = searchBarWidth + tendinaWidth;
     float wrapperHeight = xSize + 2 * sidePadding;
     float filter_Y = wrapperHeight + 8 * sidePadding;
     float containerHeight = wrapperHeight + FILTER_HEIGHT + 2 * sidePadding;
-    
-    
-    UIColor *domainColor = [Utils getChosenDomainColor];
-    if (domainColor != nil) self.barContainer.backgroundColor = domainColor;
-    else NSLog(@"SCARTO");
     
     indice = 0;
     manager = [AFHTTPRequestOperationManager manager];
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
-    CGRect tableFrame = CGRectMake(0, containerHeight, totalWidth, self.view.frame.size.height - containerHeight);
+    CGRect tableFrame = CGRectMake(0, containerHeight + FILTER_HEIGHT, totalWidth, self.view.frame.size.height - containerHeight);
     self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -109,8 +171,9 @@
     self.searchBar = [[UITextField alloc] initWithFrame:searchBarFrame];
     self.searchBar.backgroundColor = [UIColor whiteColor];
     self.searchBar.enabled = YES;
+    [self.searchBar setFont:[UIFont systemFontOfSize:14.f]];
     self.searchBar.delegate = self;
-    self.searchBar.placeholder = @"Cerca un termine...";
+    self.searchBar.placeholder = NSLocalizedString(@"SEARCH_PLACEHOLDER", @"cerca termine");
     
     [self.searchBar addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
@@ -135,17 +198,18 @@
     
     CGFloat spacing = 6.0;
     
-    UIButton *tendina = [UIButton buttonWithType:UIButtonTypeCustom];
+    tendina = [UIButton buttonWithType:UIButtonTypeCustom];
     [tendina setFrame:tendinaFrame];
     [tendina setCenter:CGPointMake(tendinaWidth / 2, xSize / 2)];
     [tendina setClipsToBounds:false];
     [tendina setImage:[UIImage imageNamed:@"down_arrow"] forState:UIControlStateNormal];
-    [tendina setTitle:@"Turismo" forState:UIControlStateNormal];
-    [tendina.titleLabel setFont:[UIFont systemFontOfSize:14.f]];
+    [tendina.titleLabel setFont:[UIFont systemFontOfSize:10.f]];
     [tendina setTitleColor:[UIColor blackColor] forState:UIControlStateNormal]; // SET the colour for your wishes
     //[tendina setTitleEdgeInsets:UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f)]; // SET the values for your wishes
     //[tendina setImageEdgeInsets:UIEdgeInsetsMake(0.f, 0.f, -40.f, 0.f)];
     tendina.backgroundColor = [UIColor whiteColor];
+    
+    [tendina addTarget:self action:@selector(openPicker:) forControlEvents:UIControlEventTouchUpInside];
     
     CGSize imageSize = tendina.imageView.frame.size;
     tendina.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
@@ -164,13 +228,14 @@
     [loader setTintColor:[UIColor darkGrayColor]];
     
     //x button
-    CGRect btnFrame = CGRectMake(230, sidePadding, xSize, xSize);
+    //float leftBtn = [AppDelegate getSidemenuWidth] - 55;
+    CGRect btnFrame = CGRectMake(loaderLeft, sidePadding, xSize, xSize);
     xbtn = [[UIButton alloc] initWithFrame:btnFrame];
-    [xbtn setTitle:@"X" forState:UIControlStateNormal];
-    [xbtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-    [xbtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateSelected];
+    [xbtn setTitle:@"x" forState:UIControlStateNormal];
+    [xbtn.titleLabel setFont:[UIFont systemFontOfSize:18.f]];
+    [xbtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [xbtn setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
     [wrapper addSubview:xbtn];
-    
     [wrapper addSubview:loader];
     
     [xbtn addTarget:self action:@selector(XBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -178,8 +243,10 @@
     // filtro categorie
     CGRect filtroFrame = CGRectMake(0, filter_Y, totalWidth, FILTER_HEIGHT);
     filter = [[UIView alloc] initWithFrame:filtroFrame];
-    UIColor *azure = [Utils colorFromHexString:@"277EFF"];
-    filter.backgroundColor = azure;
+    
+    if (chosenDomain != nil) {
+        filter.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
+    }
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     //CREO PULSANTE DI ESPANSIONE FILTRO
@@ -255,11 +322,11 @@
     suggestionTableView.hidden = YES;
     [self.view addSubview:suggestionTableView];
     
-    CGRect titleFrame = CGRectMake(0, 360, totalWidth, 16);
+    CGRect titleFrame = CGRectMake(sidePadding, 360, totalWidth, 16);
     suggestionTitle = [[UILabel alloc] initWithFrame:titleFrame];
-    suggestionTitle.text = @"POTREBBERO INTERESSARTI";
+    suggestionTitle.text = [NSLocalizedString(@"COULD_INTEREST", @"potrebbe interessare") uppercaseString];
     suggestionTitle.textColor = [UIColor darkGrayColor];
-    [suggestionTitle setFont:[UIFont systemFontOfSize:13.f]];
+    [suggestionTitle setFont:[UIFont systemFontOfSize:14.f]];
     suggestionTitle.hidden = YES;
     [self.view addSubview:suggestionTitle];
     
@@ -267,10 +334,76 @@
     //[self.tableView addGestureRecognizer:tapGesture];
     //[container addGestureRecognizer:tapGesture];
     [self.view addGestureRecognizer:tapGesture];
+    
+    //prendo altezza sidebar
+    
+    float altezza = self.view.frame.size.height;
+    float yPicker = altezza - PICKER_VIEW_HEIGHT - 10;
+    
+    myPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(10, yPicker, totalWidth - 20, PICKER_VIEW_HEIGHT)];
+    myPickerView.delegate = self;
+    myPickerView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    myPickerView.showsSelectionIndicator = YES;
+    myPickerView.hidden = YES;
+    myPickerView.layer.borderWidth = 1.0;
+    myPickerView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    [self.view addSubview:myPickerView];
 }
+
+-(void) openPicker:(UIButton *) button {
+    myPickerView.hidden = NO;
+}
+
+#pragma mark - Picker View Delegates
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
+    NSLog(@"cliccato su riga %d", (int) row);
+    Domain *dominio = [listaDomini objectAtIndex:row];
+    
+    if (dominio == nil) return;
+    
+    NSLog(@"dominio scelto = %@", dominio.descriptor);
+    myPickerView.hidden = YES;
+    [tendina setTitle:dominio.descriptor forState:UIControlStateNormal];
+    chosenDomain = dominio;
+    //[Utils setCurrentDomain:dominio];
+    svc.dominioScelto = dominio;
+    NSLog(@"cambio colore picker");
+    filter.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
+    
+    //se c'è frase nella search bar parte ricerca
+    
+    if (self.searchBar.text != nil) {
+        if (self.searchBar.text.length > 0) {
+            [self aTime];
+        }
+    }
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return listaDomini.count;
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    Domain *dominio = [listaDomini objectAtIndex:row];
+    NSString *title = dominio.descriptor;
+    return title;
+}
+/*
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    int sectionWidth = 300;
+    return sectionWidth;
+}
+*/
+#pragma mark - other methods
 
 -(void) XBtnClicked:(UIButton *) btn {
     self.searchBar.text = @"";
+    [advice removeFromSuperview];
 }
 
 -(void) startSearch {
@@ -319,12 +452,18 @@
 -(void) filterSearchByCategory:(NSString *)cat {
     
     [loader startAnimating];
+    
+    if (chosenDomain.descriptor == nil) {
+        NSLog(@"Nessun dominio scelto");
+        return;
+    }
+    
     xbtn.hidden = YES;
 
     NSString *cate = [Utils WWWFormEncoded:cat];
     NSString *suffix = @"/search?query=";
     NSString *testo = self.searchBar.text;
-    NSString *domain = [@"&domain=" stringByAppendingString:domainChosen];
+    NSString *domain = [@"&domain=" stringByAppendingString:chosenDomain.descriptor];
     NSString *category = [@"&category=" stringByAppendingString:cate];
     NSString *requestString = [[[[[Utils getServerBaseAddress] stringByAppendingString:suffix] stringByAppendingString:testo] stringByAppendingString:domain] stringByAppendingString:category];
     
@@ -405,15 +544,25 @@
 
 #pragma mark - metodi ricerca generici
 -(void)aTime {
-    NSLog(@"chiamato aTime");
+
+    NSLog(@"INIZIA RICERCA");
     
     [loader startAnimating];
     xbtn.hidden = YES;
     [timer invalidate];
     //parte richiesta
     
-    NSString *testo = self.searchBar.text;
-    NSString *domain = @"&domain=Turismo"; //TODO
+    if (chosenDomain.descriptor == nil) {
+        NSLog(@"Descrizione dominio mancnate");
+        return;
+    }
+    
+    filter.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
+    
+    NSString *dominio = [Utils WWWFormEncoded:chosenDomain.descriptor];
+    
+    NSString *testo = [Utils WWWFormEncoded:self.searchBar.text];
+    NSString *domain = [@"&domain=" stringByAppendingString:dominio]; //TODO
     NSString *suffix = @"/search?query=";
     
     NSString *requestString = [[[[Utils getServerBaseAddress] stringByAppendingString:suffix] stringByAppendingString:testo] stringByAppendingString:domain];
@@ -445,27 +594,106 @@
             int totCat = (int)[categories count];
             
             NSLog(@"categories count: %d", totCat);
-            NSLog(@"categories: %@", [categories description]);
             
-            filters = categories;
-            
-            filterHeight = categories.count * CATEGORIES_ROW_HEIGHT;
-            
-            [filterTableView reloadData];
-            
-            filterTableView.hidden = NO;
-            
-            array = suggestionsArray;
-            
-            if (totCat > 0) {
-                NSLog(@"array tot = %d", (int) array.count);
-                [self.tableView reloadData];
-                filter.hidden = NO;
+            if (totCat == 0) {
                 
-                float newHeight  = container.frame.size.height + FILTER_HEIGHT;
-                CGRect newContFrame = CGRectMake(container.frame.origin.x, container.frame.origin.y, container.frame.size.width, newHeight);
-                container.frame = newContFrame;
+                [self.view addSubview:advice];
             }
+            else {
+                NSLog(@"categories: %@", [categories description]);
+                
+                filters = categories;
+                filterHeight = categories.count * CATEGORIES_ROW_HEIGHT;
+                [filterTableView reloadData];
+                filterTableView.hidden = NO;
+                
+                if (categories.count == 1) {
+                    NSLog(@"UNA SOLA CATEGORIA TROVATA");
+                    filterToggleButton.hidden = YES;
+                    
+                    filterTableView.frame = CGRectMake(filterTableView.frame.origin.x, filterTableView.frame.origin.y, filterTableView.frame.size.width, CATEGORIES_ROW_HEIGHT);
+                    
+                }
+                else{
+                    
+                    filterTableView.frame = CGRectMake(filterTableView.frame.origin.x, filterTableView.frame.origin.y, filterTableView.frame.size.width, 0);
+                    
+                    filterToggleButton.hidden = NO;
+                }
+                
+                [advice removeFromSuperview];
+                
+                NSMutableArray *semantics = [[NSMutableArray alloc] init];
+                NSMutableArray *not_semantics = [[NSMutableArray alloc] init];
+                
+                for (NSDictionary *risultato in suggestionsArray) {
+                    NSString *descriptor = [risultato objectForKey:@"descriptor"];
+                    bool semantico = [[risultato objectForKey:@"semantic"] boolValue];
+                    if (semantico) {
+                        NSLog(@"%@ è semantico", descriptor);
+                        [semantics addObject:risultato];
+                    }
+                    else {
+                        [not_semantics addObject:risultato];
+                        NSLog(@"%@ non è semantico", descriptor);
+                    }
+                }
+                
+                //GESTISCO I NON SEMANTICI
+                array = not_semantics;
+                
+                if (totCat > 0) {
+                    NSLog(@"array tot = %d", (int) array.count);
+                    [self.tableView reloadData];
+                    filter.hidden = NO;
+                    
+                    float newHeight  = container.frame.size.height + FILTER_HEIGHT;
+                    CGRect newContFrame = CGRectMake(container.frame.origin.x, container.frame.origin.y, container.frame.size.width, newHeight);
+                    container.frame = newContFrame;
+                    
+                    float nuovaHeight = array.count * RESULTS_ROW_HEIGHT;
+                    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x,
+                                                      self.tableView.frame.origin.y,
+                                                      self.tableView.frame.size.width,
+                                                      nuovaHeight);
+                }
+                
+                
+                //GESTISCO I SEMANTICI
+                
+                suggestions = semantics;
+                
+                if (suggestions.count > 0) {
+                    suggestionTableView.hidden = NO;
+                    suggestionTitle.hidden = NO;
+                }
+                else {
+                    suggestionTableView.hidden = YES;
+                    suggestionTitle.hidden = YES;
+                }
+                
+                [suggestionTableView reloadData];
+                
+                NSLog(@"ci sono %d suggestions", (int) suggestions.count);
+                
+                //sposto tabella verticalmente
+                float inizioY = self.tableView.frame.size.height + self.tableView.frame.origin.y + 20;
+                
+                NSLog(@"inizioY = %f", inizioY);
+                
+                suggestionTitle.frame = CGRectMake(suggestionTitle.frame.origin.x,
+                                                   inizioY,
+                                                   suggestionTitle.frame.size.width,
+                                                   suggestionTitle.frame.size.height);
+                
+                float height = suggestions.count * RESULTS_ROW_HEIGHT;
+                
+                
+                
+                suggestionTableView.frame = CGRectMake(suggestionTableView.frame.origin.x, inizioY + 30, suggestionTableView.frame.size.width, height);
+                
+            }
+
             
             [loader stopAnimating];
             xbtn.hidden = NO;
@@ -647,6 +875,8 @@
         
         NSLog(@"json = %@", [json description]);
         
+        cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        
         cell.textLabel.text = [json objectForKey:@"descriptor"];
         
         NSString *keyword = self.searchBar.text;
@@ -728,16 +958,15 @@
     
         NSDictionary *json = [array objectAtIndex:riga];
         NSString *value = [json objectForKey:@"descriptor"];
+        NSString *lang = [json objectForKey:@"language"];
         NSLog(@"didSelectRowAtIndexPath = %@", value);
         
         if (value == nil) return;
         
         //NSArray *subviews = [parent.centerViewController.view subviews];
-        UINavigationController *navC = (UINavigationController *) parent.centerViewController;
-        
-        ScrollerViewController *svc = (ScrollerViewController *) [navC.viewControllers firstObject];
-        
-        [svc getSingleTerm:value];
+
+        NSLog(@"qui??, svc = %@", [svc description]);
+        [svc getSingleTerm:value withDomain:chosenDomain andLanguage:lang];
         [parent closeDrawerAnimated:YES completion:nil];
 
         [self.searchBar resignFirstResponder];
@@ -749,16 +978,15 @@
         NSLog(@"[suggestions] didSelectRowAtIndexPath = %@", value);
         
         if (value == nil) return;
-        UINavigationController *navC = (UINavigationController *) parent.centerViewController;
         
-        ScrollerViewController *svc = (ScrollerViewController *) [navC.viewControllers firstObject];
-        
-        [svc getSingleTerm:value];
+        [svc getSingleTerm:value withDomain:chosenDomain andLanguage:lingua];
         [parent closeDrawerAnimated:YES completion:nil];
         
         [self.searchBar resignFirstResponder];
     }
     else {
+        
+        if (filterToggleButton.hidden) return;
         
         NSDictionary *json = [filters objectAtIndex:riga];
         NSString *catFilter = [json objectForKey:@"descriptor"];

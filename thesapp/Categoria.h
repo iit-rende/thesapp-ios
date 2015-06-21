@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) Descriptor *descriptor;
 @property (nonatomic, strong) Domain *domain;
-@property (nonatomic, strong) NSArray *terms;
+@property (nonatomic, strong) NSMutableDictionary *terms;
 
 +(Categoria *) createFromJson:(NSDictionary *) dict;
 

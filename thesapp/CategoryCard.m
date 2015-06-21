@@ -28,6 +28,8 @@
     
     NSLog(@"[CategoryCard] render");
     
+    lingua = [Utils getCurrentLanguage];
+    
     self.layer.cornerRadius = 3;
     self.layer.shadowOffset = CGSizeMake(2, 2);
     self.layer.shadowRadius = 4.0;
@@ -35,7 +37,7 @@
     self.layer.shadowOpacity = 1.0;
     self.layer.masksToBounds = NO;
     
-    self.backgroundColor = [UIColor cyanColor];
+    self.backgroundColor = [UIColor whiteColor];
     self.clipsToBounds = NO;
     
     //self.scrollView.clipsToBounds = NO;
@@ -51,43 +53,39 @@
     
     top = [self getHeaderHeightAndPadding];
     
-    NSLog(@"TOP = %f", top);
+    // estraggo i termini in lingua
+    NSArray *termini = [self.categoria.terms objectForKey:lingua];
     
-    NSLog(@"ci sono %d categorie", (int) self.categoria.terms.count);
+    NSLog(@"ci sono %d categorie per la lingua %@", (int) termini.count, lingua);
 
-    if (self.categoria.terms.count > 0) {
+    if (termini.count > 0) {
         
-        [self addSectionTitle:@"CATEGORIES"];
+        [self addSectionTitle:@"TERMS"];
         
         int i = 0;
         float altezzaBtn = 15 + 3 * PADDING_BTN;
         float btnPaddingLeft = 2;
         float left = 0;
         float etichettaHeight = 20;
-        
         NSString *lastChar;
-        
         float finalHeight = top;
+        float lastLabelTop = 0;
         
-        for (NSDictionary *categoria in self.categoria.terms) {
+        for (NSString *categoria in termini) {
             CGRect lblFrame = CGRectMake(btnPaddingLeft + left, top, 50, etichettaHeight);
-            NSString *catTitle = [categoria objectForKey:@"descriptor"];
-            if (catTitle == nil) continue;
+            if (categoria == nil) continue;
             
-            NSString *firstChar = [catTitle substringToIndex:1];
-            NSLog(@"FirstChar = %@", firstChar);
+            NSString *firstChar = [categoria substringToIndex:1];
             if ([firstChar isEqualToString:lastChar]) {
-                NSLog(@"uguale");
             }
             else {
-                NSLog(@"diverso x %@", catTitle);
                 //cambio carattere
                 lastChar = firstChar;
-                top += altezzaBtn + 20;
+                top += 10  + altezzaBtn;
                 CGRect rect = CGRectMake(10, top, 100, 21);
                 top += 30;
                 UILabel *par = [[UILabel alloc] initWithFrame:rect];
-                par.text = firstChar;
+                par.text = [firstChar uppercaseString];
                 par.textColor = [UIColor darkGrayColor];
                 [par sizeToFit];
                 [wrapper addSubview:par];
@@ -98,7 +96,7 @@
                 lblFrame = CGRectMake(btnPaddingLeft, top, 50, etichettaHeight);
             }
             
-            Etichetta *lbl = [Etichetta createCategoriaLabel:catTitle withFrame:lblFrame];
+            Etichetta *lbl = [Etichetta createTermineLabel:categoria withFrame:lblFrame];
             
             if (lbl.frame.size.width + lbl.frame.origin.x > fullWithPadding) {
                 top += altezzaBtn;
@@ -112,16 +110,30 @@
             [wrapper addSubview:lbl];
             finalHeight += lbl.frame.size.height;
             i++;
+            
+            lastLabelTop = lbl.frame.origin.y + lbl.frame.size.height;
         }
         
+        lastLabelTop += paddingLeft;
+        
         NSLog(@"altezza finale = %f", finalHeight);
+        NSLog(@"lastLabelTop = %f", lastLabelTop);
         
         //cambio contentsize alla fine
-        CGRect newFrame = CGRectMake(0, 0, wrapper.frame.size.width, finalHeight);
-        CGRect newScrollViewFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, wrapper.frame.size.width, finalHeight);
+        CGRect newFrame = CGRectMake(0, 0, wrapper.frame.size.width, lastLabelTop);
+        
+        CGRect newScrollViewFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, wrapper.frame.size.width, lastLabelTop);
+        
         wrapper.frame = newFrame;
-        self.contentSize = CGSizeMake(wrapper.frame.size.width, finalHeight);
-        //self.frame = newScrollViewFrame;
+        
+        NSLog(@"wrapper = %f", wrapper.frame.size.height);
+        
+        self.contentSize = CGSizeMake(wrapper.frame.size.width, lastLabelTop);
+        
+        //self.frame = newScrollViewFrame; //se ci metto questo non scrolla
+    }
+    else {
+        NSLog(@"ZERO CATEGORIE");
         
     }
 }

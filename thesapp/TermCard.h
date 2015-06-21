@@ -21,6 +21,8 @@
 }
 
 @property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, strong) UIView *colDx;
+@property (nonatomic, strong) UIView *colSx;
 @property (nonatomic, strong) NSArray *categorie; //test x flow layout
 @property (nonatomic, strong) Term *termine;
 

@@ -8,7 +8,8 @@
 
 #import "GenericScrollCard.h"
 #import "Domain.h"
-
+#import "Utils.h"
+#import "Localization.h"
 
 @interface DomainCard : GenericScrollCard<UITableViewDataSource, UITableViewDelegate>
 {

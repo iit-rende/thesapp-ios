@@ -19,7 +19,40 @@
     cat.descriptor = descriptor;
     cat.domain = dominio;
     NSArray *terms = [dict objectForKey:@"terms"];
-    cat.terms = terms;
+    
+    if (terms.count == 0) NSLog(@"NESSUN TERMINE TROVATO");
+    
+    NSLog(@"termini scaricati = %@", [terms description]);
+    cat.terms = [[NSMutableDictionary alloc] init];
+    
+    NSMutableArray *itArray = [[NSMutableArray alloc] init];
+    NSMutableArray *enArray = [[NSMutableArray alloc] init];
+    
+    [cat.terms setObject:itArray forKey:@"it"];
+    [cat.terms setObject:enArray forKey:@"en"];
+    
+    for (NSDictionary *termine in terms) {
+        NSString *valore = [termine objectForKey:@"descriptor"];
+        NSString *language = [termine objectForKey:@"language"];
+        NSMutableArray *array = [cat.terms objectForKey:language];
+        [array addObject:valore];
+    }
+    
+    // italiano
+    NSArray *sortedArrayIT = [[cat.terms objectForKey:@"it"] sortedArrayUsingComparator:^NSComparisonResult(NSString *p1, NSString *p2){
+        return [p1 compare:p2];
+    }];
+    [cat.terms setObject:sortedArrayIT forKey:@"it"];
+    
+    
+    //inglese
+    NSArray *sortedArrayEn = [[cat.terms objectForKey:@"en"] sortedArrayUsingComparator:^NSComparisonResult(NSString *p1, NSString *p2){
+        return [p1 compare:p2];
+    }];
+    [cat.terms setObject:sortedArrayEn forKey:@"en"];
+    
+    NSLog(@"terms = %@", [cat.terms description]);
+    
     return cat;
 }
 

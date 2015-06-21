@@ -7,7 +7,8 @@
 //
 
 #import "DomainCard.h"
-#define ROW_HEIGHT 44
+#import "DominioTableViewCell.h"
+#define ROW_HEIGHT 85
 
 @implementation DomainCard
 @synthesize domini, tabellaDomini;
@@ -20,6 +21,11 @@
     }
     return self;
 }
+
+-(NSString *) getName {
+    return @"Domain List";
+}
+
 /*
 +(DomainCard *) createWithDomain:(Domain *) dominio {
     DomainCard *card = [DomainCard new];
@@ -29,6 +35,8 @@
 }
 */
 -(void) render {
+    
+    lingua = [Utils getCurrentLanguage];
     
     //self.backgroundColor = [UIColor whiteColor];
     //self.clipsToBounds = YES;
@@ -42,11 +50,7 @@
         
         tableHeight = domini.count * ROW_HEIGHT;
         NSLog(@"altezza = %f", tableHeight);
-        tabellaDomini.bounces = NO;
-        tabellaDomini.bouncesZoom = NO;
-        tabellaDomini.showsVerticalScrollIndicator = NO;
-        tabellaDomini.showsHorizontalScrollIndicator = NO;
-        tabellaDomini.backgroundColor = [UIColor magentaColor];
+       
         
         float y = [self getHeaderHeightAndPadding];
         
@@ -55,7 +59,17 @@
         tabellaDomini.delegate = self;
         tabellaDomini.dataSource = self;
         
+        tabellaDomini.bounces = NO;
+        tabellaDomini.bouncesZoom = NO;
+        tabellaDomini.showsVerticalScrollIndicator = NO;
+        tabellaDomini.showsHorizontalScrollIndicator = NO;
+        tabellaDomini.backgroundColor = [UIColor magentaColor];
+        
         tabellaDomini.scrollEnabled = NO;
+        
+        UINib *nib = [UINib nibWithNibName:@"DominioTableViewCell" bundle:nil];
+        [tabellaDomini registerNib:nib forCellReuseIdentifier:@"domainCell"];
+        
         
         [wrapper addSubview:tabellaDomini];
         
@@ -83,19 +97,30 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"domainCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    DominioTableViewCell *cell = (DominioTableViewCell* )[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
+    /*
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[DominioTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    */
     
     Domain *dominio = [domini objectAtIndex: [indexPath row]];
     
+    Localization *loca = [dominio.localizations objectForKey:lingua];
+    
     if (dominio != nil) {
         NSString *value =  dominio.descriptor;
-        cell.textLabel.text = value;
+        //cell.textLabel.text = value;
+        cell.titolo.text = value;
+        if (loca != nil)
+        //cell.detailTextLabel.text = loca.descrizione;
+        cell.descrizione.text = loca.descrizione;
+        cell.numero.text = [NSString stringWithFormat:@"%d", loca.termCount];
+        
+        NSLog(@"ci sono %d termini", loca.termCount);
     }
     
     return cell;

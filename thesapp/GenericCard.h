@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Etichetta.h"
 #import "Domain.h"
+#import "Utils.h"
 #import "GenericScrollCard.h"
 
 @interface GenericCard : UIView<CardName>

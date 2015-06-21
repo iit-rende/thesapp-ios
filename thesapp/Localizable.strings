@@ -10,7 +10,13 @@
 "NARROWER_TERMS" = "Termini più specifici";
 "BROADER_TERMS" = "Termini più generici";
 "RELATED_TERMS" = "Termini correlati";
+"TERMS" = "Termini";
 "LOCALIZATIONS" = "Traduzioni";
 "CATEGORIES" = "Categorie";
 "CHOSE_CAT" = "Scegli una categoria";
 "CHOSE_DOMAIN" = "Scegli un dominio";
+"DOWNLOAD_DOMAINS" = "Scarico i domini...";
+"SEARCH_PLACEHOLDER" = "Cerca un termine...";
+"COULD_INTEREST" = "Potrebbero interessarti";
+"SINOMINI" = "Sinonimi";
+"DESCRIPTION" = "Descrizione";
