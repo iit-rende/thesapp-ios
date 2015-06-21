@@ -11,6 +11,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define PADDING_BTN 8
+#define BTN_HEIGHT 40
+#define LABEL_HEIGHT 20
 #define SECTION_BOTTOM_PADDING 15
 #define TITLE_PADDING_BOTTOM 5
 #define BTN_PADDING_LEFT 10
@@ -144,7 +146,9 @@
         
         if (self.termine.narrowerTerms.count > 0) {
             //non bisogna indentare
-            gerarchia = [[NSMutableArray alloc] initWithArray:self.termine.narrowerTerms];
+            gerarchia = [[NSMutableArray alloc] init];
+            [gerarchia addObject:lastTermine];
+            [gerarchia addObjectsFromArray:self.termine.narrowerTerms];
         }
     }
     else {
@@ -157,24 +161,31 @@
     if (gerarchia.count > 0) {
         
         int i = 0;
-        //float altezzaBtn = 15 + 3 * PADDING_BTN;
         float btnPaddingLeft = 2;
         float left = 0;
-        float etichettaHeight = 20;
         
         for (NSDictionary *categoria in gerarchia) {
             
-            CGRect lblFrame = CGRectMake(btnPaddingLeft, leftTop, 50, etichettaHeight);
+            CGRect lblFrame = CGRectMake(btnPaddingLeft, leftTop, 50, LABEL_HEIGHT);
 
+            NSString *catTitle = [categoria objectForKey:@"descriptor"];
+            
+            BOOL questo = [catTitle isEqualToString:self.termine.descriptor.descriptor];
+            
             NSString *wildcards = @"";
-            for (int c=0; c<=i; c++) {
-                wildcards = [wildcards stringByAppendingString:@" · "];
+            
+            if (drawTree) {
+                for (int c=0; c<i; c++) {
+                    wildcards = [wildcards stringByAppendingString:@" · "];
+                }
+            }
+            else {
+                if (!questo) wildcards = @" · ";
             }
             
-            wildcards = [wildcards stringByAppendingString:@" "];
+            wildcards = [wildcards stringByAppendingString:@" · "];
             
             //NSString *catTitle = [wildcards stringByAppendingString:[categoria objectForKey:@"descriptor"]];
-            NSString *catTitle = [categoria objectForKey:@"descriptor"];
             
             if (catTitle == nil) continue;
             
@@ -184,20 +195,19 @@
             [lbl setTitle:[wildcards stringByAppendingString:lbl.titleLabel.text] forState:UIControlStateNormal];
             [lbl sizeToFit];
             
-            if  (i < gerarchia.count -1) {
+            //if  (i < gerarchia.count -1) {
+            if (!questo) {
                 //[lbl setTintColor:[UIColor brownColor]];
                 //lbl.titleLabel.textColor = [UIColor brownColor];
                 [lbl setTitleColor:[UIColor brownColor] forState:UIControlStateNormal];
-
             }
             
             [colSx addSubview:lbl];
             left += 20;
             
-            leftTop += etichettaHeight + 15;
+            leftTop += LABEL_HEIGHT + 15;
             i++;
         }
-        
     }
     
 }
@@ -309,30 +319,22 @@
     
         [self aggiungiTitoloSezione:@"CATEGORIES"];
         
-        int i = 0;
-        float altezzaBtn = 15 + 3 * PADDING_BTN;
         float left = 0;
-        float etichettaHeight = 20;
         
         for (NSDictionary *categoria in self.termine.categories) {
-            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, etichettaHeight);
+            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, LABEL_HEIGHT);
             NSString *catTitle = [categoria objectForKey:@"descriptor"];
-            NSString *language = [categoria objectForKey:@"language"];
+            //NSString *language = [categoria objectForKey:@"language"];
             
             if (catTitle == nil) continue;
             
             Etichetta *lbl = [Etichetta createCategoriaLabel:catTitle withFrame:lblFrame];
             //lbl.lingua = language;
             
-            if (lbl.frame.size.width + lbl.frame.origin.x > fullWithPadding) {
-                top += altezzaBtn;
-                [lbl setFrame:CGRectMake(BTN_PADDING_LEFT, top, lbl.frame.size.width, lbl.frame.size.height)];
-                self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + altezzaBtn);
-            }
-            left = lbl.frame.size.width + lbl.frame.origin.x;
+            left = [self getLabelLeft:lbl];
+
             [lbl addTarget:self action:@selector(categoryClick:) forControlEvents:UIControlEventTouchUpInside];
             [colDx addSubview:lbl];
-            i++;
         }
         
         [self adaptViewSize];
@@ -347,13 +349,10 @@
         
         [self aggiungiTitoloSezione:@"LOCALIZATIONS"];
         
-        int i = 0;
-        float altezzaBtn = 15 + 3 * PADDING_BTN;
         float left = 0;
-        float etichettaHeight = 20;
         
         for (NSDictionary *parola in self.termine.localizations) {
-            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, etichettaHeight);
+            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, LABEL_HEIGHT);
             
             NSString *catTitle = [parola objectForKey:@"descriptor"];
             NSString *language = [parola objectForKey:@"language"];
@@ -363,16 +362,10 @@
             Etichetta *lbl = [Etichetta createAltraLinguaLabel:catTitle withFrame:lblFrame];
             lbl.lingua = language;
             
-            NSLog(@"IMPOSTO ETICHETTA %@ IN %@", language, catTitle);
-            if (lbl.frame.size.width + lbl.frame.origin.x > fullWithPadding) {
-                top += altezzaBtn;
-                [lbl setFrame:CGRectMake(BTN_PADDING_LEFT, top, lbl.frame.size.width, lbl.frame.size.height)];
-                self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + altezzaBtn);
-            }
-            left = lbl.frame.size.width + lbl.frame.origin.x;
+            left = [self getLabelLeft:lbl];
+            
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
             [colDx addSubview:lbl];
-            i++;
         }
 
         [self adaptViewSize];
@@ -387,30 +380,22 @@
         
         [self aggiungiTitoloSezione:@"SINOMINI"];
         
-        int i = 0;
-        float altezzaBtn = 15 + 3 * PADDING_BTN;
         float left = 0;
-        float etichettaHeight = 20;
         
         for (NSDictionary *parola in self.termine.useFor) {
-            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, etichettaHeight);
+            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, LABEL_HEIGHT);
             NSString *catTitle = [parola objectForKey:@"descriptor"];
-            NSString *language = [parola objectForKey:@"language"];
+            //NSString *language = [parola objectForKey:@"language"];
             
             if (catTitle == nil) continue;
             
             Etichetta *lbl = [Etichetta createTermineSinonimo:catTitle withFrame:lblFrame];
             //lbl.lingua = language;
             
-            if (lbl.frame.size.width + lbl.frame.origin.x > fullWithPadding) {
-                top += altezzaBtn;
-                [lbl setFrame:CGRectMake(BTN_PADDING_LEFT, top, lbl.frame.size.width, lbl.frame.size.height)];
-                self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + altezzaBtn);
-            }
-            left = lbl.frame.size.width + lbl.frame.origin.x;
+            left = [self getLabelLeft:lbl];
+            
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
             [colDx addSubview:lbl];
-            i++;
         }
         
         [self adaptViewSize];
@@ -425,13 +410,10 @@
         
         [self aggiungiTitoloSezione:@"BROADER_TERMS"];
         
-        int i = 0;
-        float altezzaBtn = 15 + 3 * PADDING_BTN;
         float left = 0;
-        float etichettaHeight = 20;
         
         for (NSDictionary *parola in self.termine.broaderTerms) {
-            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, etichettaHeight);
+            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, LABEL_HEIGHT);
             NSString *catTitle = [parola objectForKey:@"descriptor"];
             NSString *language = [parola objectForKey:@"language"];
             
@@ -442,15 +424,10 @@
             
             NSLog(@"aggiungo termine più generico %@ in lingua %@", catTitle, language);
             
-            if (lbl.frame.size.width + lbl.frame.origin.x > fullWithPadding) {
-                top += altezzaBtn;
-                [lbl setFrame:CGRectMake(BTN_PADDING_LEFT, top, lbl.frame.size.width, lbl.frame.size.height)];
-                self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + altezzaBtn);
-            }
-            left = lbl.frame.size.width + lbl.frame.origin.x;
+            left = [self getLabelLeft:lbl];
+            
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
             [colDx addSubview:lbl];
-            i++;
         }
         
         [self adaptViewSize];
@@ -465,30 +442,22 @@
         
         [self aggiungiTitoloSezione:@"NARROWER_TERMS"];
         
-        int i = 0;
-        float altezzaBtn = 15 + 3 * PADDING_BTN;
         float left = 0;
-        float etichettaHeight = 20;
         
         for (NSDictionary *parola in self.termine.narrowerTerms) {
-            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, etichettaHeight);
+            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, LABEL_HEIGHT);
             NSString *catTitle = [parola objectForKey:@"descriptor"];
-            NSString *language = [parola objectForKey:@"language"];
+            //NSString *language = [parola objectForKey:@"language"];
             
             if (catTitle == nil) continue;
             
             Etichetta *lbl = [Etichetta createTerminePiuSpecificoLabel:catTitle withFrame:lblFrame];
             //lbl.lingua = language;
             
-            if (lbl.frame.size.width + lbl.frame.origin.x > fullWithPadding) {
-                top += altezzaBtn;
-                [lbl setFrame:CGRectMake(BTN_PADDING_LEFT, top, lbl.frame.size.width, lbl.frame.size.height)];
-                self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + altezzaBtn);
-            }
-            left = lbl.frame.size.width + lbl.frame.origin.x;
+            left = [self getLabelLeft:lbl];
+            
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
             [colDx addSubview:lbl];
-            i++;
         }
         
         [self adaptViewSize];
@@ -503,30 +472,22 @@
         
         [self aggiungiTitoloSezione:@"RELATED_TERMS"];
         
-        int i = 0;
-        float altezzaBtn = 15 + 3 * PADDING_BTN;
         float left = 0;
-        float etichettaHeight = 20;
         
         for (NSDictionary *parola in self.termine.relatedTerms) {
-            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, etichettaHeight);
+            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, LABEL_HEIGHT);
             NSString *catTitle = [parola objectForKey:@"descriptor"];
-            NSString *language = [parola objectForKey:@"language"];
+            //NSString *language = [parola objectForKey:@"language"];
             
             if (catTitle == nil) continue;
             
             Etichetta *lbl = [Etichetta createTermineCorrelatoLabel:catTitle withFrame:lblFrame];
             //lbl.lingua = language;
             
-            if (lbl.frame.size.width + lbl.frame.origin.x > fullWithPadding) {
-                top += altezzaBtn;
-                [lbl setFrame:CGRectMake(BTN_PADDING_LEFT, top, lbl.frame.size.width, lbl.frame.size.height)];
-                self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + altezzaBtn);
-            }
-            left = lbl.frame.size.width + lbl.frame.origin.x;
+            left = [self getLabelLeft:lbl];
+            
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
             [colDx addSubview:lbl];
-            i++;
         }
         
         [self adaptViewSize];
@@ -540,6 +501,17 @@
     //self.contentSize = nuovaSize;
     
     //self.clipsToBounds = YES;
+}
+
+-(float) getLabelLeft:(Etichetta *)lbl {
+
+    if (lbl.frame.size.width + lbl.frame.origin.x > colDx.frame.size.width ) { //fullWithPadding
+        top += BTN_HEIGHT;
+        [lbl setFrame:CGRectMake(BTN_PADDING_LEFT, top, lbl.frame.size.width, lbl.frame.size.height)];
+        self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + BTN_HEIGHT);
+    }
+    
+    return lbl.frame.size.width + lbl.frame.origin.x;
 }
 
 -(NSString *) getName {

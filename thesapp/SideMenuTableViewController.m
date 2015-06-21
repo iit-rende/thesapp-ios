@@ -102,7 +102,6 @@
     //if (svc.listaDomini.count > 0) listaDomini = svc.listaDomini;
     //else listaDomini = [[NSMutableArray alloc] init];
     
-    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self
                                            action:@selector(hideKeyBoard)];
@@ -129,6 +128,7 @@
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
     CGRect tableFrame = CGRectMake(0, containerHeight + FILTER_HEIGHT, totalWidth, self.view.frame.size.height - containerHeight);
+    
     self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -147,7 +147,6 @@
     
     parent = (MMDrawerController *) self.parentViewController;
     
-
     //search controller
     
     CGRect nuovoFrame = CGRectMake(0, 0, totalWidth, containerHeight);
@@ -168,6 +167,7 @@
     [container addSubview:wrapper];
     
     CGRect searchBarFrame = CGRectMake(sidePadding + tendinaWidth + sidePadding, sidePadding, searchBarWidth, xSize);
+    
     self.searchBar = [[UITextField alloc] initWithFrame:searchBarFrame];
     self.searchBar.backgroundColor = [UIColor whiteColor];
     self.searchBar.enabled = YES;
@@ -202,7 +202,7 @@
     [tendina setFrame:tendinaFrame];
     [tendina setCenter:CGPointMake(tendinaWidth / 2, xSize / 2)];
     [tendina setClipsToBounds:false];
-    [tendina setImage:[UIImage imageNamed:@"down_arrow"] forState:UIControlStateNormal];
+    //[tendina setImage:[UIImage imageNamed:@"down_arrow"] forState:UIControlStateNormal];
     [tendina.titleLabel setFont:[UIFont systemFontOfSize:10.f]];
     [tendina setTitleColor:[UIColor blackColor] forState:UIControlStateNormal]; // SET the colour for your wishes
     //[tendina setTitleEdgeInsets:UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f)]; // SET the values for your wishes
@@ -212,11 +212,11 @@
     [tendina addTarget:self action:@selector(openPicker:) forControlEvents:UIControlEventTouchUpInside];
     
     CGSize imageSize = tendina.imageView.frame.size;
-    tendina.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
+    //tendina.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
     
     //CGSize titleSize = tendina.titleLabel.frame.size;
     //tendina.imageEdgeInsets = UIEdgeInsetsMake(- (titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
-    tendina.imageEdgeInsets = UIEdgeInsetsMake(10,tendinaWidth - 10, 10, 5);
+    //tendina.imageEdgeInsets = UIEdgeInsetsMake(10,tendinaWidth - 10, 10, 5);
     
     [wrapper addSubview:tendina];
     

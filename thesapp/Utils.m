@@ -46,6 +46,10 @@
     return [Utils colorFromHexString:@"#9E9E9E"];
 }
 
++(UIColor *) getDefaultColor {
+    return [Utils colorFromHexString:@"#03A9F4"];
+}
+
 +(UIColor *) getChosenDomainColor {
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     NSString *color = [def valueForKey:@"chosen_domain_color"];

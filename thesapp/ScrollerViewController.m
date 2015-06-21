@@ -78,6 +78,8 @@
     pageIndex = 0; //pagina corrente
     totPages = 0;
     
+    self.navigationController.navigationBar.barTintColor = [Utils getDefaultColor]; 
+    
     backButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"<" style:UIBarButtonItemStylePlain target:self action:@selector(goToPrevCard:)];
     
     UIBarButtonItem *start = [[UIBarButtonItem alloc] initWithTitle:@"ThesApp" style:UIBarButtonItemStylePlain target:self action:nil];
@@ -162,6 +164,11 @@
         NSString *riferimento = dominio.descriptor;
         
         NSLog(@"controllo se ho già scheda x rif = %@", riferimento);
+       
+        //rimuovo altre cards
+        NSLog(@"controllo se cancellare altre cards...");
+        //DEVO FARLO SOLO SE STO CAMBIANDO E NON E' PRIMO AVVIO
+        [self removeCards:YES];
         
         if (cards != nil) {
             int cardIndex = [[cards objectForKey:riferimento] intValue];
@@ -171,7 +178,7 @@
             }
             else {
                 //pageIndex++;
-                NSLog(@"scarico dominio");
+                NSLog(@"non c'è, scarico dominio");
                 [self getCategoriesByDomain:dominio];
             }
         }
@@ -194,8 +201,6 @@
         NSLog(@"dominio descriptor nullo");
         return;   
     }
-    
-    //http://146.48.65.88/hierarchy?category=Strutture&domain=Turismo
     
     NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/hierarchy?category="];
     NSString *termine = [Utils WWWFormEncoded:categoria];
@@ -384,7 +389,7 @@
     
     NSLog(@"ci sono %d pagine", totPages);
     
-    [self removeCards];
+    [self removeCards:NO];
     
     for (int i=totPages - 1; i > 1; i--){
         //[self removeCard:i];
@@ -410,22 +415,32 @@
     return card;
 }
 
--(void) removeCards {
-    NSArray *subviews = [self.scrollView subviews];
-    NSLog(@"ci sono %d subviews", (int) [subviews count]);
+-(void) removeCards:(BOOL) all {
     
-    for (int i = 2; i<subviews.count; i++) {
+    NSArray *subviews = [self.scrollView subviews];
+    int totViews = (int) [subviews count];
+    
+    NSLog(@"ci sono %d subviews", totViews);
+    
+    if (totViews < 3) {
+        NSLog(@"esco...");
+        return;
+    }
+    
+    int startIndex = (all) ? 1 : 2;
+    
+    for (int i = startIndex; i < totViews; i++) {
         [[subviews objectAtIndex:i] removeFromSuperview];
         NSLog(@"cancellato view %d", i);
     }
     
     NSLog(@"ora ci sono %d subviews", (int) [[self.scrollView subviews] count]);
     
-    [self scrollToIndex:1];
+    [self scrollToIndex:(startIndex - 1)];
     
-    xOffset = 2* self.view.frame.size.width;
+    xOffset = startIndex * self.view.frame.size.width;
     
-    self.scrollView.contentSize = CGSizeMake(5 + scrollWidth * 2, CONTENT_SIZE_HEIGHT);
+    self.scrollView.contentSize = CGSizeMake(5 + scrollWidth * startIndex, CONTENT_SIZE_HEIGHT);
     
     NSLog(@"prima] cards = %@", [cards description]);
     
@@ -442,8 +457,8 @@
         [cards removeObjectForKey:chiave];
     }
     
-    totPages = 2;
-    pageIndex = 1;
+    totPages = startIndex;
+    pageIndex = startIndex - 1;
     
     lingua = @"it";
     
@@ -567,6 +582,16 @@
     float nuovaX = self.scrollView.contentOffset.x;
     pageIndex = nuovaX / scrollWidth;
     NSLog(@"PAGINA [2] = %d", pageIndex);
+    
+    if (pageIndex == 0) {
+        //home
+        self.navigationController.navigationBar.barTintColor = [Utils getDefaultColor];
+    }
+    else {
+        if (dominioScelto != nil) {
+            self.navigationController.navigationBar.barTintColor = [Utils colorFromHexString:dominioScelto.color];
+        }
+    }
 }
 
 -(void) addCard:(UIButton *) btn {

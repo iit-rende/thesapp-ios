@@ -23,6 +23,7 @@
 +(UIColor *) getPiuGenericoColor;
 +(UIColor *) getTraduzioneColor;
 +(UIColor *) getHeaderColor;
++(UIColor *) getDefaultColor;
 
 + (void) setCurrentDomain:(Domain *) dominio;
 
