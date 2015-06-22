@@ -9,8 +9,11 @@
 #import "CategoryCard.h"
 
 #define PADDING_BTN 6
+#define BTN_HEIGHT 33
+#define BTN_WIDTH 50
 #define TITLE_LABEL_HEIGHT 20
 #define PADDING_LEFT 10
+#define BTN_PADDING_LEFT 15
 #define BTN_FONT_SIZE 11.0f
 
 @implementation CategoryCard
@@ -40,13 +43,10 @@
     self.backgroundColor = [UIColor whiteColor];
     self.clipsToBounds = NO;
     
-    //self.scrollView.clipsToBounds = NO;
-    
     //////////////////////////////////////////////////////////////
     //title label
     titolo.text = self.categoria.descriptor.descriptor;
     [titolo sizeToFit];
-    //[titolo layoutIfNeeded]; //serve?
     
     //////////////////////////////////////////////////////////////
     //categorie
@@ -61,28 +61,31 @@
     if (termini.count > 0) {
         
         [self addSectionTitle:@"TERMS"];
+
+        BOOL primo = YES;
         
-        int i = 0;
-        float altezzaBtn = 15 + 3 * PADDING_BTN;
-        float btnPaddingLeft = 2;
         float left = 0;
-        float etichettaHeight = 20;
         NSString *lastChar;
         float finalHeight = top;
         float lastLabelTop = 0;
         
         for (NSString *categoria in termini) {
-            CGRect lblFrame = CGRectMake(btnPaddingLeft + left, top, 50, etichettaHeight);
+            CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, BTN_WIDTH, TITLE_LABEL_HEIGHT);
             if (categoria == nil) continue;
             
             NSString *firstChar = [categoria substringToIndex:1];
-            if ([firstChar isEqualToString:lastChar]) {
-            }
-            else {
+            if (![firstChar isEqualToString:lastChar]) {
                 //cambio carattere
                 lastChar = firstChar;
-                top += 10  + altezzaBtn;
-                CGRect rect = CGRectMake(10, top, 100, 21);
+                
+                top += 10;
+                if (!primo) {
+                    top += BTN_HEIGHT;
+                }
+                
+                primo = NO;
+                
+                CGRect rect = CGRectMake(BTN_PADDING_LEFT, top, 100, TITLE_LABEL_HEIGHT);
                 top += 30;
                 UILabel *par = [[UILabel alloc] initWithFrame:rect];
                 par.text = [firstChar uppercaseString];
@@ -93,14 +96,14 @@
                 finalHeight += par.frame.size.height;
                 
                 left = 0;
-                lblFrame = CGRectMake(btnPaddingLeft, top, 50, etichettaHeight);
+                lblFrame = CGRectMake(BTN_PADDING_LEFT, top, BTN_WIDTH, TITLE_LABEL_HEIGHT);
             }
             
             Etichetta *lbl = [Etichetta createTermineLabel:categoria withFrame:lblFrame];
             
             if (lbl.frame.size.width + lbl.frame.origin.x > fullWithPadding) {
-                top += altezzaBtn;
-                [lbl setFrame:CGRectMake(btnPaddingLeft, top, lbl.frame.size.width, lbl.frame.size.height)];
+                top += BTN_HEIGHT;
+                [lbl setFrame:CGRectMake(BTN_PADDING_LEFT, top, lbl.frame.size.width, lbl.frame.size.height)];
                 //self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + altezzaBtn);
             }
             
@@ -109,12 +112,11 @@
             [lbl addTarget:self action:@selector(openTerm:) forControlEvents:UIControlEventTouchUpInside];
             [wrapper addSubview:lbl];
             finalHeight += lbl.frame.size.height;
-            i++;
             
             lastLabelTop = lbl.frame.origin.y + lbl.frame.size.height;
         }
         
-        lastLabelTop += paddingLeft;
+        lastLabelTop += PADDING_LEFT;
         
         NSLog(@"altezza finale = %f", finalHeight);
         NSLog(@"lastLabelTop = %f", lastLabelTop);
@@ -122,19 +124,16 @@
         //cambio contentsize alla fine
         CGRect newFrame = CGRectMake(0, 0, wrapper.frame.size.width, lastLabelTop);
         
-        CGRect newScrollViewFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, wrapper.frame.size.width, lastLabelTop);
+        //CGRect newScrollViewFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, wrapper.frame.size.width, lastLabelTop);
         
         wrapper.frame = newFrame;
-        
-        NSLog(@"wrapper = %f", wrapper.frame.size.height);
         
         self.contentSize = CGSizeMake(wrapper.frame.size.width, lastLabelTop);
         
         //self.frame = newScrollViewFrame; //se ci metto questo non scrolla
     }
     else {
-        NSLog(@"ZERO CATEGORIE");
-        
+        NSLog(@"ZERO CATEGORIE");   
     }
 }
 

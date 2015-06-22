@@ -18,8 +18,8 @@
     Domain *dominio = [Domain new];
     
     dominio.descriptor = [json valueForKey:@"descriptor"];
-    dominio.icon = [json valueForKey:@"icon"]; //UIImage
-    dominio.color = [json valueForKey:@"color"]; //UIColor
+    dominio.icon = [json valueForKey:@"icon"];
+    dominio.color = [json valueForKey:@"color"];
 
     NSArray *localizations = [json valueForKey:@"localizations"];
     

@@ -13,28 +13,59 @@
 
 #define STARTING_CARD_NUM 1
 #define CONTENT_SIZE_HEIGHT 300
+#define BAR_BUTTON_SIZE 23
+#define LOADER_SIZE 37
+#define LABEL_HEIGHT 22
+#define MARGIN 20
+#define IPAD_SCREEN_SIZE 0.85
 
 @interface ScrollerViewController ()
 
 @end
 
 @implementation ScrollerViewController
+
 @synthesize listaDomini, dominioScelto;
 
--(void) didRotateFromInterfaceOrientation {
-    NSLog(@"didRotateFromInterfaceOrientation");
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self initVars];
+    [self initLanguage];
+    [self initNavigationBar];
+    [self initObjects];
+    [self initView];
+    [self loadLayout];
+    [self getDomains];
 }
 
--(void) reloadLayout {
-    NSLog(@"ricarico layout");
+- (void) goBack {
+    NSLog(@"[SVC] goBack");
+}
+
+-(void) loadLayout {
+    NSLog(@"[SVC] ricarico layout");
+    
     //ci metto tutti i valori che dipendono dallo schermo
-    larghezza = self.view.frame.size.width - 2 * padding;
-    altezza = self.view.frame.size.height - 2 * padding; // - 60;
-    scrollWidth = self.view.frame.size.width;
+    
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        larghezza = screenWidth * IPAD_SCREEN_SIZE;
+        padding = (screenWidth - larghezza) / 2;
+    }
+    else {
+        larghezza = screenWidth - 2 * padding;
+    }
+    
+    //uguale x tutti
+    altezza = self.view.frame.size.height - 2 * padding;
+    
+    scrollWidth = screenWidth;
     
     for (UIView *vista in self.scrollView.subviews) {
         NSLog(@"ricreo vista");
         
+        //TODO: non funziona
+        
+        /*
         float oldWidth = vista.frame.size.width;
         float oldHeight = vista.frame.size.height;
         //inverto altezza e larghezza
@@ -44,60 +75,77 @@
         NSLog(@"width = %f", nuovoFrame.size.width);
         NSLog(@"height = %f", nuovoFrame.size.height);
         vista.frame = nuovoFrame;
-        //[vista layoutIfNeeded];
+         */
+        
     }
 }
 
 -(void)viewDidLayoutSubviews {
-    //NSLog(@"[SVC] viewDidLayoutSubviews");
-    
+
     BOOL curPortrait;
     
-    if(self.view.frame.size.width > self.view.frame.size.height) {
-        //NSLog(@"Landscape");
+    if(screenWidth > self.view.frame.size.height) {
+        //landscape
         curPortrait = NO;
     }
     else {
-        //NSLog(@"Portrait");
+        //portrait
         curPortrait = YES;
     }
     
     if (curPortrait != portrait) {
         NSLog(@"RUOTATO");
-        [self reloadLayout];
+        
+        screenWidth = self.view.frame.size.width;
+        
+        [self loadLayout];
     }
     
     portrait = curPortrait;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+#pragma mark - Init methods
 
+-(void) initLanguage {
     lingua = [Utils getCurrentLanguage];
+    NSUserDefaults *myDefaults = [NSUserDefaults standardUserDefaults];
+    defaultLanguage = [myDefaults stringForKey:@"language"];
+    NSLog(@"SETTINGS: language = %@", defaultLanguage);
+}
+
+-(void) initView {
     
-    pageIndex = 0; //pagina corrente
-    totPages = 0;
+    self.topView.clipsToBounds = YES;
+    //self.topView.layer.shadowOffset = CGSizeMake(0, 2);
+    //self.topView.layer.shadowRadius =   4.0;
+    //self.topView.layer.shadowColor = [UIColor blackColor].CGColor;
+    //self.topView.layer.shadowOpacity = 1.0;
+    //self.topView.layer.masksToBounds = NO;
+    //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 200);
     
-    self.navigationController.navigationBar.barTintColor = [Utils getDefaultColor]; 
+    self.scrollView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.scrollView.delegate = self;
+    self.scrollView.clipsToBounds = NO;
+    self.scrollView.contentInset = UIEdgeInsetsZero;
+    //[self.scrollView setContentSize:CGSizeMake(2000, self.view.frame.size.height)];
+}
+
+-(void) initNavigationBar {
+    
+    self.navigationController.navigationBar.barTintColor = [Utils getDefaultColor];
     
     backButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"<" style:UIBarButtonItemStylePlain target:self action:@selector(goToPrevCard:)];
     
-    UIBarButtonItem *start = [[UIBarButtonItem alloc] initWithTitle:@"ThesApp" style:UIBarButtonItemStylePlain target:self action:nil];
+    UIBarButtonItem *start = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"THESAPP", @"app title") style:UIBarButtonItemStylePlain target:self action:nil];
     
     self.navigationItem.leftBarButtonItem = start;
-
     
     UIBarButtonItem *searchButton         = [[UIBarButtonItem alloc]
                                              initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
                                              target:self
                                              action:@selector(openSearchMenu:)];
     
-    /*UIBarButtonItem *infoButton          = [[UIBarButtonItem alloc]
-                                            initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks
-                                            target:self action:@selector(openInfoPage:)];
-    */
-
-    UIView* historyButtonView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 23, 23)];
+    UIView* historyButtonView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE)];
     
     UIButton *historyButton = [UIButton buttonWithType:UIButtonTypeSystem];
     historyButton.backgroundColor = [UIColor clearColor];
@@ -109,7 +157,7 @@
     [historyButtonView addSubview:historyButton];
     UIBarButtonItem *historyButtonItem = [[UIBarButtonItem alloc]initWithCustomView:historyButtonView];
     
-    UIView* leftButtonView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 23, 23)];
+    UIView* leftButtonView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE)];
     
     UIButton* leftButton = [UIButton buttonWithType:UIButtonTypeSystem];
     leftButton.backgroundColor = [UIColor clearColor];
@@ -123,37 +171,55 @@
     
     self.navigationItem.rightBarButtonItems =
     [NSArray arrayWithObjects:infoButton, historyButtonItem, searchButton, nil];
-    
-    //self.navigationItem.leftBarButtonItem = doneBtn;
-    
-    manager = [AFHTTPRequestOperationManager manager];
-
-    cards = [[NSMutableDictionary alloc] init];
-    
-    parent = (MMDrawerController *) self.parentViewController.parentViewController;
-    
-    self.topView.clipsToBounds = YES;
-    //self.topView.layer.shadowOffset = CGSizeMake(0, 2);
-    //self.topView.layer.shadowRadius =   4.0;
-    //self.topView.layer.shadowColor = [UIColor blackColor].CGColor;
-    //self.topView.layer.shadowOpacity = 1.0;
-    //self.topView.layer.masksToBounds = NO;
-    
-    //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 200);
-    
-    self.scrollView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    self.scrollView.delegate = self;
-    self.scrollView.clipsToBounds = NO;
-    self.scrollView.contentInset = UIEdgeInsetsZero;
-    //[self.scrollView setContentSize:CGSizeMake(2000, self.view.frame.size.height)];
-
-    xOffset = 0;
-    padding = 10;
-    numSchede = 0;
-    
-    [self reloadLayout];
-    [self getDomains];
 }
+
+-(void) initObjects {
+    manager = [AFHTTPRequestOperationManager manager];
+    cards = [[NSMutableDictionary alloc] init];
+    parent = (MMDrawerController *) self.parentViewController.parentViewController;
+}
+
+-(void) initVars {
+    screenWidth = self.view.frame.size.width;
+    pageIndex = 0; //pagina corrente
+    totPages = 0;
+    xOffset = 0;
+    padding = MARGIN / 2;
+    topPadding = MARGIN / 2;
+    numSchede = 0;
+}
+
+-(void) initDomainLoader {
+    NSString *downloadMsg = NSLocalizedString(@"DOWNLOAD_DOMAINS", @"scaricamento domini");
+    
+    float top = (self.view.frame.size.height - 66) / 2 - LABEL_HEIGHT - LOADER_SIZE;
+    float width = screenWidth - 2 * MARGIN;
+    
+    dwnLbl = [[UILabel alloc] initWithFrame:CGRectMake(MARGIN, top, width, LABEL_HEIGHT)];
+    dwnLbl.text = downloadMsg;
+    dwnLbl.textAlignment = NSTextAlignmentCenter;
+    dwnLbl.textColor = [UIColor darkGrayColor];
+    [dwnLbl setFont:[UIFont systemFontOfSize:16.f]];
+    
+    float metaY = top + LOADER_SIZE;
+    float metaX = width / 2;
+    
+    loader = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(metaX, metaY, LOADER_SIZE, LOADER_SIZE)];
+    [loader setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [loader setTintColor:[UIColor darkGrayColor]];
+    [loader setColor:[UIColor darkGrayColor]];
+    loader.hidesWhenStopped = YES;
+    [self.view addSubview:loader];
+    [loader startAnimating];
+    [self.view addSubview:dwnLbl];
+}
+
+-(void) removeDomainLoader {
+    [dwnLbl removeFromSuperview];
+    [loader removeFromSuperview];
+}
+
+#pragma mark - Download methods
 
 -(void) getDominio:(Domain *)dominio {
 
@@ -232,7 +298,7 @@
                  if (cat != nil) {
                      
                      NSLog(@"creo card per categoria");
-                     CGRect cardFrame = CGRectMake(padding + xOffset, padding, larghezza, altezza);
+                     CGRect cardFrame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza);
                      CategoryCard *card = [cat createCategoryCardWithFrame:cardFrame];
                      card.tag = numSchede * 1000;
                      [card render];
@@ -244,7 +310,7 @@
      
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
-             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Attenzione"
+             UIAlertView *message = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
                                                                message:error.localizedDescription
                                                               delegate:nil
                                                      cancelButtonTitle:@"OK"
@@ -277,14 +343,16 @@
         
              NSDictionary *json = (NSDictionary *)responseObject;
              
-             //contiene dominio linguaggio e categorie
-             
              NSArray *categorie  = [json objectForKey:@"categories"];
+             
+             if (categorie == nil) {
+                 return;
+             }
              
              NSLog(@"trovate %d categorie", (int) categorie.count);
              
              //creo card
-             CGRect domCatFrame = CGRectMake(padding + xOffset, padding, larghezza, altezza);
+             CGRect domCatFrame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza);
              DomainCategoryCard *card = [[DomainCategoryCard alloc] initWithFrame:domCatFrame];
              card.tag = numSchede * 1000;
              card.categorie = categorie;
@@ -292,7 +360,6 @@
              [card render];
              [self addCardToStoryboard:card];
              UIColor *colore = [Utils colorFromHexString:card.dominio.color];
-             NSLog(@"colore = %@", [colore description]);
              [self.navigationController.navigationBar setBarTintColor:colore];
          }
      
@@ -304,29 +371,7 @@
 
 -(void) getDomains {
 
-    NSString *downloadMsg = NSLocalizedString(@"DOWNLOAD_DOMAINS", @"scaricamento domini");
-    
-    float height = 22;
-    float top = (self.view.frame.size.height - 66) / 2 - height - 37;
-    float leftMargin = 20;
-    float width = self.view.frame.size.width - 2*leftMargin;
-    
-    UILabel *dwnLbl = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin,top,width,height)];
-    dwnLbl.text = downloadMsg;
-    dwnLbl.textAlignment = NSTextAlignmentCenter;
-    dwnLbl.textColor = [UIColor darkGrayColor];
-    [dwnLbl setFont:[UIFont systemFontOfSize:16.f]];
-    
-    float metaY = top + 37;
-    float metaX = width / 2;
-    UIActivityIndicatorView *loader = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(metaX, metaY, 37, 37)];
-    [loader setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [loader setTintColor:[UIColor darkGrayColor]];
-    [loader setColor:[UIColor darkGrayColor]];
-    loader.hidesWhenStopped = YES;
-    [self.view addSubview:loader];
-    [loader startAnimating];
-    [self.view addSubview:dwnLbl];
+    [self initDomainLoader];
     
     NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/domains"];
     
@@ -334,9 +379,13 @@
         
         NSDictionary *json = (NSDictionary *)responseObject;
         
-        NSLog(@"json");
         NSLog(@"%@", [json description]);
         NSArray *domini = [json objectForKey:@"domains"];
+        
+        if (domini == nil) {
+            NSLog(@"Domini non trovati");
+            return;
+        }
         
         if (domini.count > 0) {
             
@@ -347,60 +396,38 @@
                 [listaDomini addObject:dominio];
             }
             
-            //Domain *dominio = [Domain new];
-            //dominio.descriptor = @"Turismo"; // DOVREBBE SCEGLIERE UTENTE
-            //all'avvio creo DomainCard
-            
-            [dwnLbl removeFromSuperview];
-            [loader removeFromSuperview];
-            
-            CGRect domainFrame = CGRectMake(padding + xOffset, padding, larghezza, altezza);
+            CGRect domainFrame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza);
             DomainCard *mainCard = [[DomainCard alloc] initWithFrame:domainFrame]; //[DomainCard createWithDomain:dominio];
             mainCard.tag = numSchede * 1000;
-            mainCard.domini = listaDomini;
+            mainCard.domini = [Utils ordinaByDescriptor:listaDomini];
             [mainCard render];
-            [self addCardToStoryboard:mainCard];
             
-            NSLog(@"trovati %d domini", (int) listaDomini.count);
+            [self removeDomainLoader];
+            [self addCardToStoryboard:mainCard];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
-        [dwnLbl removeFromSuperview];
-        [loader removeFromSuperview];
+            [self removeDomainLoader];
     }];
     
 }
 
 -(void) openInfoPage:(id) sender {
-    NSLog(@"openInfoPage");
-    
     UIStoryboard * st =  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
     NSString *infoVCsid = @"infoVCsid";
-    
     InfoViewController *infoVC = (InfoViewController *) [st instantiateViewControllerWithIdentifier:infoVCsid];
-
     if (infoVC != nil) [self.navigationController pushViewController:infoVC animated:YES];
 }
 
 -(void) deleteHistory:(id)sender {
-    NSLog(@"deleteHistory");
     
     NSLog(@"ci sono %d pagine", totPages);
     
     [self removeCards:NO];
-    
-    for (int i=totPages - 1; i > 1; i--){
-        //[self removeCard:i];
-    }
-    
-    //removeCard
-    
 }
 
 -(void) openSearchMenu:(id)sender {
-    NSLog(@"openSearchMenu");
     [parent openDrawerSide:MMDrawerSideRight animated:YES completion:^(BOOL finished) {
         SideMenuTableViewController *side = (SideMenuTableViewController *) parent.rightDrawerViewController;
         [side menuOpen:listaDomini];
@@ -409,7 +436,7 @@
 
 -(TermCard *) createTermCard {
     NSLog(@"createCard con altezza = %f", altezza);
-    CGRect frame = CGRectMake(padding + xOffset, padding, larghezza, altezza);
+    CGRect frame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza);
     TermCard *card = [[TermCard alloc] initWithFrame:frame];
     card.tag = numSchede * 1000;
     return card;
@@ -438,7 +465,7 @@
     
     [self scrollToIndex:(startIndex - 1)];
     
-    xOffset = startIndex * self.view.frame.size.width;
+    xOffset = startIndex * screenWidth;
     
     self.scrollView.contentSize = CGSizeMake(5 + scrollWidth * startIndex, CONTENT_SIZE_HEIGHT);
     
@@ -460,7 +487,7 @@
     totPages = startIndex;
     pageIndex = startIndex - 1;
     
-    lingua = @"it";
+    lingua = defaultLanguage;
     
     NSLog(@"dopo] cards = %@", [cards description]);
 }
@@ -478,9 +505,7 @@
     NSLog(@"vista con tag = %d", indice);
     
     int tot = (int) subviews.count;
-    
-    //NSLog(@"subviews = %d", tot);
-    
+
     int index = indice / 1000;
     
     for (int i = index; i < tot; i++) {
@@ -489,7 +514,6 @@
         CGRect rect = view.frame;
         rect.origin.x -= larghezza + 2*padding;
         view.frame = rect;
-        //ricambiare i tag
     }
     
     [vista removeFromSuperview];
@@ -498,6 +522,8 @@
 -(void) addCardToStoryboard:(GenericScrollCard *) scheda {
     
     NSString *riferimento = [scheda getName];
+    
+    if (riferimento == nil) return;
     
     NSLog(@"addCardToStoryboard rif = %@", riferimento);
     
@@ -515,15 +541,23 @@
             totPages++;
             NSLog(@"[Card non trovata] Creo card Num %d", totPages);
             [cards setValue:[NSNumber numberWithInt:totPages-1] forKey:riferimento];
-            [self.scrollView addSubview:scheda];
-            self.scrollView.contentSize = CGSizeMake(5 + scrollWidth + xOffset, CONTENT_SIZE_HEIGHT);
-            xOffset += self.view.frame.size.width;
-            scheda.controller = self;
+            [self insertCard:scheda];
             [self scrollToIndex:totPages - 1];
         }
     }
     
-    NSLog(@"############ cards = %@\n###########################", [cards description]);
+    NSLog(@"###### CARDS = %@\n###############", [cards description]);
+}
+
+-(void) insertCard:(GenericScrollCard *) scheda {
+    [self.scrollView addSubview:scheda];
+    //float CONTENT_SIZE_WIDTH = 5 + scrollWidth + xOffset;
+    
+    float CONTENT_SIZE_WIDTH = scrollWidth + xOffset;
+    
+    self.scrollView.contentSize = CGSizeMake(CONTENT_SIZE_WIDTH, CONTENT_SIZE_HEIGHT);
+    xOffset += screenWidth; //aumento offset
+    scheda.controller = self;
 }
 
 -(void) scrollLeft {
@@ -575,9 +609,6 @@
     [self scrollLeft];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-}
-
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     float nuovaX = self.scrollView.contentOffset.x;
     pageIndex = nuovaX / scrollWidth;
@@ -607,11 +638,19 @@
 
 - (void) addCategoryCard:(NSString *) catName withDomain:(Domain *) dom {
     
-    //controllare se già esiste o se crere scheda
-    //[self getCategory:catName];
+    if (catName == nil) {
+        NSLog(@"Nome categoria nullo");
+    }
     
-    Domain *dominio = dom;
-    [self getDomainCategory:catName fromDomain:dominio];
+    if (catName.length < 1) {
+        NSLog(@"Nome categoria non valido");
+    }
+    
+    if (dom == nil) {
+        NSLog(@"Dominio non impostato");
+    }
+    
+    [self getDomainCategory:catName fromDomain:dom];
 }
 
 #pragma mark - other methods
@@ -634,40 +673,10 @@
     NSLog(@"%d %d", pageIndex, (int)targetContentOffset->x);
 }
 */
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    
-    NSLog(@"searchBarShouldBeginEditing");
-    
-    [parent openDrawerSide:MMDrawerSideRight animated:YES completion:nil];
-    
-    return NO;
-}
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    NSLog(@"searchBarTextDidBeginEditing");
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    NSLog(@"searchBarSearchButtonClicked");
-}
 -(void) getTerm:(NSString *)term inLanguage:(NSString *)lang {
     
-    NSLog(@"get Term, controllo se %@ esiste", term);
+    NSLog(@"[SVC] get Term, controllo se %@ esiste", term);
     
     if (cards != nil) {
         int cardIndex = [[cards objectForKey:term] intValue];
@@ -685,16 +694,17 @@
 
 -(void) getSingleTerm:(NSString *)term withDomain:(Domain *) dominio andLanguage:(NSString *)lang {
 
-    NSLog(@"[ScrollerViewController] getSingleTerm");
+    NSLog(@"[SVC] getSingleTerm");
     
-    if (term == nil) return;
+    if (term == nil) {
+        NSLog(@"Termine mancante, esco");
+        return;
+    }
     
     if (dominio == nil) {
         NSLog(@"Dominio mancante, esco");
         return;
     }
-    
-    //term = @"Alberghi";
     
     term = [Utils WWWFormEncoded:term];
     
@@ -737,13 +747,9 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        //NSDictionary *userInfo = [error userInfo];
-        
         NSInteger statusCode = operation.response.statusCode;
-    
-        NSString *msg = (statusCode == 404) ? @"Termine non trovato" : error.localizedDescription;
-        
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Attenzione"
+        NSString *msg = (statusCode == 404) ? NSLocalizedString(@"TERM_NOT_FOUND", @"termine non trovato") : error.localizedDescription;
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
                                                           message:msg
                                                          delegate:nil
                                                 cancelButtonTitle:@"OK"
@@ -753,6 +759,10 @@
         
     }];
     
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 @end

@@ -50,6 +50,13 @@
     return [Utils colorFromHexString:@"#03A9F4"];
 }
 
++(NSArray *) ordinaByDescriptor:(NSArray *) inputArray {
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"descriptor" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    NSArray *sortedArray = [inputArray sortedArrayUsingDescriptors:sortDescriptors];
+    return sortedArray;
+}
+
 +(UIColor *) getChosenDomainColor {
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     NSString *color = [def valueForKey:@"chosen_domain_color"];

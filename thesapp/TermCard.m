@@ -12,11 +12,13 @@
 
 #define PADDING_BTN 8
 #define BTN_HEIGHT 40
+#define DESC_HEIGHT 30
 #define LABEL_HEIGHT 20
 #define SECTION_BOTTOM_PADDING 15
 #define TITLE_PADDING_BOTTOM 5
 #define BTN_PADDING_LEFT 10
 #define TITOLI_FONT_SIZE 11.0f
+#define DESC_FONT_SIZE 13.0f
 
 @implementation TermCard
 @synthesize colDx, colSx;
@@ -42,7 +44,7 @@
 
 -(void) aggiungiTitoloSezione:(NSString *) title {
     
-    CGRect catTitleFrame = CGRectMake(paddingLeft, top, fullWithPadding - 2 * paddingLeft, titleLabelHeight);
+    CGRect catTitleFrame = CGRectMake(paddingLeft, top, colDx.frame.size.width - 2 * paddingLeft, titleLabelHeight);
     UILabel *catTitle = [[UILabel alloc] initWithFrame:catTitleFrame];
     catTitle.textColor = [UIColor darkGrayColor];
     catTitle.font = [catTitle.font fontWithSize:TITOLI_FONT_SIZE];
@@ -54,72 +56,30 @@
     top += titleLabelHeight + TITLE_PADDING_BOTTOM;
 }
 
-#pragma mark - Collection View Delegates
-
-- (UIEdgeInsets)collectionView:
-(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(0, 0, 0, 0);
-}
-
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
-}
-
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    
-    NSLog(@"ritorno %d", (int) self.categorie.count);
-    
-    return [self.categorie count];
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGSize size;
-    if (indexPath.row %2 == 0) {
-     size = CGSizeMake(50, 20);
-    }
-    else size = CGSizeMake(100, 20);
-    return size;
-}
-
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    CustomCollectionViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"customCell" forIndexPath:indexPath];
-    
-    NSLog(@"cellForItemAtIndexPath %d", (int) indexPath.row);
-    
-    cell.testo.text = [self.categorie objectAtIndex:indexPath.row];
-    
-    return cell;
-}
-
--(void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSLog(@"didSelectItemAtIndexPath %d", (int) indexPath.row);
-
-}
-
 #pragma mark - Rendering
 
 -(void) adaptViewSize {
+
+    NSLog(@"######################");
+    NSLog(@"current top = %f", top);
+    NSLog(@"colDx height = %f", colDx.frame.size.height);
+    NSLog(@"wrapper height = %f", wrapper.frame.size.height);
+    NSLog(@"######################");
     
-    top += titleLabelHeight + SECTION_BOTTOM_PADDING;
+    if (top > colDx.frame.size.height) {
+        float header_height = header.frame.size.height;
+        
+        float wrapperNewHeight = top + header_height;
+        wrapper.frame = CGRectMake(wrapper.frame.origin.x, wrapper.frame.origin.y, wrapper.frame.size.width, wrapperNewHeight);
+        
+        colDx.frame = CGRectMake(colDx.frame.origin.x, colDx.frame.origin.y, colDx.frame.size.width, top);
+        
+        NSLog(@"nuova wrapper height = %f", wrapperNewHeight);
+        
+        CGSize nuovaSize = CGSizeMake(self.contentSize.width, wrapperNewHeight);
+        self.contentSize = nuovaSize;
+    }
     
-    float header_height = header.frame.size.height;
-    
-    float newHeight = colDx.frame.size.height + top;
-    
-    NSLog(@"nuova altezza = %f", newHeight);
-    
-    CGSize nuovaSize = CGSizeMake(colDx.frame.size.width, newHeight - header_height);
-    
-    colDx.frame = CGRectMake(colDx.frame.origin.x, colDx.frame.origin.y, nuovaSize.width, nuovaSize.height - header_height);
-    
-    wrapper.frame = CGRectMake(wrapper.frame.origin.x, wrapper.frame.origin.y, wrapper.frame.size.width, nuovaSize.height);
-    
-    self.contentSize = nuovaSize;
-    
-    //colDx.backgroundColor = [UIColor yellowColor];
 }
 
 -(void) drawLefTree {
@@ -156,6 +116,14 @@
         gerarchia = [[NSMutableArray alloc] initWithArray:self.termine.hierarchy];
         
         [gerarchia addObject:lastTermine];
+        
+        //aggiungo i narrower terms
+        
+        if (self.termine.narrowerTerms.count > 0) {
+            //non bisogna indentare
+            [gerarchia addObjectsFromArray:self.termine.narrowerTerms];
+        }
+        
     }
     
     if (gerarchia.count > 0) {
@@ -163,6 +131,9 @@
         int i = 0;
         float btnPaddingLeft = 2;
         float left = 0;
+        int indent = 0;
+        BOOL sameLevel = NO;
+        NSString *dot = @" · ";
         
         for (NSDictionary *categoria in gerarchia) {
             
@@ -172,18 +143,26 @@
             
             BOOL questo = [catTitle isEqualToString:self.termine.descriptor.descriptor];
             
+            if (questo) sameLevel = YES;
+            
             NSString *wildcards = @"";
             
-            if (drawTree) {
-                for (int c=0; c<i; c++) {
-                    wildcards = [wildcards stringByAppendingString:@" · "];
+            if (!sameLevel) {
+                indent++;
+                for (int c=0; c<indent-1; c++) {
+                    wildcards = [wildcards stringByAppendingString:dot];
                 }
             }
             else {
-                if (!questo) wildcards = @" · ";
+            
+                for (int c=0; c<indent; c++) {
+                    wildcards = [wildcards stringByAppendingString:dot];
+                }
+                
+                if (questo) indent++;
             }
             
-            wildcards = [wildcards stringByAppendingString:@" · "];
+            wildcards = [wildcards stringByAppendingString:dot];
             
             //NSString *catTitle = [wildcards stringByAppendingString:[categoria objectForKey:@"descriptor"]];
             
@@ -234,16 +213,30 @@
     
         //orizzontale
         
+        float COL_WIDTH = size / 2 - 1;
+        
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
             NSLog(@"IPAD ORIZZONTALE");
             
-            colDx.frame = CGRectMake(size / 2, header.frame.size.height, size / 2, wrapper.frame.size.height);
+            colDx.frame = CGRectMake(size / 2, header.frame.size.height, COL_WIDTH , wrapper.frame.size.height);
             
             NSLog(@"x = %f", colDx.frame.origin.x);
             NSLog(@"y = %f", colDx.frame.origin.y);
             
-            colSx = [[UIView alloc] initWithFrame:CGRectMake(0, header.frame.size.height, size / 2, wrapper.frame.size.height)];
+            colSx = [[UIView alloc] initWithFrame:CGRectMake(0, header.frame.size.height, COL_WIDTH, wrapper.frame.size.height)];
+            
+            //colSx.clipsToBounds = YES;
             [wrapper addSubview:colSx];
+            
+            //separator
+            
+            float sepHeight = colDx.frame.size.height - header.frame.size.height - 2 * BTN_PADDING_LEFT;
+            float sepY = header.frame.size.height + BTN_PADDING_LEFT;
+            
+            CGRect sepFrame = CGRectMake(colSx.frame.size.width, sepY, 1, sepHeight);
+            sep = [[UIView alloc] initWithFrame:sepFrame];
+            sep.backgroundColor = [UIColor lightGrayColor];
+            [wrapper addSubview:sep];
             
             [self drawLefTree];
             
@@ -268,38 +261,34 @@
     
     lingua = self.termine.language;
     
-    top = [self getHeaderHeightAndPadding];    
+    //top = [self getHeaderHeightAndPadding];
   
-    
     //////////////////////////////////////////////////////////////
     //description textview
     
     top = paddingLeft * 2;
     
-    NSLog(@"top = %f", top);
-    
     //float descrizione_padding_top = 0; //paddingLeft + top;
-    float descrizioneHeight = 30;
-    float descWidth = fullWithPadding - paddingLeft;
     
     if (self.termine.scopeNote != nil) {
     
         if (self.termine.scopeNote.length > 0) {
             
+            float descWidth = colDx.frame.size.width - 2 * paddingLeft;
+            
             [self aggiungiTitoloSezione:@"DESCRIPTION"];
             
-            CGRect descrizioneFrame = CGRectMake(paddingLeft, top, descWidth, descrizioneHeight);
+            CGRect descrizioneFrame = CGRectMake(paddingLeft, top, descWidth, DESC_HEIGHT);
             
             descrizione = [[UITextView alloc] initWithFrame:descrizioneFrame];
             descrizione.text = self.termine.scopeNote;
             descrizione.textColor = [UIColor blackColor];
-            descrizione.font = [descrizione.font fontWithSize: 13.0f];
+            descrizione.font = [descrizione.font fontWithSize: DESC_FONT_SIZE];
             descrizione.editable = NO;
             descrizione.selectable = NO;
             descrizione.bounces = NO;
             descrizione.bouncesZoom = NO;
-            //descrizione.contentInset = UIEdgeInsetsMake(-4,-8,0,0);
-            //[descrizione setTextContainerInset:UIEdgeInsetsMake(10, 0, 10, 0)];
+            
             [descrizione sizeToFit];
      
             [colDx addSubview:descrizione];
@@ -337,6 +326,8 @@
             [colDx addSubview:lbl];
         }
         
+        top += titleLabelHeight + SECTION_BOTTOM_PADDING;
+        
         [self adaptViewSize];
     }
     
@@ -367,6 +358,8 @@
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
             [colDx addSubview:lbl];
         }
+        
+        top += titleLabelHeight + SECTION_BOTTOM_PADDING;
 
         [self adaptViewSize];
     }
@@ -397,6 +390,8 @@
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
             [colDx addSubview:lbl];
         }
+        
+        top += titleLabelHeight + SECTION_BOTTOM_PADDING;
         
         [self adaptViewSize];
     }    
@@ -430,6 +425,8 @@
             [colDx addSubview:lbl];
         }
         
+        top += titleLabelHeight + SECTION_BOTTOM_PADDING;
+        
         [self adaptViewSize];
     }
     
@@ -459,6 +456,8 @@
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
             [colDx addSubview:lbl];
         }
+        
+        top += titleLabelHeight + SECTION_BOTTOM_PADDING;
         
         [self adaptViewSize];
     }
@@ -490,8 +489,23 @@
             [colDx addSubview:lbl];
         }
         
+        top += titleLabelHeight + SECTION_BOTTOM_PADDING;
+        
         [self adaptViewSize];
     }
+    
+    //colSx la faccio alta come colDx (in realtà andrebbe presa la più lunga)
+    if (colSx != nil) colSx.frame = CGRectMake(
+                                               colSx.frame.origin.x,
+                                               colSx.frame.origin.y,
+                                               colSx.frame.size.width,
+                                               colDx.frame.size.height
+                                               );
+    
+    float nuovaSepHeight = colDx.frame.size.height - 2 * BTN_PADDING_LEFT;
+    
+    sep.frame = CGRectMake(sep.frame.origin.x, sep.frame.origin.y, sep.frame.size.width, nuovaSepHeight);
+    
     
     //[self setContentOffset: CGPointMake(0, -self.contentInset.top) animated:YES];
     
@@ -505,7 +519,7 @@
 
 -(float) getLabelLeft:(Etichetta *)lbl {
 
-    if (lbl.frame.size.width + lbl.frame.origin.x > colDx.frame.size.width ) { //fullWithPadding
+    if (lbl.frame.size.width + lbl.frame.origin.x > colDx.frame.size.width ) {
         top += BTN_HEIGHT;
         [lbl setFrame:CGRectMake(BTN_PADDING_LEFT, top, lbl.frame.size.width, lbl.frame.size.height)];
         self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + BTN_HEIGHT);
@@ -540,36 +554,5 @@
         [self setNeedsUpdateConstraints];
     }
 }
-
-/*
-- (void)updateConstraints
-{
-    [self removeConstraints:self.customConstraints];
-    [self.customConstraints removeAllObjects];
-    
-    if (self.containerView != nil) {
-        UIView *view = self.containerView;
-        NSDictionary *views = NSDictionaryOfVariableBindings(view);
-        
-        [self.customConstraints addObjectsFromArray:
-         [NSLayoutConstraint constraintsWithVisualFormat:
-          @"H:|[view]|" options:0 metrics:nil views:views]];
-        [self.customConstraints addObjectsFromArray:
-         [NSLayoutConstraint constraintsWithVisualFormat:
-          @"V:|[view]|" options:0 metrics:nil views:views]];
-        
-        [self addConstraints:self.customConstraints];
-    }
-    
-    [super updateConstraints];
-}
-*/
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 @end

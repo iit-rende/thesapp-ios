@@ -7,6 +7,7 @@
 //
 
 #import "Term.h"
+#import "Utils.h"
 
 @implementation Term
 
@@ -37,21 +38,20 @@
     NSArray *usedFor = [dict valueForKey:@"usedFor"];
     NSArray *useFor = [dict valueForKey:@"useFor"];
     
-    term.categories = categories;
-    term.relatedTerms = relatedTerms;
-    term.narrowerTerms = narrowerTerms;
-    term.broaderTerms = broaderTerms;
-    term.localizations = [[NSArray alloc] initWithArray:localizations];
-    term.hierarchy = hierarchy;
-    term.usedFor = usedFor;
-    term.useFor = useFor;
+    term.categories = [Utils ordinaByDescriptor:categories];
+    term.relatedTerms = [Utils ordinaByDescriptor:relatedTerms];
+    term.narrowerTerms = [Utils ordinaByDescriptor:narrowerTerms];
+    term.broaderTerms = [Utils ordinaByDescriptor:broaderTerms];
+    term.localizations = [Utils ordinaByDescriptor:localizations];
+    term.hierarchy = [Utils ordinaByDescriptor:hierarchy];
+    term.usedFor = [Utils ordinaByDescriptor:usedFor];
+    term.useFor = [Utils ordinaByDescriptor:useFor];
     
     return term;
 }
 
 -(TermCard *) createTermCard:(TermCard *) card {
     card.termine = self;
-    NSLog(@"termine card = %@", card.termine);
     [card render];
     return card;
 }

@@ -26,8 +26,7 @@
 +(UIColor *) getDefaultColor;
 
 + (void) setCurrentDomain:(Domain *) dominio;
-
++ (NSArray *) ordinaByDescriptor:(NSArray *) inputArray;
 + (NSString*)WWWFormEncoded:(NSString *) string;
-
 + (UIColor *)colorFromHexString:(NSString *)hexString;
 @end

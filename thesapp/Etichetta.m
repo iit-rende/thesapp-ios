@@ -10,17 +10,9 @@
 #import "Utils.h"
 #define PADDING_BTN 5
 #define LBL_BORDER_WIDTH 1
+#define LBL_FONT_SIZE 11
 
 @implementation Etichetta
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
-
 
 + (instancetype)buttonWithType:(UIButtonType)buttonType {
     Etichetta *button = [super buttonWithType:buttonType];
@@ -36,7 +28,7 @@
     [self setTitleEdgeInsets:titleInsets];
     [self setContentEdgeInsets:contentInsets];
     [self sizeToFit];
-    self.titleLabel.font = [UIFont systemFontOfSize:11.0];
+    self.titleLabel.font = [UIFont systemFontOfSize:LBL_FONT_SIZE];
     self.layer.borderWidth = LBL_BORDER_WIDTH;
 }
 

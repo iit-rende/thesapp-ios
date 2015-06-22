@@ -15,16 +15,18 @@
 #import <MMDrawerController.h>
 #import "DomainCategoryCard.h"
 
-@interface ScrollerViewController : UIViewController<UIScrollViewDelegate, UISearchBarDelegate, CardController>
+@interface ScrollerViewController : UIViewController<UIScrollViewDelegate, CardController>
 {
     int pageIndex, totPages, xOffset, numSchede, scrollWidth;
-    float larghezza, altezza, padding;
+    float larghezza, altezza, padding, topPadding, screenWidth;
     AFHTTPRequestOperationManager *manager;
     MMDrawerController *parent;
     NSMutableDictionary *cards;
     UIBarButtonItem *backButtonItem;
-    NSString *lingua;
+    NSString *lingua, *defaultLanguage;
     BOOL portrait;
+    UILabel *dwnLbl;
+    UIActivityIndicatorView *loader;
 }
 
 -(void) getSingleTerm:(NSString *)term withDomain:(Domain *) dominio andLanguage:(NSString *)lang;

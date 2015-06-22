@@ -27,20 +27,15 @@
 		CDA071A51B2065B700BD6CCF /* Etichetta.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071961B2065B700BD6CCF /* Etichetta.m */; };
 		CDA071A61B2065B700BD6CCF /* GenericCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071981B2065B700BD6CCF /* GenericCard.m */; };
 		CDA071A71B2065B700BD6CCF /* GenericScrollCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0719A1B2065B700BD6CCF /* GenericScrollCard.m */; };
-		CDA071A81B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0719C1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m */; };
 		CDA071AB1B2065D000BD6CCF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071AA1B2065D000BD6CCF /* AppDelegate.m */; };
 		CDA071C81B20661500BD6CCF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDA071AC1B20661400BD6CCF /* Main.storyboard */; };
-		CDA071C91B20661500BD6CCF /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071AE1B20661500BD6CCF /* MainViewController.m */; };
 		CDA071CA1B20661500BD6CCF /* MLPAutoCompleteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071B01B20661500BD6CCF /* MLPAutoCompleteTextField.m */; };
 		CDA071CB1B20661500BD6CCF /* NSString+Levenshtein.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071B51B20661500BD6CCF /* NSString+Levenshtein.m */; };
-		CDA071CC1B20661500BD6CCF /* PageRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071B71B20661500BD6CCF /* PageRootViewController.m */; };
 		CDA071CD1B20661500BD6CCF /* ScrollerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071B91B20661500BD6CCF /* ScrollerViewController.m */; };
 		CDA071CE1B20661500BD6CCF /* SideMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071BB1B20661500BD6CCF /* SideMenuTableViewController.m */; };
-		CDA071CF1B20661500BD6CCF /* SingleWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071BD1B20661500BD6CCF /* SingleWordViewController.m */; };
 		CDA071D01B20661500BD6CCF /* Term.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071BF1B20661500BD6CCF /* Term.m */; };
 		CDA071D11B20661500BD6CCF /* TermCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C11B20661500BD6CCF /* TermCard.m */; };
 		CDA071D21B20661500BD6CCF /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C31B20661500BD6CCF /* Utils.m */; };
-		CDA071D31B20661500BD6CCF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C51B20661500BD6CCF /* ViewController.m */; };
 		CDA071D41B20661500BD6CCF /* WordButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071C71B20661500BD6CCF /* WordButton.m */; };
 		CDA071D61B20664C00BD6CCF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CDA071D51B20664C00BD6CCF /* Localizable.strings */; };
 		CDA071DF1B2074CA00BD6CCF /* UILabel+FormattedText.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071DE1B2074CA00BD6CCF /* UILabel+FormattedText.m */; };
@@ -105,13 +100,9 @@
 		CDA071981B2065B700BD6CCF /* GenericCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericCard.m; sourceTree = "<group>"; };
 		CDA071991B2065B700BD6CCF /* GenericScrollCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericScrollCard.h; sourceTree = "<group>"; };
 		CDA0719A1B2065B700BD6CCF /* GenericScrollCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericScrollCard.m; sourceTree = "<group>"; };
-		CDA0719B1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPCMLPAutoCompleteDemoViewController.h; sourceTree = "<group>"; };
-		CDA0719C1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPCMLPAutoCompleteDemoViewController.m; sourceTree = "<group>"; };
 		CDA071A91B2065D000BD6CCF /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CDA071AA1B2065D000BD6CCF /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CDA071AC1B20661400BD6CCF /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		CDA071AD1B20661500BD6CCF /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		CDA071AE1B20661500BD6CCF /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		CDA071AF1B20661500BD6CCF /* MLPAutoCompleteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompleteTextField.h; sourceTree = "<group>"; };
 		CDA071B01B20661500BD6CCF /* MLPAutoCompleteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLPAutoCompleteTextField.m; sourceTree = "<group>"; };
 		CDA071B11B20661500BD6CCF /* MLPAutoCompleteTextFieldDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompleteTextFieldDataSource.h; sourceTree = "<group>"; };
@@ -119,22 +110,16 @@
 		CDA071B31B20661500BD6CCF /* MLPAutoCompletionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAutoCompletionObject.h; sourceTree = "<group>"; };
 		CDA071B41B20661500BD6CCF /* NSString+Levenshtein.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Levenshtein.h"; sourceTree = "<group>"; };
 		CDA071B51B20661500BD6CCF /* NSString+Levenshtein.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Levenshtein.m"; sourceTree = "<group>"; };
-		CDA071B61B20661500BD6CCF /* PageRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageRootViewController.h; sourceTree = "<group>"; };
-		CDA071B71B20661500BD6CCF /* PageRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageRootViewController.m; sourceTree = "<group>"; };
 		CDA071B81B20661500BD6CCF /* ScrollerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollerViewController.h; sourceTree = "<group>"; };
 		CDA071B91B20661500BD6CCF /* ScrollerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollerViewController.m; sourceTree = "<group>"; };
 		CDA071BA1B20661500BD6CCF /* SideMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuTableViewController.h; sourceTree = "<group>"; };
 		CDA071BB1B20661500BD6CCF /* SideMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuTableViewController.m; sourceTree = "<group>"; };
-		CDA071BC1B20661500BD6CCF /* SingleWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleWordViewController.h; sourceTree = "<group>"; };
-		CDA071BD1B20661500BD6CCF /* SingleWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleWordViewController.m; sourceTree = "<group>"; };
 		CDA071BE1B20661500BD6CCF /* Term.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Term.h; sourceTree = "<group>"; };
 		CDA071BF1B20661500BD6CCF /* Term.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Term.m; sourceTree = "<group>"; };
 		CDA071C01B20661500BD6CCF /* TermCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermCard.h; sourceTree = "<group>"; };
 		CDA071C11B20661500BD6CCF /* TermCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermCard.m; sourceTree = "<group>"; };
 		CDA071C21B20661500BD6CCF /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		CDA071C31B20661500BD6CCF /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
-		CDA071C41B20661500BD6CCF /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		CDA071C51B20661500BD6CCF /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		CDA071C61B20661500BD6CCF /* WordButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordButton.h; sourceTree = "<group>"; };
 		CDA071C71B20661500BD6CCF /* WordButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordButton.m; sourceTree = "<group>"; };
 		CDA071D51B20664C00BD6CCF /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -237,19 +222,10 @@
 		CDA071D91B2066B300BD6CCF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CDA071AD1B20661500BD6CCF /* MainViewController.h */,
-				CDA071AE1B20661500BD6CCF /* MainViewController.m */,
-				CDA071B61B20661500BD6CCF /* PageRootViewController.h */,
-				CDA071B71B20661500BD6CCF /* PageRootViewController.m */,
 				CDA071B81B20661500BD6CCF /* ScrollerViewController.h */,
 				CDA071B91B20661500BD6CCF /* ScrollerViewController.m */,
 				CDA071BA1B20661500BD6CCF /* SideMenuTableViewController.h */,
 				CDA071BB1B20661500BD6CCF /* SideMenuTableViewController.m */,
-				CDFF70AE1B219E7200B5FD3D /* Settings.bundle */,
-				CDA071BC1B20661500BD6CCF /* SingleWordViewController.h */,
-				CDA071BD1B20661500BD6CCF /* SingleWordViewController.m */,
-				CDA071C41B20661500BD6CCF /* ViewController.h */,
-				CDA071C51B20661500BD6CCF /* ViewController.m */,
 				CDB3F5691B33FF3E0031182E /* InfoViewController.h */,
 				CDB3F56A1B33FF3E0031182E /* InfoViewController.m */,
 			);
@@ -259,7 +235,6 @@
 		CDA071DA1B2066D700BD6CCF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				CDA071D51B20664C00BD6CCF /* Localizable.strings */,
 				CDA071B41B20661500BD6CCF /* NSString+Levenshtein.h */,
 				CDA071B51B20661500BD6CCF /* NSString+Levenshtein.m */,
 				CDA071C21B20661500BD6CCF /* Utils.h */,
@@ -284,8 +259,6 @@
 				CDA0718A1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m */,
 				CDA0718B1B2065B700BD6CCF /* DEMODataSource.h */,
 				CDA0718C1B2065B700BD6CCF /* DEMODataSource.m */,
-				CDA0719B1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.h */,
-				CDA0719C1B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m */,
 				CDA0717E1B20659100BD6CCF /* CustomCollectionViewCell.h */,
 				CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */,
 				CDA071801B20659100BD6CCF /* CustomCollectionViewCell.xib */,
@@ -307,8 +280,8 @@
 				CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */,
 				CDC02E171B26E5A500C7C15E /* left_arrow_white.png */,
 				CDA071AC1B20661400BD6CCF /* Main.storyboard */,
-				CDCB24A11B2064850087A5BE /* Images.xcassets */,
 				CDCB24A31B2064850087A5BE /* LaunchScreen.xib */,
+				CDCB24A11B2064850087A5BE /* Images.xcassets */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -360,6 +333,8 @@
 		CDCB24941B2064850087A5BE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CDA071D51B20664C00BD6CCF /* Localizable.strings */,
+				CDFF70AE1B219E7200B5FD3D /* Settings.bundle */,
 				CDCB24951B2064850087A5BE /* Info.plist */,
 				CDCB24961B2064850087A5BE /* main.m */,
 			);
@@ -554,9 +529,7 @@
 				CDA071D01B20661500BD6CCF /* Term.m in Sources */,
 				CDA071A61B2065B700BD6CCF /* GenericCard.m in Sources */,
 				CDA071CB1B20661500BD6CCF /* NSString+Levenshtein.m in Sources */,
-				CDA071D31B20661500BD6CCF /* ViewController.m in Sources */,
 				CD3DD1521B3169D20082A337 /* Localization.m in Sources */,
-				CDA071C91B20661500BD6CCF /* MainViewController.m in Sources */,
 				CDA071D11B20661500BD6CCF /* TermCard.m in Sources */,
 				CDA071AB1B2065D000BD6CCF /* AppDelegate.m in Sources */,
 				CDA0719E1B2065B700BD6CCF /* CategoryCard.m in Sources */,
@@ -568,16 +541,13 @@
 				CDA071D21B20661500BD6CCF /* Utils.m in Sources */,
 				CDA071A01B2065B700BD6CCF /* DEMODataSource.m in Sources */,
 				CDA071CE1B20661500BD6CCF /* SideMenuTableViewController.m in Sources */,
-				CDA071A81B2065B700BD6CCF /* GPCMLPAutoCompleteDemoViewController.m in Sources */,
 				CDA071A41B2065B700BD6CCF /* DomainCategoryCard.m in Sources */,
 				CDA071CA1B20661500BD6CCF /* MLPAutoCompleteTextField.m in Sources */,
 				CDA071A31B2065B700BD6CCF /* DomainCard.m in Sources */,
 				CDCB24971B2064850087A5BE /* main.m in Sources */,
-				CDA071CF1B20661500BD6CCF /* SingleWordViewController.m in Sources */,
 				CDA0719F1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m in Sources */,
 				CD8936541B32B6410016439D /* DominioTableViewCell.m in Sources */,
 				CDA071811B20659100BD6CCF /* CustomCollectionViewCell.m in Sources */,
-				CDA071CC1B20661500BD6CCF /* PageRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

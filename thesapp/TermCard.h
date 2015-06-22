@@ -14,10 +14,11 @@
 @class Term;
 
 
-@interface TermCard : GenericScrollCard<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface TermCard : GenericScrollCard
 {
     @private
     UITextView *descrizione;
+    UIView *sep;
 }
 
 @property (nonatomic, strong) UIView *containerView;

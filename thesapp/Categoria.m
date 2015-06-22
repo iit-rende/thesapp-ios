@@ -44,7 +44,6 @@
     }];
     [cat.terms setObject:sortedArrayIT forKey:@"it"];
     
-    
     //inglese
     NSArray *sortedArrayEn = [[cat.terms objectForKey:@"en"] sortedArrayUsingComparator:^NSComparisonResult(NSString *p1, NSString *p2){
         return [p1 compare:p2];

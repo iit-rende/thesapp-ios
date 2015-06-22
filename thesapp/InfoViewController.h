@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 IIT Cnr. All rights reserved.
 //
 
-#import "ViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface InfoViewController : ViewController
+@interface InfoViewController : UIViewController
 @property (nonatomic, strong) IBOutlet UITextView *testo;
 @end

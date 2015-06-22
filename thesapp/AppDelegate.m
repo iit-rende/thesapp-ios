@@ -18,20 +18,17 @@
 @property(nonatomic, assign) BOOL subscribedToTopic;
 @end
 
-NSString *const SubscriptionTopic = @"/topics/paolo";
+NSString *const SubscriptionTopic = @"/topics/thesapp";
 
 @implementation AppDelegate
 
 +(CGFloat) getSidemenuWidth {
-   //return [UIScreen mainScreen].applicationFrame.size.width - 50;
     if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) return 350;
     return 270;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    
     //IOS 7
     [[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];
@@ -58,8 +55,6 @@ NSString *const SubscriptionTopic = @"/topics/paolo";
     
     UINavigationController *svc = (UINavigationController *) [st instantiateViewControllerWithIdentifier:ScrollerViewControllerID];
     
-    NSLog(@"svc = %@", [svc description]);
-    
     SideMenuTableViewController *side = (SideMenuTableViewController *) [st instantiateViewControllerWithIdentifier:SideMenuTableViewControllerID];
     
     MMDrawerController *drawerController = [[MMDrawerController alloc]
@@ -70,21 +65,16 @@ NSString *const SubscriptionTopic = @"/topics/paolo";
     //drawerController.view.clipsToBounds = YES;
     
     float menuWidth = [AppDelegate getSidemenuWidth];
-    
     [drawerController setMaximumRightDrawerWidth:menuWidth];
-    
-    [drawerController setShowsShadow:NO];
-    
-    [drawerController setRestorationIdentifier:@"MMDrawer"];
-    
+    [drawerController setShowsShadow:YES];
     drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureModeAll;
     drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
+    [drawerController setRestorationIdentifier:@"MMDrawer"];
     
     self.window.rootViewController = drawerController;
     
     //notifiche push
     
-
     // Register for remote notifications
     UIUserNotificationType allNotificationTypes =
     (UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge);
@@ -92,7 +82,6 @@ NSString *const SubscriptionTopic = @"/topics/paolo";
     [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
-    
     
     // [START_EXCLUDE]
     _registrationKey = @"onRegistrationCompleted";
