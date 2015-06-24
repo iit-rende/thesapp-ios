@@ -60,6 +60,8 @@
 
     self.testo = title;
     [self setFrame:frame];
+    self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self setTitle:title forState:UIControlStateNormal];
     [self sizeToFit];
 }

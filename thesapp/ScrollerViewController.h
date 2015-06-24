@@ -27,6 +27,7 @@
     BOOL portrait;
     UILabel *dwnLbl;
     UIActivityIndicatorView *loader;
+    UIBarButtonItem *titleButton;
 }
 
 -(void) getSingleTerm:(NSString *)term withDomain:(Domain *) dominio andLanguage:(NSString *)lang;

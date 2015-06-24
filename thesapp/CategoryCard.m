@@ -107,6 +107,12 @@
                 //self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height + altezzaBtn);
             }
             
+            float maxLabelWidth = fullWithPadding - 2 * BTN_PADDING_LEFT;
+            
+            if (lbl.frame.size.width > maxLabelWidth) {
+                [lbl setFrame:CGRectMake(lbl.frame.origin.x, lbl.frame.origin.y, maxLabelWidth, lbl.frame.size.height)];
+            }
+            
             left = lbl.frame.size.width + lbl.frame.origin.x;
             
             [lbl addTarget:self action:@selector(openTerm:) forControlEvents:UIControlEventTouchUpInside];

@@ -13,14 +13,16 @@
 @end
 
 @implementation InfoViewController
-@synthesize testo;
+@synthesize testo, cnr, iit, labdoc;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    //[testo sizeThatFits:testo.bounds.size];
+    self.navigationController.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
     
-    //[testo sizeToFit];
+    self.navigationController.navigationBar.topItem.title = @"";
+    
+    self.title = NSLocalizedString(@"THESAPP", @"titolo");
     
     CGFloat fixedWidth = testo.frame.size.width;
     CGSize newSize = [testo sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
@@ -28,6 +30,31 @@
     newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
     testo.frame = newFrame;
     testo.scrollEnabled = NO;
+    
+    UITapGestureRecognizer *cnrTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(openCNRLink)];
+    
+    [cnr addGestureRecognizer:cnrTap];
+    
+    
+    UITapGestureRecognizer *iitTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(openIITLink)];
+    
+    [iit addGestureRecognizer:iitTap];
+    
+    UITapGestureRecognizer *labdocTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(openLabdocLink)];
+    
+    [labdoc addGestureRecognizer:labdocTap];
+}
+
+-(void) openCNRLink {
+    
+}
+
+-(void) openIITLink {
+    
+}
+
+-(void) openLabdocLink {
+    
 }
 
 - (void)didReceiveMemoryWarning {

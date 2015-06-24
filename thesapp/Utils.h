@@ -24,7 +24,6 @@
 +(UIColor *) getTraduzioneColor;
 +(UIColor *) getHeaderColor;
 +(UIColor *) getDefaultColor;
-
 + (void) setCurrentDomain:(Domain *) dominio;
 + (NSArray *) ordinaByDescriptor:(NSArray *) inputArray;
 + (NSString*)WWWFormEncoded:(NSString *) string;

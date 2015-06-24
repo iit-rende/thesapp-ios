@@ -10,4 +10,7 @@
 
 @interface InfoViewController : UIViewController
 @property (nonatomic, strong) IBOutlet UITextView *testo;
+@property (nonatomic, strong) IBOutlet UIView *cnr;
+@property (nonatomic, strong) IBOutlet UIView *iit;
+@property (nonatomic, strong) IBOutlet UIView *labdoc;
 @end

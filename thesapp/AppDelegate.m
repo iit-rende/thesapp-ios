@@ -29,6 +29,18 @@ NSString *const SubscriptionTopic = @"/topics/thesapp";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    //registro opzioni
+    NSDictionary *userDefaultsDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          @"it", @"language",
+                                          nil];
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    
     //IOS 7
     [[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];

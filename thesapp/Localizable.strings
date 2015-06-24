@@ -7,10 +7,12 @@
 */
 
 
+"CANCEL" = "Annulla";
 "NARROWER_TERMS" = "Termini più specifici";
 "BROADER_TERMS" = "Termini più generici";
 "RELATED_TERMS" = "Termini correlati";
 "TERMS" = "Termini";
+"DOMAIN" = "Dominio";
 "LOCALIZATIONS" = "Traduzioni";
 "CATEGORIES" = "Categorie";
 "CHOSE_CAT" = "Scegli una categoria";

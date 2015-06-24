@@ -29,6 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setNeedsStatusBarAppearanceUpdate];
     [self initVars];
     [self initLanguage];
     [self initNavigationBar];
@@ -36,6 +37,11 @@
     [self initView];
     [self loadLayout];
     [self getDomains];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (void) goBack {
@@ -97,7 +103,6 @@
         NSLog(@"RUOTATO");
         
         screenWidth = self.view.frame.size.width;
-        
         [self loadLayout];
     }
     
@@ -136,9 +141,9 @@
     
     backButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"<" style:UIBarButtonItemStylePlain target:self action:@selector(goToPrevCard:)];
     
-    UIBarButtonItem *start = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"THESAPP", @"app title") style:UIBarButtonItemStylePlain target:self action:nil];
+    titleButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"THESAPP", @"app title") style:UIBarButtonItemStylePlain target:self action:nil];
     
-    self.navigationItem.leftBarButtonItem = start;
+    self.navigationItem.leftBarButtonItem = titleButton;
     
     UIBarButtonItem *searchButton         = [[UIBarButtonItem alloc]
                                              initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
@@ -361,6 +366,10 @@
              [self addCardToStoryboard:card];
              UIColor *colore = [Utils colorFromHexString:card.dominio.color];
              [self.navigationController.navigationBar setBarTintColor:colore];
+             
+             NSString *newTitle = [[NSLocalizedString(@"THESAPP", @"ThesApp") stringByAppendingString:@" - "] stringByAppendingString:card.dominio.localization];
+             
+             [titleButton setTitle:newTitle];
          }
      
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -374,6 +383,8 @@
     [self initDomainLoader];
     
     NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/domains"];
+    
+    [manager.requestSerializer setValue:defaultLanguage forHTTPHeaderField:@"accept-language"];
     
     [manager GET:domainPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -436,7 +447,8 @@
 
 -(TermCard *) createTermCard {
     NSLog(@"createCard con altezza = %f", altezza);
-    CGRect frame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza);
+    NSLog(@"e xOffset = %d", xOffset);
+    CGRect frame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza); //era padding + xOffset
     TermCard *card = [[TermCard alloc] initWithFrame:frame];
     card.tag = numSchede * 1000;
     return card;
@@ -449,7 +461,7 @@
     
     NSLog(@"ci sono %d subviews", totViews);
     
-    if (totViews < 3) {
+    if (totViews < 2) {
         NSLog(@"esco...");
         return;
     }
@@ -546,10 +558,11 @@
         }
     }
     
-    NSLog(@"###### CARDS = %@\n###############", [cards description]);
+    //NSLog(@"###### CARDS = %@\n###############", [cards description]);
 }
 
 -(void) insertCard:(GenericScrollCard *) scheda {
+    
     [self.scrollView addSubview:scheda];
     //float CONTENT_SIZE_WIDTH = 5 + scrollWidth + xOffset;
     
@@ -558,6 +571,8 @@
     self.scrollView.contentSize = CGSizeMake(CONTENT_SIZE_WIDTH, CONTENT_SIZE_HEIGHT);
     xOffset += screenWidth; //aumento offset
     scheda.controller = self;
+    
+    NSLog(@"size = %f", self.scrollView.contentSize.width);
 }
 
 -(void) scrollLeft {
@@ -579,6 +594,7 @@
 
 -(void) scrollToPoint:(CGPoint) punto {
     [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        
         self.scrollView.contentOffset = punto;
         
         pageIndex = punto.x / scrollWidth;
@@ -588,6 +604,7 @@
             backButtonItem.style = UIBarButtonItemStylePlain;
             backButtonItem.enabled = false;
             backButtonItem.title = nil;
+            dominioScelto = nil;
         }
         else {
             backButtonItem.style = UIBarButtonItemStylePlain;
@@ -617,10 +634,15 @@
     if (pageIndex == 0) {
         //home
         self.navigationController.navigationBar.barTintColor = [Utils getDefaultColor];
+        NSString *newTitle = NSLocalizedString(@"THESAPP", @"ThesApp");
+        [titleButton setTitle:newTitle];
+        dominioScelto = nil;
     }
     else {
         if (dominioScelto != nil) {
             self.navigationController.navigationBar.barTintColor = [Utils colorFromHexString:dominioScelto.color];
+             NSString *newTitle = [[NSLocalizedString(@"THESAPP", @"ThesApp") stringByAppendingString:@" - "] stringByAppendingString:dominioScelto.localization];
+            [titleButton setTitle:newTitle];
         }
     }
 }
@@ -749,11 +771,12 @@
         
         NSInteger statusCode = operation.response.statusCode;
         NSString *msg = (statusCode == 404) ? NSLocalizedString(@"TERM_NOT_FOUND", @"termine non trovato") : error.localizedDescription;
+        
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
-                                                          message:msg
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
+                                                    message:msg
+                                                    delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
         
         [message show];
         

@@ -11,7 +11,8 @@
 @implementation Utils
 
 +(NSString *) getCurrentLanguage {
-    return @"it";
+    NSUserDefaults *myDefaults = [NSUserDefaults standardUserDefaults];
+    return [myDefaults stringForKey:@"language"];
 }
 
 +(NSString *) getServerBaseAddress {
@@ -51,10 +52,14 @@
 }
 
 +(NSArray *) ordinaByDescriptor:(NSArray *) inputArray {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"descriptor" ascending:YES];
-    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    NSArray *sortedArray = [inputArray sortedArrayUsingDescriptors:sortDescriptors];
-    return sortedArray;
+    if (inputArray == nil) return nil;
+    if  ([inputArray isKindOfClass:[NSArray class]]) {
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"descriptor" ascending:YES];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        NSArray *sortedArray = [inputArray sortedArrayUsingDescriptors:sortDescriptors];
+        return sortedArray;
+    }
+    return nil;
 }
 
 +(UIColor *) getChosenDomainColor {

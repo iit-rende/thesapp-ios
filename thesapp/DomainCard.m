@@ -111,15 +111,13 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     Localization *loca = [dominio.localizations objectForKey:lingua];
     
-    if (dominio != nil) {
-        NSString *value =  dominio.descriptor;
-        //cell.textLabel.text = value;
+    NSLog(@"dominio per lingua %@", lingua);
+    
+    if (dominio != nil && loca != nil) {
+        NSString *value =  loca.descriptor;
         cell.titolo.text = value;
-        if (loca != nil)
-        //cell.detailTextLabel.text = loca.descrizione;
         cell.descrizione.text = loca.descrizione;
         cell.numero.text = [NSString stringWithFormat:@"%d", loca.termCount];
-        
         NSLog(@"ci sono %d termini", loca.termCount);
     }
     

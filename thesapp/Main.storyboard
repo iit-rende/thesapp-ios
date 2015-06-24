@@ -3,53 +3,9 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Auto Complete Demo View Controller-->
-        <scene sceneID="ufC-wZ-h7g">
-            <objects>
-                <viewController id="vXZ-lx-hvc" customClass="GPCMLPAutoCompleteDemoViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RGU-me-U6U" customClass="MLPAutoCompleteTextField">
-                                <rect key="frame" x="160" y="285" width="280" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="4m4-mE-Ieq"/>
-                                    <constraint firstAttribute="width" constant="280" id="PW2-HQ-fQw"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="autoCompleteDataSource" destination="dQZ-hn-PPt" id="FCu-6j-bgt"/>
-                                    <outlet property="autoCompleteDelegate" destination="vXZ-lx-hvc" id="uWK-tc-kPz"/>
-                                </connections>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="centerY" secondItem="RGU-me-U6U" secondAttribute="centerY" id="1cG-xz-N1M"/>
-                            <constraint firstAttribute="centerX" secondItem="RGU-me-U6U" secondAttribute="centerX" id="stQ-5q-Uat"/>
-                            <constraint firstItem="RGU-me-U6U" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="50" id="vmo-fj-y3o"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="1cG-xz-N1M"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <navigationItem key="navigationItem" id="KC9-cD-JNF"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
-                <customObject id="dQZ-hn-PPt" customClass="DEMODataSource"/>
-            </objects>
-            <point key="canvasLocation" x="2113" y="358"/>
-        </scene>
         <!--Scroller View Controller-->
         <scene sceneID="Amy-yp-i1E">
             <objects>
@@ -102,33 +58,6 @@
             </objects>
             <point key="canvasLocation" x="2339" y="1762"/>
         </scene>
-        <!--Page View Controller-->
-        <scene sceneID="uCN-H1-siO">
-            <objects>
-                <pageViewController storyboardIdentifier="PageViewControllerSID" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="7bi-QH-hqI" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VJ6-D2-kKK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1706" y="1066"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Jiq-qR-muH">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4dL-t8-0io" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Mo6-Pd-eZk">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="fRL-zm-Urf"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XNf-lp-bWY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="834.375" y="368.66197183098586"/>
-        </scene>
         <!--Side Menu Table View Controller-->
         <scene sceneID="ghg-HI-FEA">
             <objects>
@@ -160,7 +89,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eZQ-21-Jk1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3278" y="1819"/>
+            <point key="canvasLocation" x="3343" y="1689"/>
         </scene>
         <!--Info View Controller-->
         <scene sceneID="5Hg-PX-aKi">
@@ -188,39 +117,93 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pmb-rz-cHr">
-                                                <rect key="frame" x="16" y="293" width="568" height="78"/>
+                                                <rect key="frame" x="16" y="293" width="568" height="100"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo cnr.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="MWU-fl-JVH">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logo cnr.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="MWU-fl-JVH">
                                                         <rect key="frame" x="0.0" y="0.0" width="180" height="78"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="78" id="l3j-FZ-EJS"/>
+                                                        </constraints>
                                                     </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Consiglio Nazionale delle Ricerche" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3EM-8q-coj">
+                                                        <rect key="frame" x="316" y="17" width="244" height="61"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="3EM-8q-coj" secondAttribute="bottom" constant="5" id="GMD-Z9-hgq"/>
+                                                    <constraint firstItem="MWU-fl-JVH" firstAttribute="leading" secondItem="pmb-rz-cHr" secondAttribute="leading" id="HYu-BE-Kqc"/>
+                                                    <constraint firstItem="MWU-fl-JVH" firstAttribute="top" secondItem="pmb-rz-cHr" secondAttribute="top" constant="11" id="P5I-Kx-Jtr"/>
                                                     <constraint firstAttribute="height" constant="100" id="QIN-21-bKW"/>
+                                                    <constraint firstAttribute="bottom" secondItem="MWU-fl-JVH" secondAttribute="bottom" constant="11" id="d0h-8D-BpH"/>
+                                                    <constraint firstItem="3EM-8q-coj" firstAttribute="top" secondItem="pmb-rz-cHr" secondAttribute="top" constant="5" id="mkW-ct-cwG"/>
+                                                    <constraint firstAttribute="trailing" secondItem="3EM-8q-coj" secondAttribute="trailing" constant="5" id="rfb-L1-fcE"/>
+                                                    <constraint firstItem="3EM-8q-coj" firstAttribute="leading" secondItem="MWU-fl-JVH" secondAttribute="trailing" constant="10" id="scg-tC-WIl"/>
+                                                    <constraint firstAttribute="width" secondItem="MWU-fl-JVH" secondAttribute="width" multiplier="2" id="vNg-Et-JOg"/>
                                                 </constraints>
                                             </view>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yvm-qA-9rg">
-                                                <rect key="frame" x="16" y="379" width="568" height="78"/>
+                                                <rect key="frame" x="16" y="407" width="568" height="100"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo iit.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="f3L-vu-IJQ">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logo iit.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="f3L-vu-IJQ">
                                                         <rect key="frame" x="0.0" y="0.0" width="180" height="78"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="78" id="q5s-CT-hWJ"/>
+                                                        </constraints>
                                                     </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Istituto di Informatica e Telematica del CNR" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leu-um-j9O">
+                                                        <rect key="frame" x="316" y="19" width="244" height="61"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="leu-um-j9O" secondAttribute="trailing" constant="5" id="PbQ-re-czE"/>
+                                                    <constraint firstAttribute="bottom" secondItem="f3L-vu-IJQ" secondAttribute="bottom" constant="11" id="Sdw-za-3iB"/>
+                                                    <constraint firstItem="f3L-vu-IJQ" firstAttribute="top" secondItem="yvm-qA-9rg" secondAttribute="top" constant="11" id="ZgR-FF-zqu"/>
+                                                    <constraint firstItem="f3L-vu-IJQ" firstAttribute="leading" secondItem="yvm-qA-9rg" secondAttribute="leading" id="Zk5-kE-loU"/>
+                                                    <constraint firstItem="leu-um-j9O" firstAttribute="leading" secondItem="f3L-vu-IJQ" secondAttribute="trailing" constant="10" id="dND-If-zOy"/>
+                                                    <constraint firstAttribute="bottom" secondItem="leu-um-j9O" secondAttribute="bottom" constant="5" id="o0L-2D-cgA"/>
+                                                    <constraint firstItem="leu-um-j9O" firstAttribute="top" secondItem="yvm-qA-9rg" secondAttribute="top" constant="5" id="obx-ug-Vby"/>
+                                                    <constraint firstItem="f3L-vu-IJQ" firstAttribute="width" secondItem="yvm-qA-9rg" secondAttribute="width" multiplier="0.5" id="ooH-kc-zjp"/>
                                                     <constraint firstAttribute="height" constant="100" id="zgg-BE-eHo"/>
                                                 </constraints>
                                             </view>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uCb-a9-j1V">
-                                                <rect key="frame" x="16" y="472" width="568" height="78"/>
+                                                <rect key="frame" x="16" y="525" width="568" height="100"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logoLabdoc.png" translatesAutoresizingMaskIntoConstraints="NO" id="7MD-ie-ns2">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logoLabdoc.png" translatesAutoresizingMaskIntoConstraints="NO" id="7MD-ie-ns2">
                                                         <rect key="frame" x="0.0" y="0.0" width="180" height="78"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="78" id="2Ix-1w-Fnd"/>
+                                                            <constraint firstAttribute="height" constant="78" id="zv9-y2-vmC"/>
+                                                        </constraints>
+                                                        <variation key="default">
+                                                            <mask key="constraints">
+                                                                <exclude reference="2Ix-1w-Fnd"/>
+                                                            </mask>
+                                                        </variation>
                                                     </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Laboratorio di Documentazione dell'UNICAL" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLo-Vg-Bbg">
+                                                        <rect key="frame" x="316" y="19" width="244" height="61"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="width" secondItem="7MD-ie-ns2" secondAttribute="width" multiplier="2" id="DZb-sL-gf3"/>
+                                                    <constraint firstItem="7MD-ie-ns2" firstAttribute="top" secondItem="uCb-a9-j1V" secondAttribute="top" constant="11" id="F1l-dJ-7X1"/>
                                                     <constraint firstAttribute="height" constant="100" id="JhP-zm-v61"/>
+                                                    <constraint firstAttribute="trailing" secondItem="YLo-Vg-Bbg" secondAttribute="trailing" constant="5" id="JiB-Tz-kYy"/>
+                                                    <constraint firstAttribute="bottom" secondItem="YLo-Vg-Bbg" secondAttribute="bottom" constant="5" id="acm-6G-ez0"/>
+                                                    <constraint firstItem="YLo-Vg-Bbg" firstAttribute="top" secondItem="uCb-a9-j1V" secondAttribute="top" constant="5" id="f8V-xk-3fP"/>
+                                                    <constraint firstItem="YLo-Vg-Bbg" firstAttribute="leading" secondItem="7MD-ie-ns2" secondAttribute="trailing" constant="10" id="ogz-Rc-I5a"/>
+                                                    <constraint firstItem="7MD-ie-ns2" firstAttribute="leading" secondItem="uCb-a9-j1V" secondAttribute="leading" id="uQv-u5-Uae"/>
+                                                    <constraint firstAttribute="bottom" secondItem="7MD-ie-ns2" secondAttribute="bottom" constant="11" id="z3W-WC-aNc"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -269,74 +252,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Luc-4g-uzd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3098" y="2524"/>
+            <point key="canvasLocation" x="2940" y="2532"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="3PZ-hx-SIB">
-            <objects>
-                <viewController id="rVf-2u-gJW" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="YoQ-fe-JQV"/>
-                        <viewControllerLayoutGuide type="bottom" id="3qV-wN-zde"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="TUU-AB-J5Z">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TeV-R3-il0">
-                                <rect key="frame" x="-158" y="381" width="568" height="97"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Consiglio Nazionale delle Ricerche" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BcJ-b4-xlI">
-                                        <rect key="frame" x="268" y="0.0" width="300" height="91"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dhP-Jj-9rr">
-                                <rect key="frame" x="0.0" y="209" width="568" height="110"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Laboratorio di Documentazione dell'UNICAL" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iMI-vX-tgH">
-                                        <rect key="frame" x="290" y="8" width="300" height="91"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.15321895190000001" green="0.4926048039" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="Byd-W6-GdS"/>
-                                </constraints>
-                            </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p2G-q6-gfj">
-                                <rect key="frame" x="32" y="90" width="568" height="111"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Istituto di Informatica e Telematica del CNR" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hyt-J0-ixv">
-                                        <rect key="frame" x="281" y="8" width="300" height="91"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.87985821740000003" green="0.91398540299999997" blue="0.05853493555" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="5zt-6V-jsT"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="99e-wg-UT2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3829" y="2350"/>
-        </scene>
-        <!--Main View Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="hDz-NZ-qol">
             <objects>
-                <navigationController storyboardIdentifier="mainNavID" automaticallyAdjustsScrollViewInsets="NO" id="Sy7-db-Xw5" customClass="MainViewController" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="mainNavID" automaticallyAdjustsScrollViewInsets="NO" id="Sy7-db-Xw5" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="53y-3C-PLx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSString *descriptor;
 @property (nonatomic, strong) NSString *icon;
 @property (nonatomic, strong) NSString *color;
+@property (nonatomic, strong) NSString *localization;
 @property (nonatomic, strong) NSMutableDictionary *localizations;
 
 

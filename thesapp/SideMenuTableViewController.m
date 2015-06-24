@@ -23,7 +23,7 @@
 @end
 
 @implementation SideMenuTableViewController
-@synthesize filter, filterTableView, chosenDomain, suggestionTableView, suggestionTitle;
+@synthesize filter, filterTableView, chosenDomain, suggestionTableView, suggestionTitle, sfondo;
 
 -(void)hideKeyBoard {
     [self.searchBar endEditing:YES];
@@ -34,10 +34,27 @@
     
     //self.barContainer.backgroundColor = [UIColor orangeColor];
     
+    if (listaDomini.count > 0) {
+        chosenDomain = [listaDomini firstObject];
+        [tendina setTitle:chosenDomain.localization forState:UIControlStateNormal];
+    }
+    
+    UIColor *colore;
+    if (chosenDomain != nil) {
+        colore = [Utils colorFromHexString:chosenDomain.color];
+        
+        NSLog(@"COLORE DA DOMINIO");
+    }
+    else {
+        colore = [Utils getDefaultColor];
+        NSLog(@"COLORE DI DEFAULT");
+    }
+    
+    NSLog(@"View Will appear, cambio colore");
+    //self.barContainer.backgroundColor = colore;
+    
     UINavigationController *navC = (UINavigationController *) parent.centerViewController;
-    NSLog(@"NAVC = %@", [navC description]);
     svc = (ScrollerViewController *) [navC.viewControllers firstObject];
-    NSLog(@"svc = %@", [svc description]);
     
     /*
     UIColor *domainColor = [Utils getChosenDomainColor];
@@ -60,8 +77,16 @@
     listaDomini = domini;
     
     if (listaDomini.count > 0) {
-        chosenDomain = [listaDomini firstObject];
-        [tendina setTitle:chosenDomain.descriptor forState:UIControlStateNormal];
+        //chosenDomain = [listaDomini firstObject]; //SBAGLIATO
+        if (svc != nil) {
+            chosenDomain = svc.dominioScelto;
+            NSLog(@"SVC NON NULLO");
+        }
+        else {
+            chosenDomain = nil;
+        }
+        
+        [tendina setTitle:chosenDomain.localization forState:UIControlStateNormal];
         
         if (chosenDomain != nil) {
             
@@ -70,11 +95,24 @@
             
             if (colore != nil){
                 self.barContainer.backgroundColor = colore;
-                self.barContainer.tintColor = colore;
-                NSLog(@"colore cambiato");
+                //self.barContainer.tintColor = colore;
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:
+                 ^{
+                    self.barContainer.backgroundColor = colore;
+                     NSLog(@"colore cambiato in %@", chosenDomain.localization);
+                 }];
+                
+                [self.barContainer setBackgroundColor:colore];
+                
+
             } else NSLog(@"colore non cambiato");
             
-        } else NSLog(@"dominio nullo");
+        } else {
+         
+            NSLog(@"dominio nullo");
+            self.barContainer.backgroundColor = [Utils getDefaultColor];
+        }
     }
     
     [myPickerView reloadAllComponents];
@@ -90,9 +128,18 @@
     
     lingua = [Utils getCurrentLanguage];
     
-    self.barContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, totalWidth,66)];
+    self.barContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, totalWidth, 64)];
+    //self.barContainer.tintColor = [Utils getDefaultColor];
+    //self.barContainer.clipsToBounds = YES;
+    
+    container.clipsToBounds = NO;
     
     [self.view addSubview:self.barContainer];
+    
+    //sfondo = [[UIView alloc] initWithFrame:CGRectMake(0, 0, totalWidth, 64)];
+    //sfondo.backgroundColor = [UIColor blackColor];
+    //self.barContainer.backgroundColor = [Utils getDefaultColor];
+    //[container addSubview:sfondo];
     
     advice = [[UILabel alloc] initWithFrame:CGRectMake(10, self.barContainer.frame.size.height + 20, totalWidth - 20, 22)];
     advice.text = @"Nessun risultato";
@@ -118,7 +165,7 @@
     float tendinaWidth = 70;
     float searchBarWidth = totalWidth - 5 * sidePadding - tendinaWidth - xSize;
     float loaderLeft = searchBarWidth + tendinaWidth;
-    float wrapperHeight = xSize + 2 * sidePadding;
+    float wrapperHeight = xSize + 4 * sidePadding;
     float filter_Y = wrapperHeight + 8 * sidePadding;
     float containerHeight = wrapperHeight + FILTER_HEIGHT + 2 * sidePadding;
     
@@ -151,22 +198,27 @@
     
     CGRect nuovoFrame = CGRectMake(0, 0, totalWidth, containerHeight);
     container = [[UIView alloc] initWithFrame:nuovoFrame];
-    container.backgroundColor = self.barContainer.backgroundColor;
-    container.clipsToBounds = YES;
+    //container.backgroundColor = [UIColor clearColor]; //self.barContainer.backgroundColor;
+    //container.clipsToBounds = YES;
     
     //wrapper
-    CGRect wrapperFrame = CGRectMake( sidePadding, 4 * sidePadding, totalWidth - 4 * sidePadding , wrapperHeight);
+    CGRect wrapperFrame = CGRectMake( 3*sidePadding, 6 * sidePadding, totalWidth - 6 * sidePadding , wrapperHeight);
     UIView *wrapper = [[UIView alloc] initWithFrame:wrapperFrame];
     wrapper.backgroundColor = [UIColor whiteColor];
     wrapper.clipsToBounds = YES;
     wrapper.layer.borderColor = [UIColor grayColor].CGColor;
     wrapper.layer.borderWidth = 1.0f;
-    wrapper.layer.cornerRadius = 3;
-    wrapper.layer.masksToBounds = YES;
+    wrapper.layer.cornerRadius = 4;
+    //wrapper.layer.masksToBounds = YES;
+    wrapper.layer.shadowOffset = CGSizeMake(2, 2);
+    wrapper.layer.shadowRadius = 4.0;
+    wrapper.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    wrapper.layer.shadowOpacity = 1.0;
+    wrapper.layer.masksToBounds = NO;
     
     [container addSubview:wrapper];
     
-    CGRect searchBarFrame = CGRectMake(sidePadding + tendinaWidth + sidePadding, sidePadding, searchBarWidth, xSize);
+    CGRect searchBarFrame = CGRectMake(sidePadding + tendinaWidth + sidePadding, 2* sidePadding, searchBarWidth, xSize);
     
     self.searchBar = [[UITextField alloc] initWithFrame:searchBarFrame];
     self.searchBar.backgroundColor = [UIColor whiteColor];
@@ -181,7 +233,7 @@
     
     //menu a tendina
     
-    CGRect tendinaFrame = CGRectMake(sidePadding, sidePadding, tendinaWidth, xSize);
+    
     /*
     UIButton *tendina = [[UIButton alloc] initWithFrame:tendinaFrame];
     tendina.backgroundColor = [UIColor whiteColor];
@@ -196,22 +248,25 @@
     [wrapper addSubview:tendina];
     */
     
-    CGFloat spacing = 6.0;
-    
+    //CGFloat spacing = 6.0;
+    CGRect tendinaFrame = CGRectMake(sidePadding, 2 * sidePadding, tendinaWidth, xSize);
     tendina = [UIButton buttonWithType:UIButtonTypeCustom];
     [tendina setFrame:tendinaFrame];
-    [tendina setCenter:CGPointMake(tendinaWidth / 2, xSize / 2)];
+    //[tendina setCenter:CGPointMake(tendinaWidth / 2, xSize / 2)];
     [tendina setClipsToBounds:false];
     //[tendina setImage:[UIImage imageNamed:@"down_arrow"] forState:UIControlStateNormal];
-    [tendina.titleLabel setFont:[UIFont systemFontOfSize:10.f]];
+    tendina.titleLabel.numberOfLines = 2;
+    tendina.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    [tendina.titleLabel setFont:[UIFont systemFontOfSize:13.0f]];
     [tendina setTitleColor:[UIColor blackColor] forState:UIControlStateNormal]; // SET the colour for your wishes
     //[tendina setTitleEdgeInsets:UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f)]; // SET the values for your wishes
     //[tendina setImageEdgeInsets:UIEdgeInsetsMake(0.f, 0.f, -40.f, 0.f)];
-    tendina.backgroundColor = [UIColor whiteColor];
+    tendina.backgroundColor = [UIColor clearColor];
     
     [tendina addTarget:self action:@selector(openPicker:) forControlEvents:UIControlEventTouchUpInside];
     
-    CGSize imageSize = tendina.imageView.frame.size;
+    //CGSize imageSize = tendina.imageView.frame.size;
     //tendina.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
     
     //CGSize titleSize = tendina.titleLabel.frame.size;
@@ -229,7 +284,7 @@
     
     //x button
     //float leftBtn = [AppDelegate getSidemenuWidth] - 55;
-    CGRect btnFrame = CGRectMake(loaderLeft, sidePadding, xSize, xSize);
+    CGRect btnFrame = CGRectMake(loaderLeft, 2*sidePadding, xSize, xSize);
     xbtn = [[UIButton alloc] initWithFrame:btnFrame];
     [xbtn setTitle:@"x" forState:UIControlStateNormal];
     [xbtn.titleLabel setFont:[UIFont systemFontOfSize:18.f]];
@@ -342,7 +397,8 @@
     
     myPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(10, yPicker, totalWidth - 20, PICKER_VIEW_HEIGHT)];
     myPickerView.delegate = self;
-    myPickerView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    myPickerView.backgroundColor = self.barContainer.backgroundColor;
+    myPickerView.tintColor = [UIColor whiteColor];
     myPickerView.showsSelectionIndicator = YES;
     myPickerView.hidden = YES;
     myPickerView.layer.borderWidth = 1.0;
@@ -351,7 +407,51 @@
 }
 
 -(void) openPicker:(UIButton *) button {
-    myPickerView.hidden = NO;
+    //myPickerView.hidden = NO;
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:NSLocalizedString(@"CHOSE_DOMAIN", @"Dominio")
+                                  delegate:self
+                                  cancelButtonTitle:NSLocalizedString(@"CANCEL", @"Annulla")
+                                  destructiveButtonTitle:nil
+                                  otherButtonTitles:nil];
+    
+    for (Domain *dom in listaDomini) {
+        [actionSheet addButtonWithTitle:dom.localization];
+    }
+    
+    [actionSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    int voce = (int) buttonIndex - 1;
+    NSLog(@"scelto indice %d", voce);
+    
+    if (!(voce > -1 && voce < listaDomini.count)) return;
+    
+    Domain *dominio = [listaDomini objectAtIndex:voce];
+    
+    if (dominio == nil) return;
+    
+    NSLog(@"dominio scelto = %@", dominio.localization);
+    myPickerView.hidden = YES;
+    [tendina setTitle:dominio.localization forState:UIControlStateNormal];
+    chosenDomain = dominio;
+    //[Utils setCurrentDomain:dominio];
+    svc.dominioScelto = dominio;
+    NSLog(@"cambio colore picker in %@", chosenDomain.color);
+    filter.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
+    self.barContainer.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
+    
+    //se c'è frase nella search bar parte ricerca
+    
+    if (self.searchBar.text != nil) {
+        if (self.searchBar.text.length > 0) {
+            [self aTime];
+        }
+    }
 }
 
 #pragma mark - Picker View Delegates
@@ -362,9 +462,9 @@
     
     if (dominio == nil) return;
     
-    NSLog(@"dominio scelto = %@", dominio.descriptor);
+    NSLog(@"dominio scelto = %@", dominio.localization);
     myPickerView.hidden = YES;
-    [tendina setTitle:dominio.descriptor forState:UIControlStateNormal];
+    [tendina setTitle:dominio.localization forState:UIControlStateNormal];
     chosenDomain = dominio;
     //[Utils setCurrentDomain:dominio];
     svc.dominioScelto = dominio;
@@ -390,9 +490,23 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     Domain *dominio = [listaDomini objectAtIndex:row];
-    NSString *title = dominio.descriptor;
-    return title;
+    return dominio.localization;
 }
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
+    
+    UILabel *label = [[UILabel alloc] init];
+    //label.backgroundColor = [UIColor blueColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = [label.font fontWithSize:20.0f];
+    //label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
+    label.textAlignment = NSTextAlignmentCenter;
+    Domain *dominio = [listaDomini objectAtIndex:row];
+    label.text = dominio.localization;
+    
+    return label;
+}
+
 /*
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
     int sectionWidth = 300;

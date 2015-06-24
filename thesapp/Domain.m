@@ -23,6 +23,7 @@
 
     NSArray *localizations = [json valueForKey:@"localizations"];
     
+    dominio.localization = [json valueForKey:@"localization"];
     dominio.localizations = [[NSMutableDictionary alloc] init];
     
     for (NSDictionary *loc in localizations) {

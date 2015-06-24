@@ -506,7 +506,6 @@
     
     sep.frame = CGRectMake(sep.frame.origin.x, sep.frame.origin.y, sep.frame.size.width, nuovaSepHeight);
     
-    
     //[self setContentOffset: CGPointMake(0, -self.contentInset.top) animated:YES];
     
     //float contentHeight = 2000; //colDx.frame.size.height + header.frame.size.height;

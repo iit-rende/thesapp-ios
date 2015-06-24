@@ -13,8 +13,8 @@
 		<dict>
 			<key>Values</key>
 			<array>
-				<string>eng</string>
-				<string>ita</string>
+				<string>en</string>
+				<string>it</string>
 			</array>
 			<key>Titles</key>
 			<array>
@@ -28,7 +28,7 @@
 			<key>Key</key>
 			<string>language</string>
 			<key>DefaultValue</key>
-			<string>Italiano</string>
+			<string>it</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>
