@@ -282,6 +282,8 @@
     
     [manager.requestSerializer setValue:lingua forHTTPHeaderField:@"accept-language"];
     
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     [manager GET:domainPath parameters:nil
      
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -311,6 +313,8 @@
                  }
              }
              
+             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+             
          }
      
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -322,6 +326,8 @@
                                                      otherButtonTitles:nil];
              
              [message show];
+             
+             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
          }
      ];
 }
@@ -341,6 +347,8 @@
     if (termine == nil) return;
     
     domainPath = [domainPath stringByAppendingString:termine];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     [manager GET:domainPath parameters:nil
      
@@ -370,10 +378,22 @@
              NSString *newTitle = [[NSLocalizedString(@"THESAPP", @"ThesApp") stringByAppendingString:@" - "] stringByAppendingString:card.dominio.localization];
              
              [titleButton setTitle:newTitle];
+             
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
          }
      
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"Error: %@", error);
+
+             UIAlertView *message = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
+                                                               message:error.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:@"OK"
+                                                     otherButtonTitles:nil];
+             
+             [message show];
+             
+             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
          }
      ];
 }
@@ -385,6 +405,8 @@
     NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/domains"];
     
     [manager.requestSerializer setValue:defaultLanguage forHTTPHeaderField:@"accept-language"];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     [manager GET:domainPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -417,9 +439,15 @@
             [self addCardToStoryboard:mainCard];
         }
         
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
-            [self removeDomainLoader];
+        
+        [self removeDomainLoader];
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
     }];
     
 }
@@ -750,6 +778,8 @@
     
     [manager.requestSerializer setValue:lang forHTTPHeaderField:@"accept-language"];
     
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     [manager GET:termRequest parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *json = (NSDictionary *)responseObject;
@@ -767,6 +797,8 @@
             [self addCardToStoryboard:card];
         }
         
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         NSInteger statusCode = operation.response.statusCode;
@@ -779,6 +811,8 @@
                                                     otherButtonTitles:nil];
         
         [message show];
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
     }];
     

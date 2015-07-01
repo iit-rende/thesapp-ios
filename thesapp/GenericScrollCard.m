@@ -106,7 +106,7 @@
     //////////////////////////////////////////////////////////////
     //title label
     float title_padding_top = PADDING_BTN + TITLE_PADDING_TOP;
-    CGRect titleFrame = CGRectMake(PADDING_BTN, title_padding_top, fullWithPadding, titleHeight);
+    CGRect titleFrame = CGRectMake(PADDING_BTN, title_padding_top, fullWithPadding - PADDING_BTN, titleHeight);
     titolo = [[TitoloLabel alloc] initWithFrame:titleFrame];
     titolo.backgroundColor = [UIColor clearColor];
     titolo.font = [titolo.font fontWithSize: titleFontSize];
