@@ -52,6 +52,8 @@
 		CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCB24A11B2064850087A5BE /* Images.xcassets */; };
 		CDCB24A51B2064850087A5BE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDCB24A31B2064850087A5BE /* LaunchScreen.xib */; };
 		CDCB24B11B2064850087A5BE /* thesappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB24B01B2064850087A5BE /* thesappTests.m */; };
+		CDD790BB1B5E4E73001AC21F /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = CDD790BA1B5E4E73001AC21F /* Global.m */; };
+		CDE68F881B5FBAEB004047A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CDE68F871B5FBAEB004047A6 /* GoogleService-Info.plist */; };
 		CDFF70AF1B219E7200B5FD3D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CDFF70AE1B219E7200B5FD3D /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
@@ -144,6 +146,9 @@
 		CDCB24AA1B2064850087A5BE /* thesappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thesappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDCB24AF1B2064850087A5BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDCB24B01B2064850087A5BE /* thesappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = thesappTests.m; sourceTree = "<group>"; };
+		CDD790B91B5E4E73001AC21F /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
+		CDD790BA1B5E4E73001AC21F /* Global.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Global.m; sourceTree = "<group>"; };
+		CDE68F871B5FBAEB004047A6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CDFF70AE1B219E7200B5FD3D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		ECA7F9158DA319590B1CA5F3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F05FC7612CD92CF1739E44C4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -241,6 +246,8 @@
 				CDA071C31B20661500BD6CCF /* Utils.m */,
 				CDA071A91B2065D000BD6CCF /* AppDelegate.h */,
 				CDA071AA1B2065D000BD6CCF /* AppDelegate.m */,
+				CDD790B91B5E4E73001AC21F /* Global.h */,
+				CDD790BA1B5E4E73001AC21F /* Global.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -333,6 +340,7 @@
 		CDCB24941B2064850087A5BE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CDE68F871B5FBAEB004047A6 /* GoogleService-Info.plist */,
 				CDA071D51B20664C00BD6CCF /* Localizable.strings */,
 				CDFF70AE1B219E7200B5FD3D /* Settings.bundle */,
 				CDCB24951B2064850087A5BE /* Info.plist */,
@@ -465,6 +473,7 @@
 				CD25C3361B29BA3600C0EE91 /* up_arrow_white.png in Resources */,
 				CDCB24A51B2064850087A5BE /* LaunchScreen.xib in Resources */,
 				CD8936551B32B6410016439D /* DominioTableViewCell.xib in Resources */,
+				CDE68F881B5FBAEB004047A6 /* GoogleService-Info.plist in Resources */,
 				CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */,
 				CDA071821B20659100BD6CCF /* CustomCollectionViewCell.xib in Resources */,
 				CD25C3341B29B82F00C0EE91 /* filter_list.png in Resources */,
@@ -545,6 +554,7 @@
 				CDA071CA1B20661500BD6CCF /* MLPAutoCompleteTextField.m in Sources */,
 				CDA071A31B2065B700BD6CCF /* DomainCard.m in Sources */,
 				CDCB24971B2064850087A5BE /* main.m in Sources */,
+				CDD790BB1B5E4E73001AC21F /* Global.m in Sources */,
 				CDA0719F1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m in Sources */,
 				CD8936541B32B6410016439D /* DominioTableViewCell.m in Sources */,
 				CDA071811B20659100BD6CCF /* CustomCollectionViewCell.m in Sources */,

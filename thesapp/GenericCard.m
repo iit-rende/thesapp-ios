@@ -52,14 +52,18 @@
     //////////////////////////////////////////////////////////////
     //preparo scheda
     
-    self.backgroundColor = [UIColor redColor];
+    //self.backgroundColor = [UIColor redColor];
     self.clipsToBounds = YES;
+    
+    /*
+     TEMP
     self.layer.cornerRadius = 3;
     self.layer.shadowOffset = CGSizeMake(2, 2);
     self.layer.shadowRadius = 4.0;
     self.layer.shadowColor = [UIColor blackColor].CGColor;
     self.layer.shadowOpacity = 1.0;
     self.layer.masksToBounds = NO;
+     */
     
     //////////////////////////////////////////////////////////////
     //disegno header

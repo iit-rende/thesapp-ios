@@ -33,12 +33,15 @@
     
     lingua = [Utils getCurrentLanguage];
     
+    /*
+     TEMP
     self.layer.cornerRadius = 3;
     self.layer.shadowOffset = CGSizeMake(2, 2);
     self.layer.shadowRadius = 4.0;
     self.layer.shadowColor = [UIColor grayColor].CGColor;
     self.layer.shadowOpacity = 1.0;
     self.layer.masksToBounds = NO;
+    */
     
     self.backgroundColor = [UIColor whiteColor];
     self.clipsToBounds = NO;

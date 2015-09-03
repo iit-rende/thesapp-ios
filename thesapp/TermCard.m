@@ -200,7 +200,11 @@
     
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     
-    wrapper.backgroundColor = [UIColor whiteColor];
+    //wrapper.backgroundColor = [UIColor whiteColor];
+    
+    //TEMP
+    //wrapper.backgroundColor = [UIColor cyanColor];
+    //self.backgroundColor = [UIColor blackColor];
     
     float size = wrapper.frame.size.width;
     float altezza = wrapper.frame.size.height - header.frame.size.height;
@@ -225,7 +229,9 @@
             
             colSx = [[UIView alloc] initWithFrame:CGRectMake(0, header.frame.size.height, COL_WIDTH, wrapper.frame.size.height)];
             
-            //colSx.clipsToBounds = YES;
+            
+            colSx.clipsToBounds = YES; //sennò va fuori a destra, forse taglia sotto però
+            
             [wrapper addSubview:colSx];
             
             //separator

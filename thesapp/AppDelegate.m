@@ -18,7 +18,7 @@
 @property(nonatomic, assign) BOOL subscribedToTopic;
 @end
 
-NSString *const SubscriptionTopic = @"/topics/thesapp";
+NSString *const SubscriptionTopic = @"/topics/TEST_TOPIC";
 
 @implementation AppDelegate
 
@@ -210,6 +210,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (void)application:(UIApplication *)application
 didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     NSLog(@"Registration for remote notification failed with error: %@", error.localizedDescription);
+    
+    NSLog(@"Registration for remote notification failed with error: %@", error.description);
+    
     // [END receive_apns_token_error]
     NSDictionary *userInfo = @{@"error" :error.localizedDescription};
     [[NSNotificationCenter defaultCenter] postNotificationName:_registrationKey
@@ -237,9 +240,12 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     // [END_EXCLUDE]
 }
 
+
+//se ci metto "content_available": true, arriva QUI, altrimenti sopra
 - (void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo
-fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
+    
     NSLog(@"2] Notification received: %@", userInfo);
     // This works only if the app started the GCM service
     [[GCMService sharedInstance] appDidReceiveMessage:userInfo];
@@ -249,7 +255,9 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
     [[NSNotificationCenter defaultCenter] postNotificationName:_messageKey
                                                         object:nil
                                                       userInfo:userInfo];
-    handler(UIBackgroundFetchResultNoData);
+    
+    handler(UIBackgroundFetchResultNewData); //UIBackgroundFetchResultNoData
+
     // [END_EXCLUDE]
 }
 // [END ack_message_reception]

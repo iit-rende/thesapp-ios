@@ -25,10 +25,12 @@
 
 @implementation ScrollerViewController
 
-@synthesize listaDomini, dominioScelto;
+@synthesize listaDomini ; //, dominioScelto;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.scrollView setPagingEnabled:YES];
+    self.scrollView.delaysContentTouches = NO;
     [self setNeedsStatusBarAppearanceUpdate];
     [self initVars];
     [self initLanguage];
@@ -37,6 +39,11 @@
     [self initView];
     [self loadLayout];
     [self getDomains];
+}
+
+- (void)viewDidUnload {
+    // Release any retained subviews of the main view.
+    self.scrollView = nil;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -54,10 +61,12 @@
     //ci metto tutti i valori che dipendono dallo schermo
     
     if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        larghezza = screenWidth * IPAD_SCREEN_SIZE;
-        padding = (screenWidth - larghezza) / 2;
+        larghezza = ceil(screenWidth * IPAD_SCREEN_SIZE);
+        padding = ((screenWidth - larghezza) / 2);
+        NSLog(@"PADDING = %f", padding);
     }
     else {
+        padding = MARGIN / 2;
         larghezza = screenWidth - 2 * padding;
     }
     
@@ -66,7 +75,7 @@
     
     scrollWidth = screenWidth;
     
-    for (UIView *vista in self.scrollView.subviews) {
+   // for (UIView *vista in self.scrollView.subviews) {
         NSLog(@"ricreo vista");
         
         //TODO: non funziona
@@ -83,7 +92,7 @@
         vista.frame = nuovoFrame;
          */
         
-    }
+   // }
 }
 
 -(void)viewDidLayoutSubviews {
@@ -141,7 +150,12 @@
     
     backButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"<" style:UIBarButtonItemStylePlain target:self action:@selector(goToPrevCard:)];
     
-    titleButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"THESAPP", @"app title") style:UIBarButtonItemStylePlain target:self action:nil];
+    //titleButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"THESAPP", @"app title") style:UIBarButtonItemStylePlain target:self action:nil];
+    
+    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
+    lbl.text = NSLocalizedString(@"THESAPP", @"app title");
+    lbl.textColor = [UIColor whiteColor];
+    titleButton = [[UIBarButtonItem alloc] initWithCustomView:lbl];
     
     self.navigationItem.leftBarButtonItem = titleButton;
     
@@ -189,9 +203,41 @@
     pageIndex = 0; //pagina corrente
     totPages = 0;
     xOffset = 0;
-    padding = MARGIN / 2;
     topPadding = MARGIN / 2;
     numSchede = 0;
+}
+
+-(void) appendRetryButton {
+    
+    NSLog(@"appendRetryButton");
+    
+    NSString *downloadMsg = NSLocalizedString(@"DOWNLOAD_DOMAINS", @"scaricamento domini");
+    
+    downloadMsg = @"RIPROVA";
+    
+    float top = (self.view.frame.size.height - 66) / 2 - LABEL_HEIGHT;
+    float width = screenWidth - 2 * MARGIN;
+    
+    retryBtn = [[UIButton alloc] initWithFrame:CGRectMake(MARGIN, top, width, LABEL_HEIGHT)];
+    [retryBtn setTintColor:[UIColor darkGrayColor]];
+    [retryBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    [retryBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [retryBtn setTitle:downloadMsg forState:UIControlStateNormal];
+    [retryBtn.titleLabel setFont:[UIFont systemFontOfSize:16.f]];
+    
+    [retryBtn addTarget:self action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:retryBtn];
+}
+
+-(void) removeRetryButton {
+    [retryBtn removeFromSuperview];
+}
+
+-(void) reload {
+    NSLog(@"reload");
+    [self removeRetryButton];
+    [self getDomains];
 }
 
 -(void) initDomainLoader {
@@ -230,6 +276,12 @@
 
     if (dominio != nil) {
         
+        [[Global singleton] setDominio:dominio];
+        
+        //self.dominioScelto = dominio; //NUOVO
+        
+        NSLog(@"dominio scelto = %@", [Global singleton].activeDomain.descriptor);
+        
         //controllo se già esiste, altrimenti scarico
         
         NSString *riferimento = dominio.descriptor;
@@ -244,7 +296,7 @@
         if (cards != nil) {
             int cardIndex = [[cards objectForKey:riferimento] intValue];
             if (cardIndex > 0) {
-                NSLog(@"Trovata card con indice = %d", cardIndex);
+                NSLog(@"[2] Trovata card con indice = %d", cardIndex);
                 [self scrollToIndex:cardIndex];
             }
             else {
@@ -305,8 +357,7 @@
                  if (cat != nil) {
                      
                      NSLog(@"creo card per categoria");
-                     CGRect cardFrame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza);
-                     CategoryCard *card = [cat createCategoryCardWithFrame:cardFrame];
+                     CategoryCard *card = [cat createCategoryCardWithFrame:[self makeCardFrame]];
                      card.tag = numSchede * 1000;
                      [card render];
                      [self addCardToStoryboard:card];
@@ -338,8 +389,13 @@
     
     if (dominio.descriptor == nil) return;
     
-    dominioScelto = dominio;
-    [Utils setCurrentDomain:dominio];
+    //dominioScelto = dominio;
+
+    //[Utils setCurrentDomain:dominio];
+    
+    [[Global singleton] setDominio:dominio];
+    
+    NSLog(@"[due] dominio scelto = %@", [Global singleton].activeDomain.descriptor);
     
     NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/hierarchy?domain="];
     NSString *termine = [Utils WWWFormEncoded:dominio.descriptor];
@@ -365,13 +421,13 @@
              NSLog(@"trovate %d categorie", (int) categorie.count);
              
              //creo card
-             CGRect domCatFrame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza);
-             DomainCategoryCard *card = [[DomainCategoryCard alloc] initWithFrame:domCatFrame];
+             DomainCategoryCard *card = [[DomainCategoryCard alloc] initWithFrame:[self makeCardFrame]];
              card.tag = numSchede * 1000;
              card.categorie = categorie;
              card.dominio = dominio;
              [card render];
              [self addCardToStoryboard:card];
+             
              UIColor *colore = [Utils colorFromHexString:card.dominio.color];
              [self.navigationController.navigationBar setBarTintColor:colore];
              
@@ -380,6 +436,8 @@
              [titleButton setTitle:newTitle];
              
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+             
+             
          }
      
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -408,6 +466,8 @@
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
+    NSLog(@"Scarico domini da domainPath = %@", domainPath);
+    
     [manager GET:domainPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *json = (NSDictionary *)responseObject;
@@ -429,8 +489,7 @@
                 [listaDomini addObject:dominio];
             }
             
-            CGRect domainFrame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza);
-            DomainCard *mainCard = [[DomainCard alloc] initWithFrame:domainFrame]; //[DomainCard createWithDomain:dominio];
+            DomainCard *mainCard = [[DomainCard alloc] initWithFrame:[self makeCardFrame]]; //[DomainCard createWithDomain:dominio];
             mainCard.tag = numSchede * 1000;
             mainCard.domini = [Utils ordinaByDescriptor:listaDomini];
             [mainCard render];
@@ -442,11 +501,25 @@
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
         NSLog(@"Error: %@", error);
         
         [self removeDomainLoader];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        NSString *msg = [error localizedDescription];
+        
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
+                                                          message:msg
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+        
+        
+        [self appendRetryButton];
         
     }];
     
@@ -462,11 +535,27 @@
 -(void) deleteHistory:(id)sender {
     
     NSLog(@"ci sono %d pagine", totPages);
+    NSLog(@"itero");
     
-    [self removeCards:NO];
+    int indice = 0;
+    
+    for (UIView *vista in self.scrollView.subviews) {
+        float x = vista.frame.origin.x;
+        float width = vista.frame.size.width;
+        NSLog(@"pagina %d ha X = %f e width = %f", indice, x, width);
+        indice++;
+    }
+    
+    //[self removeCards:NO];
 }
 
 -(void) openSearchMenu:(id)sender {
+    
+    if (listaDomini == nil || listaDomini.count == 0) {
+
+        return;
+    }
+    
     [parent openDrawerSide:MMDrawerSideRight animated:YES completion:^(BOOL finished) {
         SideMenuTableViewController *side = (SideMenuTableViewController *) parent.rightDrawerViewController;
         [side menuOpen:listaDomini];
@@ -476,10 +565,18 @@
 -(TermCard *) createTermCard {
     NSLog(@"createCard con altezza = %f", altezza);
     NSLog(@"e xOffset = %d", xOffset);
-    CGRect frame = CGRectMake(padding + xOffset, topPadding, larghezza, altezza); //era padding + xOffset
-    TermCard *card = [[TermCard alloc] initWithFrame:frame];
+    TermCard *card = [[TermCard alloc] initWithFrame:[self makeCardFrame]];
     card.tag = numSchede * 1000;
     return card;
+}
+
+-(CGRect) makeCardFrame {
+    float xFrame = padding + xOffset;
+    
+    NSLog(@"xFrame = %f", xFrame);
+    NSLog(@"xOffset = %d", xOffset);
+    
+    return CGRectMake(xFrame, topPadding, larghezza, altezza); //era padding + xOffset
 }
 
 -(void) removeCards:(BOOL) all {
@@ -507,7 +604,13 @@
     
     xOffset = startIndex * screenWidth;
     
-    self.scrollView.contentSize = CGSizeMake(5 + scrollWidth * startIndex, CONTENT_SIZE_HEIGHT);
+    //NSLog(@"QUI");
+    //NSLog(@"scrollWidth = %f", scrollWidth);
+    //NSLog(@"screenWidth = %f",screenWidth);
+    
+    float width = 5 + xOffset; //scrollWidth * startIndex;
+    
+    [self updateContentSizeWithWidth:width];
     
     NSLog(@"prima] cards = %@", [cards description]);
     
@@ -589,18 +692,25 @@
     //NSLog(@"###### CARDS = %@\n###############", [cards description]);
 }
 
+-(void) updateContentSizeWithWidth:(float) width {
+    
+    NSLog(@"content size passa a %f", width);
+    self.scrollView.contentSize = CGSizeMake(width, CONTENT_SIZE_HEIGHT);
+}
+
 -(void) insertCard:(GenericScrollCard *) scheda {
     
     [self.scrollView addSubview:scheda];
-    //float CONTENT_SIZE_WIDTH = 5 + scrollWidth + xOffset;
+    
+    float X = scheda.frame.origin.x;
+    
+    NSLog(@"appesa X a  %f", X);
     
     float CONTENT_SIZE_WIDTH = scrollWidth + xOffset;
+    [self updateContentSizeWithWidth:CONTENT_SIZE_WIDTH];
     
-    self.scrollView.contentSize = CGSizeMake(CONTENT_SIZE_WIDTH, CONTENT_SIZE_HEIGHT);
     xOffset += screenWidth; //aumento offset
     scheda.controller = self;
-    
-    NSLog(@"size = %f", self.scrollView.contentSize.width);
 }
 
 -(void) scrollLeft {
@@ -610,7 +720,7 @@
 }
 
 -(void) scrollToIndex:(int) indice {
-    float offset = (indice) * scrollWidth;
+    float offset = indice * scrollWidth;
     NSLog(@"vado a offset = %f", offset);
     [self scrollToPoint:CGPointMake(offset, 0)];
 }
@@ -621,9 +731,14 @@
 }
 
 -(void) scrollToPoint:(CGPoint) punto {
+    
+    manuale = YES;
+    
     [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         
         self.scrollView.contentOffset = punto;
+        
+        NSLog(@"x diventa %f", self.scrollView.contentOffset.x);
         
         pageIndex = punto.x / scrollWidth;
         NSLog(@"PAGINA [1] = %d", pageIndex);
@@ -632,9 +747,18 @@
             backButtonItem.style = UIBarButtonItemStylePlain;
             backButtonItem.enabled = false;
             backButtonItem.title = nil;
-            dominioScelto = nil;
+
+            NSLog(@"torno a pagina iniziale, tolgo dominio");
+            
+            [[Global singleton] setDominio:nil];
         }
         else {
+            
+            if ([Global singleton].activeDomain == nil) {
+                NSLog(@"recupero ultimo dominio");
+                [[Global singleton] restoreLastDomain];
+            }
+            
             backButtonItem.style = UIBarButtonItemStylePlain;
             backButtonItem.enabled = true;
             UIImage *img = [UIImage imageNamed:@"left_arrow_white"];
@@ -654,9 +778,31 @@
     [self scrollLeft];
 }
 
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    scrollView.userInteractionEnabled = NO;
+    
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+
+    scrollView.userInteractionEnabled = YES;
+
+    if (manuale) {
+        manuale = NO;
+        return;
+    }
+    
     float nuovaX = self.scrollView.contentOffset.x;
-    pageIndex = nuovaX / scrollWidth;
+    
+    NSLog(@"nuovaX = %f", nuovaX);
+    NSLog(@"rapporto = %f", nuovaX / scrollWidth);
+    
+    //pageIndex = nuovaX / scrollWidth;
+    int ratio = lroundf(nuovaX / scrollWidth);
+    
+    pageIndex = ratio;
+    
     NSLog(@"PAGINA [2] = %d", pageIndex);
     
     if (pageIndex == 0) {
@@ -664,14 +810,27 @@
         self.navigationController.navigationBar.barTintColor = [Utils getDefaultColor];
         NSString *newTitle = NSLocalizedString(@"THESAPP", @"ThesApp");
         [titleButton setTitle:newTitle];
-        dominioScelto = nil;
+        
+        NSLog(@"torno a pagina iniziale, tolgo dominio");
+        
+        [[Global singleton] setDominio:nil];
     }
     else {
-        if (dominioScelto != nil) {
-            self.navigationController.navigationBar.barTintColor = [Utils colorFromHexString:dominioScelto.color];
-             NSString *newTitle = [[NSLocalizedString(@"THESAPP", @"ThesApp") stringByAppendingString:@" - "] stringByAppendingString:dominioScelto.localization];
+        
+        if ([Global singleton].activeDomain == nil) {
+            NSLog(@"recupero ultimo dominio");
+            [[Global singleton] restoreLastDomain];
+        }
+        
+        if ([Global singleton].activeDomain != nil) {
+            
+            self.navigationController.navigationBar.barTintColor = [Utils colorFromHexString:[Global singleton].activeDomain.color];
+            
+             NSString *newTitle = [[NSLocalizedString(@"THESAPP", @"ThesApp") stringByAppendingString:@" - "] stringByAppendingString:[Global singleton].activeDomain.localization];
+            
             [titleButton setTitle:newTitle];
         }
+        
     }
 }
 
@@ -735,9 +894,9 @@
             [self scrollToIndex:cardIndex];
         }
         else {
-            NSLog(@"Card non trovata, scarico, dominio scelto = %@", dominioScelto.descriptor);
-            
-            [self getSingleTerm:term withDomain:dominioScelto andLanguage:lang];
+            //self.dominioScelto = [Global singleton].activeDomain;
+            NSLog(@"Card non trovata, scarico, dominio scelto = %@", [Global singleton].activeDomain.descriptor);
+            [self getSingleTerm:term withDomain:[Global singleton].activeDomain andLanguage:lang];
         }
     }
 }
@@ -788,6 +947,8 @@
         if (term != nil) {
 
             //creo card vuota
+            NSLog(@"CREO TERM CARD");
+            
             TermCard *card = [self createTermCard];
             
             //popolo card con i dati del term

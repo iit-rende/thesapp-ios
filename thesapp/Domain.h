@@ -16,7 +16,6 @@
 @property (nonatomic, strong) NSString *localization;
 @property (nonatomic, strong) NSMutableDictionary *localizations;
 
-
 +(Domain *) getDomainFromJson:(NSDictionary *) json;
 
 @end

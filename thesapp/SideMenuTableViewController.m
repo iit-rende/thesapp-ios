@@ -79,7 +79,7 @@
     if (listaDomini.count > 0) {
         //chosenDomain = [listaDomini firstObject]; //SBAGLIATO
         if (svc != nil) {
-            chosenDomain = svc.dominioScelto;
+            chosenDomain = [Global singleton].activeDomain; //svc.dominioScelto;
             NSLog(@"SVC NON NULLO");
         }
         else {
@@ -440,7 +440,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [tendina setTitle:dominio.localization forState:UIControlStateNormal];
     chosenDomain = dominio;
     //[Utils setCurrentDomain:dominio];
-    svc.dominioScelto = dominio;
+    //svc.dominioScelto = dominio;
+    
+    [[Global singleton] setDominio:dominio];
+    
     NSLog(@"cambio colore picker in %@", chosenDomain.color);
     filter.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
     self.barContainer.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
@@ -467,7 +470,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     [tendina setTitle:dominio.localization forState:UIControlStateNormal];
     chosenDomain = dominio;
     //[Utils setCurrentDomain:dominio];
-    svc.dominioScelto = dominio;
+    //svc.dominioScelto = dominio;
+    [[Global singleton] setDominio:dominio];
     NSLog(@"cambio colore picker");
     filter.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
     

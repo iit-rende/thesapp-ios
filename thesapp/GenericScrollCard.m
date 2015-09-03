@@ -52,15 +52,21 @@
     //scroll view
     self.bouncesZoom = NO;
     self.bounces = NO;
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor clearColor]; //clearColor
     self.showsVerticalScrollIndicator = NO;
     self.showsHorizontalScrollIndicator = NO;
-    self.clipsToBounds = YES;
+    //self.clipsToBounds = YES;
+    self.clipsToBounds = NO;
     self.delaysContentTouches = YES;
     self.canCancelContentTouches = YES;
     
-    CGRect wrapperFrame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    float width = self.frame.size.width;
+    float height = self.frame.size.height;
+    float x = 0;
+    
+    CGRect wrapperFrame = CGRectMake(x, 0, width, height);
     wrapper = [[UIView alloc] initWithFrame:wrapperFrame];
+    wrapper.backgroundColor = [UIColor greenColor];
     [self addSubview:wrapper];
      
     fullWidth = wrapper.frame.size.width;
@@ -75,6 +81,7 @@
     
     wrapper.backgroundColor = [UIColor whiteColor];
     wrapper.clipsToBounds = YES;
+    //wrapper.clipsToBounds = NO;
     wrapper.layer.cornerRadius = 3;
     
     self.layer.cornerRadius = 3;
@@ -165,7 +172,7 @@
 
 -(void) openTerm:(Etichetta *) btn {
     NSString *value = [btn titleLabel].text;
-    NSLog(@"openTerm: %@", value);
+    NSLog(@"[GenericScrollCard] openTerm: %@", value);
     [self.controller getTerm:value inLanguage:lingua];
 }
 

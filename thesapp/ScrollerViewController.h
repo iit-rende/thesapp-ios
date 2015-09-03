@@ -14,18 +14,20 @@
 #import <AFHTTPRequestOperationManager.h>
 #import <MMDrawerController.h>
 #import "DomainCategoryCard.h"
+#import "Global.h"
 
 @interface ScrollerViewController : UIViewController<UIScrollViewDelegate, CardController>
 {
-    int pageIndex, totPages, xOffset, numSchede, scrollWidth;
-    float larghezza, altezza, padding, topPadding, screenWidth;
+    int pageIndex, totPages, xOffset, numSchede;
+    float larghezza, altezza, padding, topPadding, screenWidth, scrollWidth;
     AFHTTPRequestOperationManager *manager;
     MMDrawerController *parent;
     NSMutableDictionary *cards;
     UIBarButtonItem *backButtonItem;
     NSString *lingua, *defaultLanguage;
-    BOOL portrait;
+    BOOL portrait, manuale;
     UILabel *dwnLbl;
+    UIButton *retryBtn;
     UIActivityIndicatorView *loader;
     UIBarButtonItem *titleButton;
 }
@@ -36,7 +38,7 @@
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, strong) IBOutlet UIView *topView;
 @property (nonatomic, strong) NSMutableArray *listaDomini;
-@property (nonatomic, strong) Domain *dominioScelto;
+//@property (nonatomic, strong) Domain *dominioScelto;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *search;
 
 -(IBAction) openSearchMenu:(id)sender;

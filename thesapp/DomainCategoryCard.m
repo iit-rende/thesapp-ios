@@ -93,11 +93,19 @@
         [wrapper addSubview:tabellaCategorie];
         
         [tabellaCategorie reloadData];
-    
+        NSLog(@"TABELLA RICARICATA");
+        
     }
 }
 
 #pragma mark - Table View Methods
+
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    NSLog(@"willSelectRowAtIndexPath");
+    
+    return indexPath;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"cliccato su riga %d", (int) indexPath.row);
