@@ -19,10 +19,6 @@
 #define MARGIN 20
 #define IPAD_SCREEN_SIZE 0.85
 
-@interface ScrollerViewController ()
-
-@end
-
 @implementation ScrollerViewController
 
 @synthesize listaDomini ; //, dominioScelto;
@@ -42,7 +38,6 @@
 }
 
 - (void)viewDidUnload {
-    // Release any retained subviews of the main view.
     self.scrollView = nil;
 }
 
@@ -205,6 +200,7 @@
     xOffset = 0;
     topPadding = MARGIN / 2;
     numSchede = 0;
+    repo = [[Repository alloc] initWithProtocol:self];
 }
 
 -(void) appendRetryButton {
@@ -238,6 +234,12 @@
     NSLog(@"reload");
     [self removeRetryButton];
     [self getDomains];
+}
+
+-(void) getDomains {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];    
+    [self initDomainLoader];
+    [repo getDomainsForLanguage:defaultLanguage];
 }
 
 -(void) initDomainLoader {
@@ -308,221 +310,16 @@
     }
 }
 
--(void) getDomainCategory:(NSString *) categoria fromDomain:(Domain *) dominio {
-
-    if (categoria == nil) {
-        NSLog(@"categoria nulla");
-        return;
-    }
-    
-    if (dominio == nil) {
-        NSLog(@"dominio nullo");
-        return;
-    }
-    
-    if (dominio.descriptor == nil) {
-        NSLog(@"dominio descriptor nullo");
-        return;   
-    }
-    
-    NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/hierarchy?category="];
-    NSString *termine = [Utils WWWFormEncoded:categoria];
-    NSString *dom = [Utils WWWFormEncoded:dominio.descriptor];
-    domainPath = [[[domainPath stringByAppendingString:termine] stringByAppendingString:@"&domain="] stringByAppendingString:dom];
-    
-    NSLog(@"chiamo %@ con lingua %@", domainPath, lingua);
-    
-    [manager.requestSerializer setValue:lingua forHTTPHeaderField:@"accept-language"];
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
-    [manager GET:domainPath parameters:nil
-     
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             
-             /*
-             NSDictionary *json = (NSDictionary *)responseObject;
-             NSDictionary *dominioJson = [json objectForKey:@"domain"];
-             NSString *language = [json objectForKey:@"language"];
-             NSString *descriptor = [json objectForKey:@"descriptor"];
-             NSArray *termsArray = [json objectForKey:@"terms"];
-             Domain *dominio = [Domain getDomainFromJson:dominioJson];
-             NSLog(@"array = %d", (int)[termsArray count]);
-             */
-             
-             NSDictionary *json = (NSDictionary *)responseObject;
-             
-             if (json != nil) {
-                 Categoria *cat = [Categoria createFromJson:json];
-                 if (cat != nil) {
-                     
-                     NSLog(@"creo card per categoria");
-                     CategoryCard *card = [cat createCategoryCardWithFrame:[self makeCardFrame]];
-                     card.tag = numSchede * 1000;
-                     [card render];
-                     [self addCardToStoryboard:card];
-                 }
-             }
-             
-             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-             
-         }
-     
-         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
-             UIAlertView *message = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:@"OK"
-                                                     otherButtonTitles:nil];
-             
-             [message show];
-             
-             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-         }
-     ];
-}
-
 -(void) getCategoriesByDomain:(Domain *) dominio {
     
-    if (dominio == nil) return;
-    
-    if (dominio.descriptor == nil) return;
-    
-    //dominioScelto = dominio;
-
-    //[Utils setCurrentDomain:dominio];
-    
     [[Global singleton] setDominio:dominio];
-    
     NSLog(@"[due] dominio scelto = %@", [Global singleton].activeDomain.descriptor);
-    
-    NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/hierarchy?domain="];
-    NSString *termine = [Utils WWWFormEncoded:dominio.descriptor];
-    
-    if (termine == nil) return;
-    
-    domainPath = [domainPath stringByAppendingString:termine];
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
-    [manager GET:domainPath parameters:nil
-     
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-             NSDictionary *json = (NSDictionary *)responseObject;
-             
-             NSArray *categorie  = [json objectForKey:@"categories"];
-             
-             if (categorie == nil) {
-                 return;
-             }
-             
-             NSLog(@"trovate %d categorie", (int) categorie.count);
-             
-             //creo card
-             DomainCategoryCard *card = [[DomainCategoryCard alloc] initWithFrame:[self makeCardFrame]];
-             card.tag = numSchede * 1000;
-             card.categorie = categorie;
-             card.dominio = dominio;
-             [card render];
-             [self addCardToStoryboard:card];
-             
-             UIColor *colore = [Utils colorFromHexString:card.dominio.color];
-             [self.navigationController.navigationBar setBarTintColor:colore];
-             
-             NSString *newTitle = [[NSLocalizedString(@"THESAPP", @"ThesApp") stringByAppendingString:@" - "] stringByAppendingString:card.dominio.localization];
-             
-             [titleButton setTitle:newTitle];
-             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-             
-             
-         }
-     
-         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-             NSLog(@"Error: %@", error);
-
-             UIAlertView *message = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:@"OK"
-                                                     otherButtonTitles:nil];
-             
-             [message show];
-             
-             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-         }
-     ];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];    
+    [repo getCategoriesByDomain:dominio];
 }
 
--(void) getDomains {
-
-    [self initDomainLoader];
-    
-    NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/domains"];
-    
-    [manager.requestSerializer setValue:defaultLanguage forHTTPHeaderField:@"accept-language"];
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
-    NSLog(@"Scarico domini da domainPath = %@", domainPath);
-    
-    [manager GET:domainPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSDictionary *json = (NSDictionary *)responseObject;
-        
-        NSLog(@"%@", [json description]);
-        NSArray *domini = [json objectForKey:@"domains"];
-        
-        if (domini == nil) {
-            NSLog(@"Domini non trovati");
-            return;
-        }
-        
-        if (domini.count > 0) {
-            
-            listaDomini = [[NSMutableArray alloc] init];
-            
-            for (NSDictionary *domain in domini) {
-                Domain *dominio = [Domain getDomainFromJson:domain];
-                [listaDomini addObject:dominio];
-            }
-            
-            DomainCard *mainCard = [[DomainCard alloc] initWithFrame:[self makeCardFrame]]; //[DomainCard createWithDomain:dominio];
-            mainCard.tag = numSchede * 1000;
-            mainCard.domini = [Utils ordinaByDescriptor:listaDomini];
-            [mainCard render];
-            
-            [self removeDomainLoader];
-            [self addCardToStoryboard:mainCard];
-        }
-        
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"Error: %@", error);
-        
-        [self removeDomainLoader];
-        
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        NSString *msg = [error localizedDescription];
-        
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
-                                                          message:msg
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        
-        [message show];
-        
-        
-        [self appendRetryButton];
-        
-    }];
-    
+- (void) getDomainCategory:(NSString *) categoria fromDomain:(Domain *) dominio {
+    [repo getDomainCategory:categoria fromDomain:dominio forLanguage:lingua];
 }
 
 -(void) openInfoPage:(id) sender {
@@ -551,10 +348,7 @@
 
 -(void) openSearchMenu:(id)sender {
     
-    if (listaDomini == nil || listaDomini.count == 0) {
-
-        return;
-    }
+    if (listaDomini == nil || listaDomini.count == 0) return;
     
     [parent openDrawerSide:MMDrawerSideRight animated:YES completion:^(BOOL finished) {
         SideMenuTableViewController *side = (SideMenuTableViewController *) parent.rightDrawerViewController;
@@ -688,8 +482,6 @@
             [self scrollToIndex:totPages - 1];
         }
     }
-    
-    //NSLog(@"###### CARDS = %@\n###############", [cards description]);
 }
 
 -(void) updateContentSizeWithWidth:(float) width {
@@ -781,7 +573,6 @@
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
     scrollView.userInteractionEnabled = NO;
-    
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -859,7 +650,9 @@
         NSLog(@"Dominio non impostato");
     }
     
-    [self getDomainCategory:catName fromDomain:dom];
+    //[self getDomainCategory:catName fromDomain:dom];
+    
+    [repo getDomainCategory:catName fromDomain:dom forLanguage:lingua];
 }
 
 #pragma mark - other methods
@@ -896,91 +689,138 @@
         else {
             //self.dominioScelto = [Global singleton].activeDomain;
             NSLog(@"Card non trovata, scarico, dominio scelto = %@", [Global singleton].activeDomain.descriptor);
-            [self getSingleTerm:term withDomain:[Global singleton].activeDomain andLanguage:lang];
+            //[self getSingleTerm:term withDomain:[Global singleton].activeDomain andLanguage:lang]; OLD
+            [repo getSingleTerm:term withDomain:[Global singleton].activeDomain andLanguage:lang];
         }
     }
-}
-
--(void) getSingleTerm:(NSString *)term withDomain:(Domain *) dominio andLanguage:(NSString *)lang {
-
-    NSLog(@"[SVC] getSingleTerm");
-    
-    if (term == nil) {
-        NSLog(@"Termine mancante, esco");
-        return;
-    }
-    
-    if (dominio == nil) {
-        NSLog(@"Dominio mancante, esco");
-        return;
-    }
-    
-    term = [Utils WWWFormEncoded:term];
-    
-    NSLog(@"getSingleTerm = %@", term);
-    
-    NSString *dom = [Utils WWWFormEncoded:dominio.descriptor];
-    
-    if (dom == nil) {
-        NSLog(@"Dominio non impostato");
-        return;
-    }
-    
-    NSString *domain = [@"&domain=" stringByAppendingString:dom];
-    NSString *prefix = @"/terms?descriptor=";
-    
-    NSString *termRequest = [[[[Utils getServerBaseAddress] stringByAppendingString:prefix] stringByAppendingString:term] stringByAppendingString:domain];
-    
-    if (manager == nil) return;
-    
-     NSLog(@"termRequest = %@", termRequest);
-    
-    [manager.requestSerializer setValue:lang forHTTPHeaderField:@"accept-language"];
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
-    [manager GET:termRequest parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSDictionary *json = (NSDictionary *)responseObject;
-        Term *term = [Term createTermFromJson:json];
-        
-        if (term != nil) {
-
-            //creo card vuota
-            NSLog(@"CREO TERM CARD");
-            
-            TermCard *card = [self createTermCard];
-            
-            //popolo card con i dati del term
-            card = [term createTermCard:card];
-            
-            //inserisco card nella vista
-            [self addCardToStoryboard:card];
-        }
-        
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSInteger statusCode = operation.response.statusCode;
-        NSString *msg = (statusCode == 404) ? NSLocalizedString(@"TERM_NOT_FOUND", @"termine non trovato") : error.localizedDescription;
-        
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
-                                                    message:msg
-                                                    delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles:nil];
-        
-        [message show];
-        
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-    }];
-    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Repository delegate methods
+
+-(void) singleTermReceived:(Term *) term {
+    NSLog(@"singleTermReceived");
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    //creo card vuota
+    TermCard *card = [self createTermCard];
+    //popolo card con i dati del term
+    card = [term createTermCard:card];
+    //inserisco card nella vista
+    [self addCardToStoryboard:card];
+}
+
+-(void) singleTermNotReceived:(NSString *) error {
+    NSLog(@"singleTermNotReceived");
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    //NSInteger statusCode = operation.response.statusCode;
+    //NSString *msg = (statusCode == 404) ? NSLocalizedString(@"TERM_NOT_FOUND", @"termine non trovato") : error.localizedDescription;
+    
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
+                                                        message:error
+                                                        delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil] show];
+}
+
+-(void) domainReceived:(NSArray *) domainlist {
+    
+    NSLog(@"domainReceived");
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    listaDomini = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *domain in domainlist) {
+        Domain *dominio = [Domain getDomainFromJson:domain];
+        [listaDomini addObject:dominio];
+    }
+    
+    DomainCard *mainCard = [[DomainCard alloc] initWithFrame:[self makeCardFrame]]; //[DomainCard createWithDomain:dominio];
+    mainCard.tag = numSchede * 1000;
+    mainCard.domini = [Utils ordinaByDescriptor:listaDomini];
+    [mainCard render];
+    
+    [self removeDomainLoader];
+    [self addCardToStoryboard:mainCard];
+}
+
+-(void) domainNotReceived:(NSString *) error {
+    NSLog(@"domainNotReceived");
+    
+    [self removeDomainLoader];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
+                                                        message:error
+                                                        delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil] show];
+    
+    [self appendRetryButton];
+}
+
+-(void) domainCategoriesReceived:(NSArray *) categoriesList forDomain:(Domain *) dominio {
+    
+    NSLog(@"domainCategoriesReceived");
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    //creo card
+    DomainCategoryCard *card = [[DomainCategoryCard alloc] initWithFrame:[self makeCardFrame]];
+    card.tag = numSchede * 1000;
+    card.categorie = categoriesList;
+    card.dominio = dominio;
+    [card render];
+    [self addCardToStoryboard:card];
+    
+    UIColor *colore = [Utils colorFromHexString:card.dominio.color];
+    [self.navigationController.navigationBar setBarTintColor:colore];
+    
+    NSString *newTitle = [[NSLocalizedString(@"THESAPP", @"ThesApp") stringByAppendingString:@" - "] stringByAppendingString:card.dominio.localization];
+    
+    [titleButton setTitle:newTitle];
+}
+
+-(void) domainCategoriesNotReceived:(NSString *) error {
+    NSLog(@"domainCategoriesNotReceived");
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
+                                                        message:error
+                                                        delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil] show];
+}
+
+-(void) domainCategoryReceived:(Categoria *) category fromDomain:(Domain *) dominio {
+
+    NSLog(@"domainCategoryReceived");
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    NSLog(@"creo card per categoria");
+    CategoryCard *card = [category createCategoryCardWithFrame:[self makeCardFrame]];
+    card.tag = numSchede * 1000;
+    [card render];
+    [self addCardToStoryboard:card];
+}
+
+-(void) domainCategoryNotReceived:(NSString *) error {
+    
+    NSLog(@"domainCategoryNotReceived");
+    
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
+                                                      message:error
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil] show];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 @end

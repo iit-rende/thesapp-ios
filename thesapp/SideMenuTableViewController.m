@@ -126,6 +126,8 @@
     
     float totalWidth = [AppDelegate getSidemenuWidth];
     
+    repo = [[Repository alloc] initWithProtocol:svc];
+    
     lingua = [Utils getCurrentLanguage];
     
     self.barContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, totalWidth, 64)];
@@ -1084,7 +1086,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         //NSArray *subviews = [parent.centerViewController.view subviews];
 
         NSLog(@"qui??, svc = %@", [svc description]);
-        [svc getSingleTerm:value withDomain:chosenDomain andLanguage:lang];
+        [repo getSingleTerm:value withDomain:chosenDomain andLanguage:lang];
         [parent closeDrawerAnimated:YES completion:nil];
 
         [self.searchBar resignFirstResponder];
@@ -1097,7 +1099,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         
         if (value == nil) return;
         
-        [svc getSingleTerm:value withDomain:chosenDomain andLanguage:lingua];
+        [repo getSingleTerm:value withDomain:chosenDomain andLanguage:lingua];
         [parent closeDrawerAnimated:YES completion:nil];
         
         [self.searchBar resignFirstResponder];

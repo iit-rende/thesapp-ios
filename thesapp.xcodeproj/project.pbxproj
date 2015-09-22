@@ -11,6 +11,7 @@
 		CD25C3341B29B82F00C0EE91 /* filter_list.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3331B29B82F00C0EE91 /* filter_list.png */; };
 		CD25C3361B29BA3600C0EE91 /* up_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */; };
 		CD3DD1521B3169D20082A337 /* Localization.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3DD1511B3169D20082A337 /* Localization.m */; };
+		CD5FFC5C1BB13988009D2235 /* Repository.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5FFC5B1BB13988009D2235 /* Repository.m */; settings = {ASSET_TAGS = (); }; };
 		CD8936541B32B6410016439D /* DominioTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8936521B32B6410016439D /* DominioTableViewCell.m */; };
 		CD8936551B32B6410016439D /* DominioTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD8936531B32B6410016439D /* DominioTableViewCell.xib */; };
 		CDA071811B20659100BD6CCF /* CustomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0717F1B20659100BD6CCF /* CustomCollectionViewCell.m */; };
@@ -73,6 +74,11 @@
 		CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up_arrow_white.png; sourceTree = "<group>"; };
 		CD3DD1501B3169D20082A337 /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localization.h; sourceTree = "<group>"; };
 		CD3DD1511B3169D20082A337 /* Localization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Localization.m; sourceTree = "<group>"; };
+		CD5FFC5A1BB13988009D2235 /* Repository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Repository.h; sourceTree = "<group>"; };
+		CD5FFC5B1BB13988009D2235 /* Repository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Repository.m; sourceTree = "<group>"; };
+		CD5FFC5D1BB13AA8009D2235 /* TimelineDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineDelegate.h; sourceTree = "<group>"; };
+		CD5FFC5E1BB154C5009D2235 /* CardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardController.h; sourceTree = "<group>"; };
+		CD5FFC5F1BB154FC009D2235 /* CardName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardName.h; sourceTree = "<group>"; };
 		CD8936511B32B6410016439D /* DominioTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DominioTableViewCell.h; sourceTree = "<group>"; };
 		CD8936521B32B6410016439D /* DominioTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DominioTableViewCell.m; sourceTree = "<group>"; };
 		CD8936531B32B6410016439D /* DominioTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DominioTableViewCell.xib; sourceTree = "<group>"; };
@@ -181,6 +187,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CD5FFC601BB15510009D2235 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				CD5FFC5D1BB13AA8009D2235 /* TimelineDelegate.h */,
+				CD5FFC5E1BB154C5009D2235 /* CardController.h */,
+				CD5FFC5F1BB154FC009D2235 /* CardName.h */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
 		CDA071D71B20669200BD6CCF /* Card */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +236,8 @@
 				CD3DD1511B3169D20082A337 /* Localization.m */,
 				CDB3F5791B341A220031182E /* TitoloLabel.h */,
 				CDB3F57A1B341A220031182E /* TitoloLabel.m */,
+				CD5FFC5A1BB13988009D2235 /* Repository.h */,
+				CD5FFC5B1BB13988009D2235 /* Repository.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -233,6 +251,7 @@
 				CDA071BB1B20661500BD6CCF /* SideMenuTableViewController.m */,
 				CDB3F5691B33FF3E0031182E /* InfoViewController.h */,
 				CDB3F56A1B33FF3E0031182E /* InfoViewController.m */,
+				CD5FFC601BB15510009D2235 /* Protocols */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -539,6 +558,7 @@
 				CDA071A61B2065B700BD6CCF /* GenericCard.m in Sources */,
 				CDA071CB1B20661500BD6CCF /* NSString+Levenshtein.m in Sources */,
 				CD3DD1521B3169D20082A337 /* Localization.m in Sources */,
+				CD5FFC5C1BB13988009D2235 /* Repository.m in Sources */,
 				CDA071D11B20661500BD6CCF /* TermCard.m in Sources */,
 				CDA071AB1B2065D000BD6CCF /* AppDelegate.m in Sources */,
 				CDA0719E1B2065B700BD6CCF /* CategoryCard.m in Sources */,

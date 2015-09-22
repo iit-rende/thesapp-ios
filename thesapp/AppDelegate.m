@@ -30,12 +30,21 @@ NSString *const SubscriptionTopic = @"/topics/TEST_TOPIC";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
+    NSString *linguaDevice = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+    
+    NSString *linguaTrovata = [[NSUserDefaults standardUserDefaults] stringForKey:@"language"];
+    
+    NSLog(@"linguaTrovata prima = %@", linguaTrovata);
+    
     //registro opzioni
     NSDictionary *userDefaultsDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                                          @"it", @"language",
-                                          nil];
+                                          linguaDevice, @"language", nil];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    
+    NSString *linguaTrovata1 = [[NSUserDefaults standardUserDefaults] stringForKey:@"language"];
+    
+    NSLog(@"linguaTrovata dopo = %@", linguaTrovata1);
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     

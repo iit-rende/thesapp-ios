@@ -7,7 +7,6 @@
 //
 
 #import "GenericScrollCard.h"
-#import "Utils.h"
 
 #define PADDING_BTN 8
 #define HEADER_HEIGHT 110

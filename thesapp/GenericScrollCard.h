@@ -10,23 +10,13 @@
 #import "Etichetta.h"
 #import "Domain.h"
 #import "TitoloLabel.h"
-
-@protocol CardController
-- (void) goBack;
-- (void) addCategoryCard:(NSString *) catName withDomain:(Domain *) dom;
-- (void) getTerm:(NSString *) term inLanguage:(NSString *) lang;
-- (void) getDominio:(Domain *) dominio;
-- (void) getDomainCategory:(NSString *) categoria fromDomain:(Domain *) dominio;
-@end
-
-@protocol CardName <NSObject>
-
--(NSString *) getName;
-
-@end
+#import "CardName.h"
+#import "CardController.h"
+#import "Utils.h"
 
 @interface GenericScrollCard : UIScrollView<CardName>
 {
+    
     @protected
     float fullWidth, fullWithPadding, top, paddingLeft, titleLabelHeight;
     UIView *header, *wrapper;

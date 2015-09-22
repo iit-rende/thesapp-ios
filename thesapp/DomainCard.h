@@ -7,7 +7,6 @@
 //
 
 #import "GenericScrollCard.h"
-#import "Domain.h"
 #import "Utils.h"
 #import "Localization.h"
 
@@ -15,6 +14,7 @@
 {
     float tableHeight;
 }
+
 @property (nonatomic, strong) NSArray *domini;
 @property (nonatomic, strong) UITableView *tabellaDomini;
 //+(DomainCard *) createWithDomain:(Domain *) dominio;

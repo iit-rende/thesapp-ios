@@ -11,6 +11,7 @@
 #import "ScrollerViewController.h"
 #import <MMDrawerController.h>
 #import <AFHTTPRequestOperationManager.h>
+#import "Repository.h"
 
 @interface SideMenuTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIActionSheetDelegate>
 {
@@ -31,6 +32,7 @@
     UILabel *filterBtn, *advice;
     UIPickerView *myPickerView;
     NSString *lingua;
+    Repository *repo;
 }
 
 @property (strong, nonatomic) NSArray *filteredList;

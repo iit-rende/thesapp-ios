@@ -15,8 +15,11 @@
 #import <MMDrawerController.h>
 #import "DomainCategoryCard.h"
 #import "Global.h"
+#import "TimelineDelegate.h"
+#import "Repository.h"
+#import "CardController.h"
 
-@interface ScrollerViewController : UIViewController<UIScrollViewDelegate, CardController>
+@interface ScrollerViewController : UIViewController<UIScrollViewDelegate, CardController, TimelineDelegate>
 {
     int pageIndex, totPages, xOffset, numSchede;
     float larghezza, altezza, padding, topPadding, screenWidth, scrollWidth;
@@ -30,9 +33,10 @@
     UIButton *retryBtn;
     UIActivityIndicatorView *loader;
     UIBarButtonItem *titleButton;
+    Repository *repo;
 }
 
--(void) getSingleTerm:(NSString *)term withDomain:(Domain *) dominio andLanguage:(NSString *)lang;
+//-(void) getSingleTerm:(NSString *)term withDomain:(Domain *) dominio andLanguage:(NSString *)lang;
 
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;

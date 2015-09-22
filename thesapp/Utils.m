@@ -12,7 +12,9 @@
 
 +(NSString *) getCurrentLanguage {
     NSUserDefaults *myDefaults = [NSUserDefaults standardUserDefaults];
-    return [myDefaults stringForKey:@"language"];
+    NSString *lingua = [myDefaults stringForKey:@"language"];
+    NSLog(@"[getCurrentLanguage] %@", lingua);
+    return lingua;
 }
 
 +(NSString *) getServerBaseAddress {
