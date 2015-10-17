@@ -352,6 +352,9 @@
     
     [parent openDrawerSide:MMDrawerSideRight animated:YES completion:^(BOOL finished) {
         SideMenuTableViewController *side = (SideMenuTableViewController *) parent.rightDrawerViewController;
+
+        NSLog(@"PAOLO - apro menu con lista di %d domini", listaDomini.count);
+        
         [side menuOpen:listaDomini];
     }];
 }

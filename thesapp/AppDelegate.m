@@ -48,8 +48,6 @@ NSString *const SubscriptionTopic = @"/topics/TEST_TOPIC";
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    
     //IOS 7
     [[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];

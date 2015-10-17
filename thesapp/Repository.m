@@ -61,11 +61,13 @@
         Term *term = [Term createTermFromJson:json];
         
         if (term != nil) {
+            NSLog(@"RISPOSTA POSITIVA");
             [self.timelineDelegate singleTermReceived:term];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+
+        NSLog(@"RISPOSTA NEGATIVA");
         [self.timelineDelegate singleTermNotReceived:error.localizedDescription];
     }];
     

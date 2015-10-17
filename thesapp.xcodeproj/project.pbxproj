@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		63ADC5281D052028D05A4B1E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3819954E89B38082E6374B6A /* libPods.a */; };
+		CD12B0141BB6F012009DC3B2 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CD12B0131BB6F012009DC3B2 /* Icon.png */; settings = {ASSET_TAGS = (); }; };
 		CD25C3341B29B82F00C0EE91 /* filter_list.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3331B29B82F00C0EE91 /* filter_list.png */; };
 		CD25C3361B29BA3600C0EE91 /* up_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */; };
 		CD3DD1521B3169D20082A337 /* Localization.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3DD1511B3169D20082A337 /* Localization.m */; };
@@ -70,6 +71,7 @@
 
 /* Begin PBXFileReference section */
 		3819954E89B38082E6374B6A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD12B0131BB6F012009DC3B2 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		CD25C3331B29B82F00C0EE91 /* filter_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter_list.png; sourceTree = "<group>"; };
 		CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up_arrow_white.png; sourceTree = "<group>"; };
 		CD3DD1501B3169D20082A337 /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localization.h; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				CD25C3331B29B82F00C0EE91 /* filter_list.png */,
 				CDC02E131B26E35F00C7C15E /* down_arrow.png */,
 				CDB3F5771B3416B10031182E /* clock_icon.png */,
+				CD12B0131BB6F012009DC3B2 /* Icon.png */,
 				CDB3F5731B3415070031182E /* info_icon.png */,
 				CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */,
 				CDC02E171B26E5A500C7C15E /* left_arrow_white.png */,
@@ -445,6 +448,7 @@
 				TargetAttributes = {
 					CDCB24901B2064850087A5BE = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = YUMXWWWSC3;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -491,6 +495,7 @@
 				CDC02E181B26E5A500C7C15E /* left_arrow_white.png in Resources */,
 				CD25C3361B29BA3600C0EE91 /* up_arrow_white.png in Resources */,
 				CDCB24A51B2064850087A5BE /* LaunchScreen.xib in Resources */,
+				CD12B0141BB6F012009DC3B2 /* Icon.png in Resources */,
 				CD8936551B32B6410016439D /* DominioTableViewCell.xib in Resources */,
 				CDE68F881B5FBAEB004047A6 /* GoogleService-Info.plist in Resources */,
 				CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */,
@@ -698,6 +703,8 @@
 			baseConfigurationReference = ECA7F9158DA319590B1CA5F3 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = thesapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -709,6 +716,8 @@
 			baseConfigurationReference = F05FC7612CD92CF1739E44C4 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = thesapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -35,8 +35,13 @@
     //self.barContainer.backgroundColor = [UIColor orangeColor];
     
     if (listaDomini.count > 0) {
+        
+        NSLog(@"PAOLO - domini trovati, metto titolo");
         chosenDomain = [listaDomini firstObject];
         [tendina setTitle:chosenDomain.localization forState:UIControlStateNormal];
+    }
+    else {
+        NSLog(@"PAOLO - domini non trovati");
     }
     
     UIColor *colore;
@@ -55,6 +60,14 @@
     
     UINavigationController *navC = (UINavigationController *) parent.centerViewController;
     svc = (ScrollerViewController *) [navC.viewControllers firstObject];
+    
+    if (svc == nil) {
+        NSLog(@"PAOLO - ancora nullo");
+    }
+    else {
+        repo = [[Repository alloc] initWithProtocol:svc];
+        NSLog(@"PAOLO - non nullo");
+    }
     
     /*
     UIColor *domainColor = [Utils getChosenDomainColor];
@@ -79,14 +92,28 @@
     if (listaDomini.count > 0) {
         //chosenDomain = [listaDomini firstObject]; //SBAGLIATO
         if (svc != nil) {
+            
             chosenDomain = [Global singleton].activeDomain; //svc.dominioScelto;
-            NSLog(@"SVC NON NULLO");
+            
+            NSLog(@"chosenDomain = %@", [chosenDomain description]);
+            
+            NSLog(@"SVC NON NULLO, loca = %@", chosenDomain.localization);
+            
+            NSString *etichetta;
+            
+            if (chosenDomain == nil)  {
+                Domain *domin = [listaDomini objectAtIndex:0];
+                etichetta = domin.localization;
+            }
+            else {
+                etichetta = chosenDomain.localization;
+            }
+            
+            [tendina setTitle:etichetta forState:UIControlStateNormal];
         }
         else {
             chosenDomain = nil;
         }
-        
-        [tendina setTitle:chosenDomain.localization forState:UIControlStateNormal];
         
         if (chosenDomain != nil) {
             
@@ -126,7 +153,12 @@
     
     float totalWidth = [AppDelegate getSidemenuWidth];
     
-    repo = [[Repository alloc] initWithProtocol:svc];
+    if (svc == nil) {
+        NSLog(@"PAOLO - SVC NULLO");
+    }
+    else {
+        NSLog(@"PAOLO - SVC NON NULLO");
+    }
     
     lingua = [Utils getCurrentLanguage];
     
@@ -252,10 +284,12 @@
     
     //CGFloat spacing = 6.0;
     CGRect tendinaFrame = CGRectMake(sidePadding, 2 * sidePadding, tendinaWidth, xSize);
+    
     tendina = [UIButton buttonWithType:UIButtonTypeCustom];
     [tendina setFrame:tendinaFrame];
     //[tendina setCenter:CGPointMake(tendinaWidth / 2, xSize / 2)];
     [tendina setClipsToBounds:false];
+    
     //[tendina setImage:[UIImage imageNamed:@"down_arrow"] forState:UIControlStateNormal];
     tendina.titleLabel.numberOfLines = 2;
     tendina.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -264,6 +298,7 @@
     [tendina setTitleColor:[UIColor blackColor] forState:UIControlStateNormal]; // SET the colour for your wishes
     //[tendina setTitleEdgeInsets:UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f)]; // SET the values for your wishes
     //[tendina setImageEdgeInsets:UIEdgeInsetsMake(0.f, 0.f, -40.f, 0.f)];
+
     tendina.backgroundColor = [UIColor clearColor];
     
     [tendina addTarget:self action:@selector(openPicker:) forControlEvents:UIControlEventTouchUpInside];
@@ -1085,7 +1120,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         
         //NSArray *subviews = [parent.centerViewController.view subviews];
 
-        NSLog(@"qui??, svc = %@", [svc description]);
         [repo getSingleTerm:value withDomain:chosenDomain andLanguage:lang];
         [parent closeDrawerAnimated:YES completion:nil];
 
