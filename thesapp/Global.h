@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) Domain *activeDomain;
 @property (nonatomic, strong) Domain *pendingDomain;
+@property (nonatomic, strong) NSString *linguaInUso;
 
 +(Global *) singleton;
 

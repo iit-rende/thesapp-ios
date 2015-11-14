@@ -24,6 +24,7 @@
     AFHTTPRequestOperationManager *manager;    
     MMDrawerController *parent;
     ScrollerViewController *svc;
+    Repository *repo;
     UIActivityIndicatorView *loader;
     UIButton *xbtn, *tendina;
     UIView *container, *filterToggleButton;
@@ -31,12 +32,11 @@
     UIImageView *toggleFilter;
     UILabel *filterBtn, *advice;
     UIPickerView *myPickerView;
-    NSString *lingua;
-    Repository *repo;
+    NSString *lingua, *searchString;
 }
 
 @property (strong, nonatomic) NSArray *filteredList;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UITableView *tabellaRisultati;
 @property (nonatomic, strong) UITableView *filterTableView;
 @property (nonatomic, strong) UITableView *suggestionTableView;
 @property (nonatomic, strong) UITextField *searchBar;

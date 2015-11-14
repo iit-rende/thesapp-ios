@@ -8,17 +8,33 @@
 
 #import "Utils.h"
 
+NSString * const LANGUAGE = @"lang";
+
 @implementation Utils
+
++(NSString *) getDeviceLanguage {
+    NSString *language = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
+    return language;
+}
 
 +(NSString *) getCurrentLanguage {
     NSUserDefaults *myDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *lingua = [myDefaults stringForKey:@"language"];
-    NSLog(@"[getCurrentLanguage] %@", lingua);
+    //OLD - NSString *lingua = [myDefaults stringForKey:@"language"];
+    NSString *lingua = [myDefaults stringForKey:LANGUAGE];
     return lingua;
 }
 
++(BOOL) saveLanguage:(NSString *) lingua {
+    NSUserDefaults *myDefaults = [NSUserDefaults standardUserDefaults];
+    [myDefaults setObject:lingua forKey:LANGUAGE];
+    
+    NSLog(@"salvo lingua = %@", lingua);
+    
+    return [myDefaults synchronize];
+}
+
 +(NSString *) getServerBaseAddress {
-    return @"http://146.48.65.88";
+    return @"http://thesapp.iit.cnr.it";
 }
 
 +(UIColor *) getTermineCorrelatoColor {
@@ -78,6 +94,9 @@
 }
 
 + (void) setCurrentDomain:(Domain *) dominio {
+    
+    if (dominio == nil) return;
+    
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     [def setValue:dominio.descriptor forKey:@"chosen_domain_name"];
     [def setValue:dominio.color forKey:@"chosen_domain_color"];
@@ -85,7 +104,43 @@
     [def synchronize];
 }
 
++(Domain *) getDomainFromFile:(NSString *) domaiName {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filename = [domaiName stringByAppendingString:@".json"];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:filename];
+    NSString *content = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:NULL];
+
+    NSError *jsonError;
+    NSData *objectData = [content dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:objectData
+                                                         options:NSJSONReadingMutableContainers
+                                                           error:&jsonError];
+    
+    if (json != nil) {
+        return [Domain getDomainFromJson:json];
+    }
+    
+    return nil;
+}
+
++(BOOL) saveJsonToDisk:(NSString *)json withName:(NSString *)nome {
+    
+    if (json == nil) return NO;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filename = [nome stringByAppendingString:@".json"];
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+    
+    NSError *error;
+    return [json writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
+}
+
 + (NSString*)WWWFormEncoded:(NSString *) string {
+    
+    if (string == nil) return nil;
+    
     NSMutableCharacterSet *chars = NSCharacterSet.alphanumericCharacterSet.mutableCopy;
     [chars addCharactersInString:@" "];
     NSString* encodedString = [string stringByAddingPercentEncodingWithAllowedCharacters:chars];
@@ -94,6 +149,9 @@
 }
 
 + (UIColor *)colorFromHexString:(NSString *)hexString {
+    
+    if (hexString == nil) return nil;
+    
     unsigned rgbValue = 0;
     NSScanner *scanner = [NSScanner scannerWithString:hexString];
     [scanner setScanLocation:1]; // bypass '#' character

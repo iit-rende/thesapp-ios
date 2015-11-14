@@ -24,7 +24,7 @@
 -(id) initWithProtocol:(id<TimelineDelegate>) delegato;
 -(void) getSingleTerm:(NSString *)term withDomain:(Domain *) dominio andLanguage:(NSString *)lang;
 -(void) getDomainsForLanguage:(NSString *) linguaggio;
--(void) getCategoriesByDomain:(Domain *) dominio;
+-(void) getCategoriesByDomain:(Domain *) dominio forLanguage:(NSString *) linguaggio;
 -(void) getDomainCategory:(NSString *) categoria fromDomain:(Domain *) dominio forLanguage:(NSString *) lingua;
 
 @end

@@ -22,25 +22,18 @@
     NSLog(@"[REPOSITORY] getSingleTerm");
     
     if (term == nil) {
-        NSLog(@"Termine mancante, esco");
         return;
     }
     
     if (dominio == nil) {
-        NSLog(@"Dominio mancante, esco");
         return;
     }
     
     term = [Utils WWWFormEncoded:term];
     
-    NSLog(@"getSingleTerm = %@", term);
-    
     NSString *dom = [Utils WWWFormEncoded:dominio.descriptor];
     
-    if (dom == nil) {
-        NSLog(@"Dominio non impostato");
-        return;
-    }
+    if (dom == nil) return;
     
     NSString *domain = [@"&domain=" stringByAppendingString:dom];
     NSString *prefix = @"/terms?descriptor=";
@@ -61,13 +54,14 @@
         Term *term = [Term createTermFromJson:json];
         
         if (term != nil) {
-            NSLog(@"RISPOSTA POSITIVA");
             [self.timelineDelegate singleTermReceived:term];
+        }
+        else {
+            [self.timelineDelegate singleTermNotReceived:@"NO_TERM_FOUND"];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
-        NSLog(@"RISPOSTA NEGATIVA");
         [self.timelineDelegate singleTermNotReceived:error.localizedDescription];
     }];
     
@@ -90,8 +84,17 @@
     [manager GET:domainPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *json = (NSDictionary *)responseObject;
-        
         NSArray *domini = [json objectForKey:@"domains"];
+        NSMutableArray *domainlist = [[NSMutableArray alloc] init];
+        
+        for (NSDictionary *domain in domini) {
+            Domain *dominio = [Domain getDomainFromJson:domain];
+            [domainlist addObject:dominio];
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:domain options:0 error:nil];
+            NSString *domString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                        
+            [Utils saveJsonToDisk:domString withName:dominio.descriptor];
+        }
         
         if (domini == nil) {
             NSLog(@"Domini non trovati");
@@ -100,7 +103,7 @@
         }
         
         if (domini.count > 0) {
-            [self.timelineDelegate domainReceived:domini];
+            [self.timelineDelegate domainReceived:domainlist];
         }
         else
             [self.timelineDelegate domainNotReceived:@"Nessun dominio trovato"];
@@ -118,9 +121,9 @@
  getCategoriesByDomain
  */
 
--(void) getCategoriesByDomain:(Domain *) dominio {
-    
-    NSLog(@"[REPOSITORY] getCategoriesByDomain");
+-(void) getCategoriesByDomain:(Domain *) dominio forLanguage:(NSString *) linguaggio {
+
+    NSLog(@"[REPOSITORY] getCategoriesByDomain per lingua = %@", linguaggio);
     
     if (dominio == nil) return;
     
@@ -132,7 +135,9 @@
     if (termine == nil) return;
     
     domainPath = [domainPath stringByAppendingString:termine];
-        
+    
+    [manager.requestSerializer setValue:linguaggio forHTTPHeaderField:@"accept-language"];
+    
     [manager GET:domainPath parameters:nil
      
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -150,7 +155,7 @@
                  [self.timelineDelegate domainCategoriesReceived:categorie forDomain:dominio];
              }
              else {
-                 [self.timelineDelegate domainCategoriesNotReceived:@"Nessuna car"];
+                 [self.timelineDelegate domainCategoriesNotReceived:@"NO_CATEGORIES_FOUND"];
              }
          }
      
@@ -162,7 +167,7 @@
 
 -(void) getDomainCategory:(NSString *) categoria fromDomain:(Domain *) dominio forLanguage:(NSString *) lingua {
     
-    NSLog(@"[REPOSITORY] getDomainCategory");
+    NSLog(@"[REPO] getDomainCategory");
     
     if (categoria == nil) {
         NSLog(@"categoria nulla");

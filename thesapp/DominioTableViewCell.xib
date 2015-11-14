@@ -1,50 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="domainCell" rowHeight="85" id="KGk-i7-Jjw" customClass="DominioTableViewCell">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="domainCell" rowHeight="85" id="KGk-i7-Jjw" customClass="DominioTableViewCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="84.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titolo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQx-7n-CFD">
                         <rect key="frame" x="8" y="8" width="304" height="30"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="a6t-Sc-MmU"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="descrizione descrizione descrizione descrizione descrizione descrizione " lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="njQ-IZ-Brc">
-                        <rect key="frame" x="8" y="41.5" width="254" height="35"/>
+                        <rect key="frame" x="8" y="42" width="254" height="35"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iqc-jn-F2p">
                         <rect key="frame" x="270" y="43" width="42" height="33"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="v5v-nC-Xb9"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="njQ-IZ-Brc" firstAttribute="top" secondItem="zQx-7n-CFD" secondAttribute="bottom" id="1gm-Sk-5FA"/>
                     <constraint firstItem="iqc-jn-F2p" firstAttribute="leading" secondItem="njQ-IZ-Brc" secondAttribute="trailing" id="89i-DD-fkU"/>
                     <constraint firstItem="iqc-jn-F2p" firstAttribute="top" secondItem="zQx-7n-CFD" secondAttribute="bottom" id="IKO-VQ-0jt"/>
                     <constraint firstItem="zQx-7n-CFD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="K0s-bK-NX2"/>
-                    <constraint firstItem="njQ-IZ-Brc" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="PcG-xy-XL1"/>
+                    <constraint firstItem="njQ-IZ-Brc" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" constant="1" id="PcG-xy-XL1"/>
                     <constraint firstItem="zQx-7n-CFD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="a4v-JW-7wR"/>
                     <constraint firstAttribute="bottomMargin" secondItem="iqc-jn-F2p" secondAttribute="bottom" id="eb8-0b-kLI"/>
                     <constraint firstItem="iqc-jn-F2p" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="mIA-gW-0Og"/>
@@ -58,6 +63,8 @@
                     </mask>
                 </variation>
             </tableViewCellContentView>
+            <animations/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="descrizione" destination="njQ-IZ-Brc" id="t5q-Ia-j3D"/>
                 <outlet property="numero" destination="iqc-jn-F2p" id="A3c-HM-JRL"/>

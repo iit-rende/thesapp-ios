@@ -109,8 +109,9 @@
 
 -(void) openTerm:(Etichetta *) btn {
     NSString *value = [btn titleLabel].text;
-    NSLog(@"openTerm: %@", value);
-    [self.controller getTerm:value inLanguage:@"it"]; //TODO
+    NSString *lingua = [Utils getCurrentLanguage]; //TODO: testare
+    NSLog(@"[GenericCard] openTerm: %@ per lingua %@", value, lingua);
+    [self.controller getTerm:value inLanguage:lingua];
 }
 
 -(void) dietro:(UIButton *) btn {

@@ -46,15 +46,22 @@
     self.backgroundColor = [UIColor whiteColor];
     self.clipsToBounds = NO;
     
-    //////////////////////////////////////////////////////////////
-    //title label
     titolo.text = self.categoria.descriptor.descriptor;
     [titolo sizeToFit];
+    //[header sizeToFit];
     
-    //////////////////////////////////////////////////////////////
+    float titoloTop = titolo.frame.origin.y + titolo.frame.size.height;
+    
+    header.frame = CGRectMake(
+                              header.frame.origin.x,
+                              header.frame.origin.y,
+                              header.frame.size.width,
+                              titoloTop + 20);
+    
     //categorie
-    
     top = [self getHeaderHeightAndPadding];
+    
+    //NSLog(@"[TOP] = %d", top);
     
     // estraggo i termini in lingua
     NSArray *termini = [self.categoria.terms objectForKey:lingua];
@@ -89,7 +96,9 @@
                 primo = NO;
                 
                 CGRect rect = CGRectMake(BTN_PADDING_LEFT, top, 100, TITLE_LABEL_HEIGHT);
+                
                 top += 30;
+                
                 UILabel *par = [[UILabel alloc] initWithFrame:rect];
                 par.text = [firstChar uppercaseString];
                 par.textColor = [UIColor darkGrayColor];
@@ -119,7 +128,9 @@
             left = lbl.frame.size.width + lbl.frame.origin.x;
             
             [lbl addTarget:self action:@selector(openTerm:) forControlEvents:UIControlEventTouchUpInside];
+            
             [wrapper addSubview:lbl];
+            
             finalHeight += lbl.frame.size.height;
             
             lastLabelTop = lbl.frame.origin.y + lbl.frame.size.height;
@@ -136,13 +147,9 @@
         //CGRect newScrollViewFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, wrapper.frame.size.width, lastLabelTop);
         
         wrapper.frame = newFrame;
-        
         self.contentSize = CGSizeMake(wrapper.frame.size.width, lastLabelTop);
         
         //self.frame = newScrollViewFrame; //se ci metto questo non scrolla
-    }
-    else {
-        NSLog(@"ZERO CATEGORIE");   
     }
 }
 

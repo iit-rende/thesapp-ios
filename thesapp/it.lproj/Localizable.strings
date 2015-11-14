@@ -19,6 +19,10 @@
 "CHOSE_DOMAIN" = "Scegli un dominio";
 "DOWNLOAD_DOMAINS" = "Scarico i domini...";
 "SEARCH_PLACEHOLDER" = "Cerca un termine...";
+"DOMAIN_SEARCH" = "Ricerca domini in corso...";
+"CATEGORY_SEARCH" = "Ricerca categorie in corso...";
+"CATEGORIES_SEARCH" = "Ricerca categoria in corso...";
+"TERM_SEARCH" = "Ricerca termine in corso...";
 "COULD_INTEREST" = "Potrebbero interessarti";
 "SINOMINI" = "Sinonimi";
 "DESCRIPTION" = "Descrizione";
@@ -26,3 +30,9 @@
 "THESAPP" = "ThesApp";
 "WARNING" = "Attenzione";
 "TERM_NOT_FOUND" = "Termine non trovato";
+"NO_CATEGORIES_FOUND" = "Nessuna categoria trovata per questo dominio";
+"FILTER_FOR_CATEGORY" = "FILTRA PER CATEGORIA";
+"USE_ALL_CATEGORY" = "USA TUTTE LE CATEGORIE";
+"NO_TERM_FOUND" = "Nessun termine trovato";
+"NO_RESULTS" = "Nessun risultato";
+"RETRY"  = "Riprova";

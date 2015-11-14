@@ -22,4 +22,6 @@
 +(Etichetta *) createTermineLabel:(NSString *) title withFrame:(CGRect) frame;
 +(Etichetta *) createTermineGerarchiaLabel:(NSString *) title withFrame:(CGRect) frame;
 
+-(void) adaptSizeToMax:(float) maxSize;
+
 @end

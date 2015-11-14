@@ -102,8 +102,6 @@
 
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    NSLog(@"willSelectRowAtIndexPath");
-    
     return indexPath;
 }
 

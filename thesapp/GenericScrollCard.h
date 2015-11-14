@@ -16,7 +16,6 @@
 
 @interface GenericScrollCard : UIScrollView<CardName>
 {
-    
     @protected
     float fullWidth, fullWithPadding, top, paddingLeft, titleLabelHeight;
     UIView *header, *wrapper;

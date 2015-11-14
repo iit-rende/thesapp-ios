@@ -56,6 +56,7 @@
         
         CGRect tabelFrame = CGRectMake(10, y, fullWithPadding - 20, tableHeight);
         tabellaDomini = [[UITableView alloc] initWithFrame:tabelFrame style:UITableViewStylePlain];
+        
         tabellaDomini.delegate = self;
         tabellaDomini.dataSource = self;
         
@@ -64,12 +65,15 @@
         tabellaDomini.showsVerticalScrollIndicator = NO;
         tabellaDomini.showsHorizontalScrollIndicator = NO;
         tabellaDomini.backgroundColor = [UIColor magentaColor];
+        tabellaDomini.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        tabellaDomini.separatorColor = [UIColor lightGrayColor];
+        
+        //tabellaDomini.backgroundColor = [UIColor redColor];
         
         tabellaDomini.scrollEnabled = NO;
         
         UINib *nib = [UINib nibWithNibName:@"DominioTableViewCell" bundle:nil];
         [tabellaDomini registerNib:nib forCellReuseIdentifier:@"domainCell"];
-        
         
         [wrapper addSubview:tabellaDomini];
         
@@ -90,6 +94,24 @@
     }
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Remove seperator inset
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    // Prevent the cell from inheriting the Table View's margin settings
+    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+        [cell setPreservesSuperviewLayoutMargins:NO];
+    }
+    
+    // Explictly set your cell's layout margins
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView
 heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return ROW_HEIGHT;
@@ -107,6 +129,13 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     }
     */
     
+    //cell.separatorInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, cell.bounds.size.width);
+    
+    //cell.clipsToBounds = YES;
+    
+    //cell.indentationLevel = 1;
+    //cell.indentationWidth = 2000;
+    
     Domain *dominio = [domini objectAtIndex: [indexPath row]];
     
     Localization *loca = [dominio.localizations objectForKey:lingua];
@@ -122,7 +151,6 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     }
     
     return cell;
-    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

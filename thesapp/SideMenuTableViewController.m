@@ -13,26 +13,23 @@
 
 #define TIMER_INTERVAL 1.5
 #define FILTER_HEIGHT 35
+#define BASE_CONTAINER_HEIGHT 120
 #define CATEGORIES_ROW_HEIGHT 30
 #define RESULTS_ROW_HEIGHT 40
 #define LOADER_SIZE 37
 #define PICKER_VIEW_HEIGHT 162
 
-@interface SideMenuTableViewController ()
-
-@end
-
 @implementation SideMenuTableViewController
-@synthesize filter, filterTableView, chosenDomain, suggestionTableView, suggestionTitle, sfondo;
+@synthesize filter, filterTableView, chosenDomain, suggestionTableView, suggestionTitle, sfondo, tabellaRisultati;
 
 -(void)hideKeyBoard {
     [self.searchBar endEditing:YES];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
-    NSLog(@"menu apparso");
+    NSLog(@"[SEQ] menu apparso");
     
-    //self.barContainer.backgroundColor = [UIColor orangeColor];
+    self.barContainer.backgroundColor = [UIColor orangeColor];
     
     if (listaDomini.count > 0) {
         
@@ -40,33 +37,27 @@
         chosenDomain = [listaDomini firstObject];
         [tendina setTitle:chosenDomain.localization forState:UIControlStateNormal];
     }
-    else {
-        NSLog(@"PAOLO - domini non trovati");
-    }
     
     UIColor *colore;
     if (chosenDomain != nil) {
         colore = [Utils colorFromHexString:chosenDomain.color];
         
-        NSLog(@"COLORE DA DOMINIO");
     }
     else {
         colore = [Utils getDefaultColor];
-        NSLog(@"COLORE DI DEFAULT");
+
     }
     
-    NSLog(@"View Will appear, cambio colore");
-    //self.barContainer.backgroundColor = colore;
+    self.barContainer.backgroundColor = colore;
     
     UINavigationController *navC = (UINavigationController *) parent.centerViewController;
     svc = (ScrollerViewController *) [navC.viewControllers firstObject];
     
     if (svc == nil) {
-        NSLog(@"PAOLO - ancora nullo");
+
     }
     else {
         repo = [[Repository alloc] initWithProtocol:svc];
-        NSLog(@"PAOLO - non nullo");
     }
     
     /*
@@ -103,7 +94,13 @@
             
             if (chosenDomain == nil)  {
                 Domain *domin = [listaDomini objectAtIndex:0];
+                chosenDomain = domin;
+                
+                [Global singleton].activeDomain = domin;
+                
                 etichetta = domin.localization;
+                NSLog(@"setto dominio a %@ [%@]", [chosenDomain description], etichetta);
+                NSLog(@"domimnio settato ha colore %@", chosenDomain.color);
             }
             else {
                 etichetta = chosenDomain.localization;
@@ -118,6 +115,9 @@
         if (chosenDomain != nil) {
             
             NSLog(@"colore = %@", chosenDomain.color);
+            
+            if (chosenDomain.color != nil) {
+            
             UIColor *colore = [Utils colorFromHexString:chosenDomain.color];
             
             if (colore != nil){
@@ -127,14 +127,14 @@
                 [[NSOperationQueue mainQueue] addOperationWithBlock:
                  ^{
                     self.barContainer.backgroundColor = colore;
-                     NSLog(@"colore cambiato in %@", chosenDomain.localization);
+                     NSLog(@"colore cambiato in %@", chosenDomain.color);
                  }];
                 
                 [self.barContainer setBackgroundColor:colore];
-                
 
             } else NSLog(@"colore non cambiato");
-            
+                
+            }
         } else {
          
             NSLog(@"dominio nullo");
@@ -144,21 +144,12 @@
     
     [myPickerView reloadAllComponents];
     myPickerView.hidden = YES;
-    
-    NSLog(@"apro menu side");
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     float totalWidth = [AppDelegate getSidemenuWidth];
-    
-    if (svc == nil) {
-        NSLog(@"PAOLO - SVC NULLO");
-    }
-    else {
-        NSLog(@"PAOLO - SVC NON NULLO");
-    }
     
     lingua = [Utils getCurrentLanguage];
     
@@ -175,8 +166,8 @@
     //self.barContainer.backgroundColor = [Utils getDefaultColor];
     //[container addSubview:sfondo];
     
-    advice = [[UILabel alloc] initWithFrame:CGRectMake(10, self.barContainer.frame.size.height + 20, totalWidth - 20, 22)];
-    advice.text = @"Nessun risultato";
+    advice = [[UILabel alloc] initWithFrame:CGRectMake(10, BASE_CONTAINER_HEIGHT + 20, totalWidth - 20, 22)];
+    advice.text = NSLocalizedString(@"NO_RESULTS", @"nessun risultato");
     advice.textColor = [UIColor darkGrayColor];
     advice.textAlignment = NSTextAlignmentCenter;
     
@@ -187,13 +178,11 @@
                                            initWithTarget:self
                                            action:@selector(hideKeyBoard)];
     
-
     filter_list = [UIImage imageNamed:@"filter_list"];
     up_arrow = [UIImage imageNamed:@"up_arrow_white"];
     
     //misure
 
-    NSLog(@"width = %f", totalWidth );
     float sidePadding = 5;
     float xSize = 30;
     float tendinaWidth = 70;
@@ -204,23 +193,27 @@
     float containerHeight = wrapperHeight + FILTER_HEIGHT + 2 * sidePadding;
     
     indice = 0;
+    
     manager = [AFHTTPRequestOperationManager manager];
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
     CGRect tableFrame = CGRectMake(0, containerHeight + FILTER_HEIGHT, totalWidth, self.view.frame.size.height - containerHeight);
     
-    self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.bounces = NO;
-    self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.separatorColor = [UIColor clearColor];
-    self.tableView.tableFooterView = nil;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tabellaRisultati = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
+    tabellaRisultati.delegate = self;
+    tabellaRisultati.dataSource = self;
+    tabellaRisultati.bounces = NO;
+    tabellaRisultati.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    tabellaRisultati.showsVerticalScrollIndicator = NO;
+    tabellaRisultati.tableFooterView = nil;
+    tabellaRisultati.separatorColor = [UIColor clearColor];
+    tabellaRisultati.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    //self.tableView.estimatedRowHeight = 32.0;
+    //self.tableView.rowHeight = UITableViewAutomaticDimension;
     
-    [self.view addSubview:self.tableView];
+    [self.view addSubview:tabellaRisultati];
     
     self.navigationController.navigationBar.translucent = NO;
     
@@ -232,8 +225,9 @@
     
     CGRect nuovoFrame = CGRectMake(0, 0, totalWidth, containerHeight);
     container = [[UIView alloc] initWithFrame:nuovoFrame];
-    //container.backgroundColor = [UIColor clearColor]; //self.barContainer.backgroundColor;
     //container.clipsToBounds = YES;
+    
+    container.backgroundColor = [UIColor clearColor];
     
     //wrapper
     CGRect wrapperFrame = CGRectMake( 3*sidePadding, 6 * sidePadding, totalWidth - 6 * sidePadding , wrapperHeight);
@@ -266,7 +260,6 @@
     [wrapper addSubview:self.searchBar];
     
     //menu a tendina
-    
     
     /*
     UIButton *tendina = [[UIButton alloc] initWithFrame:tendinaFrame];
@@ -344,15 +337,17 @@
     //CREO PULSANTE DI ESPANSIONE FILTRO
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    CGRect toggleButtonFrame = CGRectMake(0, 5, totalWidth, 35);
+    CGRect toggleButtonFrame = CGRectMake(0, 5, totalWidth, FILTER_HEIGHT);
     filterToggleButton = [[UIView alloc] initWithFrame:toggleButtonFrame];
     
-    CGRect filterBtnFrame = CGRectMake(10, 5, 0, 35);
-    filterBtn = [[UILabel alloc] initWithFrame:filterBtnFrame];
-    [filterBtn setText:@"FILTRA PER CATEGORIA"];
+    filterBtn = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 0, FILTER_HEIGHT)];
+    
+    NSString *filterText = NSLocalizedString(@"FILTER_FOR_CATEGORY", @"filtro x categoria");
+    [filterBtn setText:filterText];
     [filterBtn setTextColor:[UIColor whiteColor]];
-    [filterBtn setFont:[UIFont systemFontOfSize:13.f]];
+    [filterBtn setFont:[UIFont italicSystemFontOfSize:13.f]];
     [filterBtn sizeToFit];
+    
     [filterToggleButton addSubview:filterBtn];
     
     //tasto toggle filtro
@@ -362,7 +357,7 @@
     [filterToggleButton addSubview:toggleFilter];
     
     UITapGestureRecognizer *singleFingerTap =
-    [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(expandFilter:)];
+    [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resetFilter:)];
     [filterToggleButton addGestureRecognizer:singleFingerTap];
     
     [filter addSubview:filterToggleButton];
@@ -384,6 +379,7 @@
     filterTableView.tableFooterView = nil;
     filterTableView.separatorColor = [UIColor clearColor];
     filterTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    filterTableView.clipsToBounds = YES; //NUOVO
     
     [filter addSubview:filterTableView];
     
@@ -395,8 +391,6 @@
     [self.view addSubview:container];
     
     float suggTabStartY = 360; // self.tableView.frame.size.height + self.tableView.frame.origin.y;
-    
-    NSLog(@"start = %f", suggTabStartY);
     
     CGRect suggTabFrame = CGRectMake(0, suggTabStartY + 30, totalWidth, 50);
     suggestionTableView = [[UITableView alloc] initWithFrame:suggTabFrame style:UITableViewStylePlain];
@@ -443,6 +437,15 @@
     [self.view addSubview:myPickerView];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    CGRect frame = tabellaRisultati.frame;
+    frame.size = tabellaRisultati.contentSize;
+    //self.tableView.frame = frame;
+    
+    //[self.tableView sizeToFit];
+}
+
 -(void) openPicker:(UIButton *) button {
     //myPickerView.hidden = NO;
     
@@ -460,11 +463,9 @@
     [actionSheet showInView:self.view];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet
-clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     int voce = (int) buttonIndex - 1;
-    NSLog(@"scelto indice %d", voce);
     
     if (!(voce > -1 && voce < listaDomini.count)) return;
     
@@ -513,7 +514,6 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     filter.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
     
     //se c'è frase nella search bar parte ricerca
-    
     if (self.searchBar.text != nil) {
         if (self.searchBar.text.length > 0) {
             [self aTime];
@@ -537,10 +537,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
     
     UILabel *label = [[UILabel alloc] init];
-    //label.backgroundColor = [UIColor blueColor];
     label.textColor = [UIColor whiteColor];
     label.font = [label.font fontWithSize:20.0f];
-    //label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
     label.textAlignment = NSTextAlignmentCenter;
     Domain *dominio = [listaDomini objectAtIndex:row];
     label.text = dominio.localization;
@@ -554,6 +552,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     return sectionWidth;
 }
 */
+
 #pragma mark - other methods
 
 -(void) XBtnClicked:(UIButton *) btn {
@@ -565,8 +564,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     if (expanded) [self expandFilter:self];
     
-    NSString *searchString = self.searchBar.text;
-    NSLog(@"cerco per %@", searchString);
+    searchString = self.searchBar.text;
     if (searchString != nil) {
         if (searchString.length > 0) {
             //azzero timer
@@ -593,14 +591,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 -(BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
-    NSLog(@"textFieldShouldBeginEditing");
-    
     return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    
-
     NSLog(@"textFieldDidBeginEditing %@]", self.searchBar.text);
 }
 
@@ -613,14 +607,18 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         return;
     }
     
+    if ([searchString isEqualToString:@""] || searchString == nil) {
+        NSLog(@"Nessuna stringa specificata");
+        return;
+    }
+    
     xbtn.hidden = YES;
 
     NSString *cate = [Utils WWWFormEncoded:cat];
     NSString *suffix = @"/search?query=";
-    NSString *testo = self.searchBar.text;
-    NSString *domain = [@"&domain=" stringByAppendingString:chosenDomain.descriptor];
+    NSString *domain = [@"&domain=" stringByAppendingString:[Utils WWWFormEncoded:chosenDomain.descriptor]];
     NSString *category = [@"&category=" stringByAppendingString:cate];
-    NSString *requestString = [[[[[Utils getServerBaseAddress] stringByAppendingString:suffix] stringByAppendingString:testo] stringByAppendingString:domain] stringByAppendingString:category];
+    NSString *requestString = [[[[[Utils getServerBaseAddress] stringByAppendingString:suffix] stringByAppendingString:searchString] stringByAppendingString:domain] stringByAppendingString:category];
     
     NSLog(@"[filterSearchByCategory] requestString = %@", requestString);
 
@@ -628,11 +626,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         
         NSDictionary *json = (NSDictionary *)responseObject;
         
-        NSLog(@"[Filter] JSON: %@", json);
-        
         NSMutableArray *results = [[NSMutableArray alloc] init];
         suggestions = [[NSMutableArray alloc] init];
+        
         //suggestions vanno filtrate in base al valore "semantic"
+        
         NSArray *temp = [json objectForKey:@"suggestions"];
 
         for (NSDictionary *sugg in temp) {
@@ -662,18 +660,24 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         
         array = [[NSArray alloc] initWithArray:results];
         
-        //aggiorno tabelle risultati
-        [self.tableView reloadData];
+        NSLog(@"array contiene %d risultati ", (int) array.count);
         
-        float newHeight = array.count * RESULTS_ROW_HEIGHT;
-        self.tableView.frame = CGRectMake(self.tableView.frame.origin.x,
-                                          self.tableView.frame.origin.y,
-                                          self.tableView.frame.size.width,
-                                          newHeight);
+        if (results.count > 0) {
+            //aggiorno tabelle risultati
+            [tabellaRisultati reloadData];
+        }
+        
+        //[self.tableView sizeToFit];
+        
+        float newHeight = array.count * RESULTS_ROW_HEIGHT; // tabellaRisultati.rowHeight;
+        tabellaRisultati.frame = CGRectMake(tabellaRisultati.frame.origin.x,
+                                          tabellaRisultati.frame.origin.y,
+                                          tabellaRisultati.frame.size.width,
+                                       newHeight);
         
         [suggestionTableView reloadData];
-        
-        float inizioY = self.tableView.frame.size.height + self.tableView.frame.origin.y + 20;
+
+        float inizioY = tabellaRisultati.frame.size.height + tabellaRisultati.frame.origin.y + 20;
         
         suggestionTitle.frame = CGRectMake(suggestionTitle.frame.origin.x,
                                            inizioY,
@@ -681,34 +685,49 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                                            suggestionTitle.frame.size.height);
         
         float height = suggerimenti * RESULTS_ROW_HEIGHT;
+        
         suggestionTableView.frame = CGRectMake(suggestionTableView.frame.origin.x, inizioY + 30, suggestionTableView.frame.size.width, height);
         
         //[suggestionTableView sizeToFit];
         //[self.tableView sizeToFit];
-        
         [loader stopAnimating];
         xbtn.hidden = NO;
     }
     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-             
         NSLog(@"Error: %@", error);
         [loader stopAnimating];
         xbtn.hidden = NO;
     }];
 }
 
+- (CGRect)heightOfLabel:(UILabel*)resizableLable
+{
+    CGSize constrainedSize = CGSizeMake(resizableLable.frame.size.width  , 9999);
+    
+    NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          [UIFont fontWithName:@"HelveticaNeue" size:11.0], NSFontAttributeName,
+                                          nil];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"textToShow" attributes:attributesDictionary];
+    
+    CGRect requiredHeight = [string boundingRectWithSize:constrainedSize options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    
+    if (requiredHeight.size.width > resizableLable.frame.size.width) {
+        requiredHeight = CGRectMake(0,0, resizableLable.frame.size.width, requiredHeight.size.height);
+    }
+    
+    return requiredHeight;
+}
+
 #pragma mark - metodi ricerca generici
 -(void)aTime {
 
-    NSLog(@"INIZIA RICERCA");
-    
     [loader startAnimating];
     xbtn.hidden = YES;
     [timer invalidate];
     //parte richiesta
     
     if (chosenDomain.descriptor == nil) {
-        NSLog(@"Descrizione dominio mancnate");
         return;
     }
     
@@ -726,11 +745,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     [manager GET:requestString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        //NSLog(@"JSON: %@", responseObject);
-        
         NSDictionary *json = (NSDictionary *)responseObject;
-        
-        NSLog(@"json = %@", json);
         
         if ([operation.response isKindOfClass:[NSHTTPURLResponse class]]) {
             NSHTTPURLResponse *r = (NSHTTPURLResponse *)operation.response;
@@ -748,11 +763,24 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
             
             int totCat = (int)[categories count];
             
-            NSLog(@"categories count: %d", totCat);
+            //filterTableView.backgroundColor = [UIColor purpleColor];
             
             if (totCat == 0) {
                 
+                NSLog(@"inserisco avviso");
+                
                 [self.view addSubview:advice];
+                
+                array = @[];
+                
+                [tabellaRisultati reloadData];
+                
+                float nuovaHeight = array.count * RESULTS_ROW_HEIGHT;
+                tabellaRisultati.frame = CGRectMake(tabellaRisultati.frame.origin.x,
+                                                  tabellaRisultati.frame.origin.y,
+                                                  tabellaRisultati.frame.size.width,
+                                                  nuovaHeight);
+                
             }
             else {
                 NSLog(@"categories: %@", [categories description]);
@@ -763,15 +791,21 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                 filterTableView.hidden = NO;
                 
                 if (categories.count == 1) {
-                    NSLog(@"UNA SOLA CATEGORIA TROVATA");
-                    filterToggleButton.hidden = YES;
                     
+                    NSLog(@"UNA SOLA CATEGORIA TROVATA, CATEGORIES_ROW_HEIGHT = %d", CATEGORIES_ROW_HEIGHT);
+                    
+                    filterToggleButton.hidden = YES;
                     filterTableView.frame = CGRectMake(filterTableView.frame.origin.x, filterTableView.frame.origin.y, filterTableView.frame.size.width, CATEGORIES_ROW_HEIGHT);
                     
+                    //[filterTableView removeFromSuperview]; //TODO: temp
                 }
                 else{
                     
+                    float height = CATEGORIES_ROW_HEIGHT * categories.count;
+                    
                     filterTableView.frame = CGRectMake(filterTableView.frame.origin.x, filterTableView.frame.origin.y, filterTableView.frame.size.width, 0);
+
+                    NSLog(@"PIU CATEGORIE TROVATE, altezza = %f", height);
                     
                     filterToggleButton.hidden = NO;
                 }
@@ -799,32 +833,51 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                 
                 if (totCat > 0) {
                     NSLog(@"array tot = %d", (int) array.count);
-                    [self.tableView reloadData];
+                    
+                    [tabellaRisultati reloadData];
+                    
                     filter.hidden = NO;
                     
-                    float newHeight  = container.frame.size.height + FILTER_HEIGHT;
+                    //container.frame.size.height
+                    float newHeight =  BASE_CONTAINER_HEIGHT; // + FILTER_HEIGHT;
+                    
                     CGRect newContFrame = CGRectMake(container.frame.origin.x, container.frame.origin.y, container.frame.size.width, newHeight);
+                    
+                    NSLog(@"nuova altezza per container è %f, di cui filter height è %d", newHeight, FILTER_HEIGHT);
+                    
                     container.frame = newContFrame;
                     
                     float nuovaHeight = array.count * RESULTS_ROW_HEIGHT;
-                    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x,
-                                                      self.tableView.frame.origin.y,
-                                                      self.tableView.frame.size.width,
+                    
+                    tabellaRisultati.frame = CGRectMake(tabellaRisultati.frame.origin.x,
+                                                      tabellaRisultati.frame.origin.y,
+                                                      tabellaRisultati.frame.size.width,
                                                       nuovaHeight);
+                    
+                    
+                    NSLog(@"newHeight = %f", nuovaHeight);
+                    
+                    [tabellaRisultati becomeFirstResponder];
                 }
-                
+                else {
+                    NSLog(@"no categories");
+                }
                 
                 //GESTISCO I SEMANTICI
                 
                 suggestions = semantics;
                 
                 if (suggestions.count > 0) {
+                    
+                    //self.tableView.backgroundColor = [UIColor orangeColor];
+                    
                     suggestionTableView.hidden = NO;
                     suggestionTitle.hidden = NO;
                 }
                 else {
-                    suggestionTableView.hidden = YES;
-                    suggestionTitle.hidden = YES;
+                    //suggestionTableView.hidden = YES;
+                    //suggestionTitle.hidden = YES;
+                    //suggestionTableView.backgroundColor = [UIColor redColor];
                 }
                 
                 [suggestionTableView reloadData];
@@ -832,7 +885,27 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                 NSLog(@"ci sono %d suggestions", (int) suggestions.count);
                 
                 //sposto tabella verticalmente
-                float inizioY = self.tableView.frame.size.height + self.tableView.frame.origin.y + 20;
+                
+                //[self.tableView sizeToFit];
+                /*
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    CGFloat newHeight = self.tableView.contentSize.height;
+                    
+                    CGFloat screenHeightPermissible=(self.view.bounds.size.height-self.tableView.frame.origin.y);
+                 
+                    CGRect frame = self.tableView.frame;
+                    frame.size.height = newHeight;
+                    self.tableView.frame = frame;
+
+                });
+                */
+                
+                tabellaRisultati.clipsToBounds = YES;
+                
+                NSLog(@"altezzaTabella 2 = %f", tabellaRisultati.frame.size.height);
+                
+                float inizioY = tabellaRisultati.frame.size.height + tabellaRisultati.frame.origin.y + 20;
                 
                 NSLog(@"inizioY = %f", inizioY);
                 
@@ -842,13 +915,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
                                                    suggestionTitle.frame.size.height);
                 
                 float height = suggestions.count * RESULTS_ROW_HEIGHT;
-                
-                
-                
+
                 suggestionTableView.frame = CGRectMake(suggestionTableView.frame.origin.x, inizioY + 30, suggestionTableView.frame.size.width, height);
                 
             }
-
             
             [loader stopAnimating];
             xbtn.hidden = NO;
@@ -862,7 +932,23 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }];
 }
 
+-(IBAction)resetFilter:(id)sender {
+    if (expanded) {
+        [self filterSearchByCategory:@""];
+    }
+
+    [self expandFilter:sender];
+}
+
 -(IBAction)expandFilter:(id)sender {
+    
+    if (advice != nil) [advice removeFromSuperview];
+    
+    BOOL resetFilter = sender != nil;
+
+    if (resetFilter) {
+
+    }
     
     [self.searchBar resignFirstResponder];
     
@@ -871,47 +957,47 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *titolo;
     
     if (!expanded) {
-        height = filterHeight + increment;
+        height = filterHeight + FILTER_HEIGHT; // + increment;
         tableHeight = filterHeight;
         difference = increment;
-        btnY = filterHeight + 20;
+        btnY = filterHeight + 5;
         containerHeight = 80 + increment;
         NSLog(@"espando");
-        titolo = @"USA TUTTE LE CATEGORIE";
+        titolo = NSLocalizedString(@"USE_ALL_CATEGORY", @"usa tutte");
         tabellaY = containerHeight;
     }
     else {
         height = FILTER_HEIGHT;
         tableHeight = 0;
-        containerHeight = 115;
+        containerHeight = BASE_CONTAINER_HEIGHT;
         difference = -increment;
         btnY = 5;
         NSLog(@"comprimo");
-        titolo = @"FILTRA PER CATEGORIA";
-        tabellaY = containerHeight;
+        titolo = NSLocalizedString(@"FILTER_FOR_CATEGORY", @"filtra");
+        tabellaY = BASE_CONTAINER_HEIGHT;
     }
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.25];
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
     
-    filter.frame = CGRectMake(filter.frame.origin.x, filter.frame.origin.y, filter.frame.size.width, height);
-    
     container.frame = CGRectMake(container.frame.origin.x, container.frame.origin.y, container.frame.size.width, containerHeight);
-    
+
     //float y = self.tableView.frame.origin.y  + difference;
 
-    self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, tabellaY, self.tableView.frame.size.width, self.tableView.frame.size.height);
+    tabellaRisultati.frame = CGRectMake(tabellaRisultati.frame.origin.x, tabellaY, tabellaRisultati.frame.size.width, tabellaRisultati.frame.size.height);
     
     filterTableView.frame = CGRectMake(filterTableView.frame.origin.x, filterTableView.frame.origin.y, filterTableView.frame.size.width, tableHeight); //height - 50
     
-    //filterBtn.frame = CGRectMake(filterBtn.frame.origin.x, btnY, filterBtn.frame.size.width, filterBtn.frame.size.height);
+    filter.frame = CGRectMake(filter.frame.origin.x, filter.frame.origin.y, filter.frame.size.width, height);
     
+    //filter.backgroundColor = [UIColor purpleColor];
+    //filterBtn.frame = CGRectMake(filterBtn.frame.origin.x, btnY, filterBtn.frame.size.width, filterBtn.frame.size.height);
     //toggleFilter.frame = CGRectMake(toggleFilter.frame.origin.x, btnY, toggleFilter.frame.size.width, toggleFilter.frame.size.height);
     
     filterToggleButton.frame = CGRectMake(filterToggleButton.frame.origin.x, btnY, filterToggleButton.frame.size.width, filterToggleButton.frame.size.height);
     
-    float suggestionNewY = self.tableView.frame.origin.y + self.tableView.frame.size.height + 10;
+    float suggestionNewY = tabellaRisultati.frame.origin.y + tabellaRisultati.frame.size.height + 10;
     
     suggestionTitle.frame = CGRectMake(
                                            suggestionTitle.frame.origin.x,
@@ -996,7 +1082,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         }
     }
     
-    //[self.tableView reloadData];
+    //[tabellaRisultati reloadData];
 }
 */
 
@@ -1007,20 +1093,34 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == self.tableView) return [array count];
-    if (tableView == suggestionTableView) return [suggestions count];
-    return [filters count];
+    
+    int val = 0;
+
+    if (tableView == tabellaRisultati) {
+        val = (int)[array count];
+    }
+    else
+        if (tableView == suggestionTableView) {
+            val = (int)[suggestions count];
+        }
+        else {
+            val = (int)[filters count];
+        }
+
+    return val;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell;
     
-    if (tableView == self.tableView) {
+    if (tableView == tabellaRisultati) {
+        
+        NSLog(@"creo riga risultati per Tabella Risultati, altezza = %f", tabellaRisultati.frame.size.height);
     
         static NSString *CellIdentifier = @"cell";
     
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell = [tabellaRisultati dequeueReusableCellWithIdentifier:CellIdentifier];
         
         if (cell == nil) {
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
@@ -1028,14 +1128,16 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         
         NSDictionary *json = [array objectAtIndex:indexPath.row];
         
-        NSLog(@"json = %@", [json description]);
-        
         cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
-        
+        cell.textLabel.font = [UIFont systemFontOfSize:13.0];
         cell.textLabel.text = [json objectForKey:@"descriptor"];
+        cell.textLabel.numberOfLines = 0;
+        //cell.textLabel.lineBreakMode = UIText;
+        //[cell.textLabel sizeToFit];
         
         NSString *keyword = self.searchBar.text;
         NSRange range = [cell.textLabel.text rangeOfString:keyword options:NSCaseInsensitiveSearch];
+        
         if (range.location == NSNotFound) {
         } else {
             int start = (int)range.location;
@@ -1059,7 +1161,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         cell.backgroundColor = [UIColor clearColor];
         NSDictionary *json = [suggestions objectAtIndex:indexPath.row];
         cell.textLabel.text = [json objectForKey:@"descriptor"];
-        //cell.textLabel.font = [cell.textLabel.font fontWithSize:14.0f];
+        cell.textLabel.font = [UIFont systemFontOfSize:13.0];
         //cell.textLabel.textColor = [UIColor darkGrayColor];
     }
     else {
@@ -1099,26 +1201,32 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     return 0;
 }
 
+/*
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewAutomaticDimension;
+}
+*/
+
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == self.tableView) return RESULTS_ROW_HEIGHT;
+    
+    if (tableView == tabellaRisultati) return RESULTS_ROW_HEIGHT;
     return CATEGORIES_ROW_HEIGHT;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int riga = (int)[tableView indexPathForSelectedRow].row;
+    
     if (riga < 0) return;
  
-    if (tableView == self.tableView) {
+    if (tableView == tabellaRisultati) {
     
         NSDictionary *json = [array objectAtIndex:riga];
         NSString *value = [json objectForKey:@"descriptor"];
         NSString *lang = [json objectForKey:@"language"];
-        NSLog(@"didSelectRowAtIndexPath = %@", value);
         
         if (value == nil) return;
-        
-        //NSArray *subviews = [parent.centerViewController.view subviews];
+        [svc showHUDProgress:@"Ricerca termine in corso..."];
 
         [repo getSingleTerm:value withDomain:chosenDomain andLanguage:lang];
         [parent closeDrawerAnimated:YES completion:nil];
@@ -1127,9 +1235,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
     else if (tableView == suggestionTableView) {
     
+        NSLog(@"suggestionTableView");
+        
         NSDictionary *json = [suggestions objectAtIndex:riga];
         NSString *value = [json objectForKey:@"descriptor"];
-        NSLog(@"[suggestions] didSelectRowAtIndexPath = %@", value);
         
         if (value == nil) return;
         
@@ -1139,6 +1248,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         [self.searchBar resignFirstResponder];
     }
     else {
+        
+        NSLog(@"altro");
         
         if (filterToggleButton.hidden) return;
         
@@ -1153,14 +1264,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     //NSArray *sotto = view.subviews;
     //int cards = (int) view.subviews.count;
     //NSLog(@"ci sono %d card", cards);
-    
-    //for (UIView *v in subviews) {
-    //    NSLog(@"[View] %@", [v description]);
-    //}
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    NSLog(@"didReceiveMemoryWarning");
 }
 
 @end

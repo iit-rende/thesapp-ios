@@ -4,7 +4,6 @@
 //
 //  Created by Paolo Burzacca on 12/05/15.
 //
-//
 
 #import "InfoViewController.h"
 #import "ScrollerViewController.h"
@@ -23,18 +22,82 @@
 
 @synthesize listaDomini ; //, dominioScelto;
 
+-(void) viewWillAppear:(BOOL)animated {
+
+    NSLog(@"lingua in uso = %@", [Global singleton].linguaInUso);
+    NSString *nuova = [Utils getCurrentLanguage];
+    
+    NSLog(@"rileggo la lingua, nuova = %@", nuova);
+    
+    if (![nuova isEqualToString:[Global singleton].linguaInUso]) {
+
+        NSLog(@"[LINGUA] lingua cambiata in %@", nuova);
+        
+        [Global singleton].linguaInUso = nuova;
+        
+        [self removeCards:YES];
+        [self resetVars];
+        [self removeMainCard];
+        [self getDomains];
+    }
+}
+
+-(void) viewDidAppear:(BOOL)animated {
+
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.scrollView setPagingEnabled:YES];
     self.scrollView.delaysContentTouches = NO;
     [self setNeedsStatusBarAppearanceUpdate];
     [self initVars];
-    [self initLanguage];
     [self initNavigationBar];
     [self initObjects];
     [self initView];
     [self loadLayout];
+    
     [self getDomains];
+    
+    /*
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(applicationReactivated)
+                                                name:UIApplicationDidBecomeActiveNotification
+                                              object:nil];
+     */
+    
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(onMessageReceived:)
+                                                name:@"onMessageReceived"
+                                              object:nil];
+}
+
+-(void) onMessageReceived:(NSNotification *) notification {
+
+    NSLog(@"onMessageReceived");
+    NSDictionary *dizionario = notification.userInfo;
+    NSString *customNotification = [dizionario objectForKey:@"notification"];
+    NSData *data = [customNotification dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    NSString *domain = [json objectForKey:@"domain"];
+    Domain *dom = [Utils getDomainFromFile:domain];
+    
+    if (dom != nil) {
+        NSLog(@"domnio locale trovato, scarico categorie dominio");
+        [self getCategoriesByDomain:dom];
+    }
+    else {
+        NSLog(@"Dominio locale non trovato, non faccio nulla");
+    }
+    
+    // CONTROLLO LINGUA
+    [self removeCards:YES];
+    [self resetVars];
+    [self getDomains];
+}
+
+-(void) applicationReactivated {
 }
 
 - (void)viewDidUnload {
@@ -47,18 +110,15 @@
 }
 
 - (void) goBack {
-    NSLog(@"[SVC] goBack");
 }
 
 -(void) loadLayout {
-    NSLog(@"[SVC] ricarico layout");
     
     //ci metto tutti i valori che dipendono dallo schermo
     
     if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        larghezza = ceil(screenWidth * IPAD_SCREEN_SIZE);
+        larghezza = screenWidth; // ceil(screenWidth * IPAD_SCREEN_SIZE);
         padding = ((screenWidth - larghezza) / 2);
-        NSLog(@"PADDING = %f", padding);
     }
     else {
         padding = MARGIN / 2;
@@ -71,7 +131,6 @@
     scrollWidth = screenWidth;
     
    // for (UIView *vista in self.scrollView.subviews) {
-        NSLog(@"ricreo vista");
         
         //TODO: non funziona
         
@@ -104,8 +163,6 @@
     }
     
     if (curPortrait != portrait) {
-        NSLog(@"RUOTATO");
-        
         screenWidth = self.view.frame.size.width;
         [self loadLayout];
     }
@@ -114,13 +171,6 @@
 }
 
 #pragma mark - Init methods
-
--(void) initLanguage {
-    lingua = [Utils getCurrentLanguage];
-    NSUserDefaults *myDefaults = [NSUserDefaults standardUserDefaults];
-    defaultLanguage = [myDefaults stringForKey:@"language"];
-    NSLog(@"SETTINGS: language = %@", defaultLanguage);
-}
 
 -(void) initView {
     
@@ -141,7 +191,7 @@
 
 -(void) initNavigationBar {
     
-    self.navigationController.navigationBar.barTintColor = [Utils getDefaultColor];
+    [self updateNavBarColor:[Utils getDefaultColor]];
     
     backButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"<" style:UIBarButtonItemStylePlain target:self action:@selector(goToPrevCard:)];
     
@@ -176,7 +226,7 @@
     UIButton* leftButton = [UIButton buttonWithType:UIButtonTypeSystem];
     leftButton.backgroundColor = [UIColor clearColor];
     leftButton.frame = leftButtonView.frame;
-    [leftButton setImage:[UIImage imageNamed:@"info_icon"] forState:UIControlStateNormal];
+    [leftButton setImage:[UIImage imageNamed:@"settings"] forState:UIControlStateNormal];
     leftButton.autoresizesSubviews = YES;
     leftButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     [leftButton addTarget:self action:@selector(openInfoPage:) forControlEvents:UIControlEventTouchUpInside];
@@ -195,21 +245,23 @@
 
 -(void) initVars {
     screenWidth = self.view.frame.size.width;
+    topPadding = MARGIN / 2;
+    repo = [[Repository alloc] initWithProtocol:self];
+    [self resetVars];
+}
+
+-(void) resetVars {
     pageIndex = 0; //pagina corrente
     totPages = 0;
     xOffset = 0;
-    topPadding = MARGIN / 2;
     numSchede = 0;
-    repo = [[Repository alloc] initWithProtocol:self];
 }
 
 -(void) appendRetryButton {
     
-    NSLog(@"appendRetryButton");
-    
     NSString *downloadMsg = NSLocalizedString(@"DOWNLOAD_DOMAINS", @"scaricamento domini");
     
-    downloadMsg = @"RIPROVA";
+    downloadMsg = NSLocalizedString(@"RETRY", @"riprova");
     
     float top = (self.view.frame.size.height - 66) / 2 - LABEL_HEIGHT;
     float width = screenWidth - 2 * MARGIN;
@@ -222,7 +274,6 @@
     [retryBtn.titleLabel setFont:[UIFont systemFontOfSize:16.f]];
     
     [retryBtn addTarget:self action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
-    
     [self.view addSubview:retryBtn];
 }
 
@@ -231,17 +282,18 @@
 }
 
 -(void) reload {
-    NSLog(@"reload");
     [self removeRetryButton];
     [self getDomains];
 }
 
 -(void) getDomains {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];    
-    [self initDomainLoader];
-    [repo getDomainsForLanguage:defaultLanguage];
+    listaDomini = nil;
+    
+    [self showHUDProgress:@"DOMAIN_SEARCH"];
+    [repo getDomainsForLanguage:[Global singleton].linguaInUso];
 }
 
+// DEPRECATO
 -(void) initDomainLoader {
     NSString *downloadMsg = NSLocalizedString(@"DOWNLOAD_DOMAINS", @"scaricamento domini");
     
@@ -267,7 +319,9 @@
     [self.view addSubview:dwnLbl];
 }
 
+// DEPRECATO
 -(void) removeDomainLoader {
+    NSLog(@"removeDomainLoader");
     [dwnLbl removeFromSuperview];
     [loader removeFromSuperview];
 }
@@ -304,7 +358,7 @@
             else {
                 //pageIndex++;
                 NSLog(@"non c'è, scarico dominio");
-                [self getCategoriesByDomain:dominio];
+                [self getCategoriesByDomain:dominio ];
             }
         }
     }
@@ -313,20 +367,69 @@
 -(void) getCategoriesByDomain:(Domain *) dominio {
     
     [[Global singleton] setDominio:dominio];
-    NSLog(@"[due] dominio scelto = %@", [Global singleton].activeDomain.descriptor);
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];    
-    [repo getCategoriesByDomain:dominio];
+    [self showHUDProgress:@"CATEGORIES_SEARCH"];
+    [repo getCategoriesByDomain:dominio forLanguage:[Global singleton].linguaInUso];
 }
 
 - (void) getDomainCategory:(NSString *) categoria fromDomain:(Domain *) dominio {
-    [repo getDomainCategory:categoria fromDomain:dominio forLanguage:lingua];
+    [self showHUDProgress:@"CATEGORIES_SEARCH"];
+    [repo getDomainCategory:categoria fromDomain:dominio forLanguage:[Global singleton].linguaInUso];
 }
 
 -(void) openInfoPage:(id) sender {
+    
+    /*
     UIStoryboard * st =  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     NSString *infoVCsid = @"infoVCsid";
     InfoViewController *infoVC = (InfoViewController *) [st instantiateViewControllerWithIdentifier:infoVCsid];
     if (infoVC != nil) [self.navigationController pushViewController:infoVC animated:YES];
+     */
+    
+    PopoverViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"PopoverView"];
+    
+    controller.delegato = self;
+    
+    //UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:controller];
+    
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    
+    UIPopoverPresentationController *popover = controller.popoverPresentationController;
+    
+    controller.preferredContentSize = CGSizeMake(150, 100);
+    
+    popover.delegate = self;
+    popover.sourceView = self.view;
+    popover.sourceRect = CGRectMake(self.view.frame.size.width - 50, 10, 0, 0);
+    popover.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+-(void) closeMenuWithSID:(NSString *)sid {
+    NSLog(@"sid = %@", sid);
+    
+    UIStoryboard * st =  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIViewController *infoVC = (UIViewController *) [st instantiateViewControllerWithIdentifier:sid];
+    
+    if (infoVC != nil) [self.navigationController pushViewController:infoVC animated:YES];
+}
+
+- (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+
+    NSLog(@"DIMESSO 1");
+    return YES;
+}
+
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+
+    NSLog(@"DIMESSO");
+    
+}
+
+-(UIModalPresentationStyle) adaptivePresentationStyleForPresentationController: (UIPresentationController * ) controller
+{
+    return UIModalPresentationNone;
 }
 
 -(void) deleteHistory:(id)sender {
@@ -343,7 +446,7 @@
         indice++;
     }
     
-    //[self removeCards:NO];
+    [self removeCards:NO];
 }
 
 -(void) openSearchMenu:(id)sender {
@@ -374,6 +477,22 @@
     NSLog(@"xOffset = %d", xOffset);
     
     return CGRectMake(xFrame, topPadding, larghezza, altezza); //era padding + xOffset
+}
+
+-(void) removeMainCard {
+    NSArray *subviews = [self.scrollView subviews];
+    int totViews = (int) [subviews count];
+    
+    NSLog(@"ci sono %d subviews", totViews);
+    if (totViews < 1) return;
+    [[subviews objectAtIndex:0] removeFromSuperview];
+    xOffset = 0;
+    
+    NSLog(@"Cards = %@", [cards description]);
+    [cards removeAllObjects];
+    NSLog(@"Cards = %@", [cards description]);
+    totPages = 0;
+    pageIndex = 0;
 }
 
 -(void) removeCards:(BOOL) all {
@@ -427,7 +546,7 @@
     totPages = startIndex;
     pageIndex = startIndex - 1;
     
-    lingua = defaultLanguage;
+    //lingua = defaultLanguage;
     
     NSLog(@"dopo] cards = %@", [cards description]);
 }
@@ -516,7 +635,7 @@
 
 -(void) scrollToIndex:(int) indice {
     float offset = indice * scrollWidth;
-    NSLog(@"vado a offset = %f", offset);
+    //NSLog(@"vado a offset = %f", offset);
     [self scrollToPoint:CGPointMake(offset, 0)];
 }
 
@@ -589,8 +708,8 @@
     
     float nuovaX = self.scrollView.contentOffset.x;
     
-    NSLog(@"nuovaX = %f", nuovaX);
-    NSLog(@"rapporto = %f", nuovaX / scrollWidth);
+    //NSLog(@"nuovaX = %f", nuovaX);
+    //NSLog(@"rapporto = %f", nuovaX / scrollWidth);
     
     //pageIndex = nuovaX / scrollWidth;
     int ratio = lroundf(nuovaX / scrollWidth);
@@ -601,7 +720,10 @@
     
     if (pageIndex == 0) {
         //home
-        self.navigationController.navigationBar.barTintColor = [Utils getDefaultColor];
+        
+
+        [self updateNavBarColor:[Utils getDefaultColor]];
+        
         NSString *newTitle = NSLocalizedString(@"THESAPP", @"ThesApp");
         [titleButton setTitle:newTitle];
         
@@ -612,13 +734,13 @@
     else {
         
         if ([Global singleton].activeDomain == nil) {
-            NSLog(@"recupero ultimo dominio");
+            //NSLog(@"recupero ultimo dominio");
             [[Global singleton] restoreLastDomain];
         }
         
         if ([Global singleton].activeDomain != nil) {
             
-            self.navigationController.navigationBar.barTintColor = [Utils colorFromHexString:[Global singleton].activeDomain.color];
+            [self updateNavBarColor:[Utils colorFromHexString:[Global singleton].activeDomain.color]];
             
              NSString *newTitle = [[NSLocalizedString(@"THESAPP", @"ThesApp") stringByAppendingString:@" - "] stringByAppendingString:[Global singleton].activeDomain.localization];
             
@@ -653,9 +775,8 @@
         NSLog(@"Dominio non impostato");
     }
     
-    //[self getDomainCategory:catName fromDomain:dom];
-    
-    [repo getDomainCategory:catName fromDomain:dom forLanguage:lingua];
+    [self showHUDProgress:@"CATEGORY_SEARCH"];
+    [repo getDomainCategory:catName fromDomain:dom forLanguage:[Global singleton].linguaInUso];
 }
 
 #pragma mark - other methods
@@ -681,18 +802,20 @@
 
 -(void) getTerm:(NSString *)term inLanguage:(NSString *)lang {
     
-    NSLog(@"[SVC] get Term, controllo se %@ esiste", term);
+    //NSLog(@"[SVC] get Term, controllo se %@ esiste", term);
     
     if (cards != nil) {
         int cardIndex = [[cards objectForKey:term] intValue];
         if (cardIndex > 0) {
-            NSLog(@"Trovata card con indice = %d", cardIndex);
+
             [self scrollToIndex:cardIndex];
         }
         else {
             //self.dominioScelto = [Global singleton].activeDomain;
             NSLog(@"Card non trovata, scarico, dominio scelto = %@", [Global singleton].activeDomain.descriptor);
             //[self getSingleTerm:term withDomain:[Global singleton].activeDomain andLanguage:lang]; OLD
+            
+            [self showHUDProgress:@"TERM_SEARCH"];
             [repo getSingleTerm:term withDomain:[Global singleton].activeDomain andLanguage:lang];
         }
     }
@@ -707,25 +830,24 @@
 -(void) singleTermReceived:(Term *) term {
     NSLog(@"singleTermReceived");
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self showSuccessHUD:@""];
     
-    //creo card vuota
+    UIColor *colore = [Utils colorFromHexString:term.domain.color];
+    [self updateNavBarColor:colore];
+    
     TermCard *card = [self createTermCard];
-    //popolo card con i dati del term
     card = [term createTermCard:card];
-    //inserisco card nella vista
     [self addCardToStoryboard:card];
 }
 
 -(void) singleTermNotReceived:(NSString *) error {
-    NSLog(@"singleTermNotReceived");
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
-    //NSInteger statusCode = operation.response.statusCode;
-    //NSString *msg = (statusCode == 404) ? NSLocalizedString(@"TERM_NOT_FOUND", @"termine non trovato") : error.localizedDescription;
+    NSLog(@"singleTermNotReceived");
+
+    [self removeHUD];
     
     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
-                                                        message:error
+                                                        message:NSLocalizedString(@"NO_TERM_FOUND", @"termine non trovato")
                                                         delegate:nil
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles:nil] show];
@@ -733,32 +855,27 @@
 
 -(void) domainReceived:(NSArray *) domainlist {
     
-    NSLog(@"domainReceived");
+    NSLog(@"[domainReceived]");
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self showSuccessHUD:@""];
     
-    listaDomini = [[NSMutableArray alloc] init];
-    
-    for (NSDictionary *domain in domainlist) {
-        Domain *dominio = [Domain getDomainFromJson:domain];
-        [listaDomini addObject:dominio];
-    }
+    listaDomini = [[NSMutableArray alloc] initWithArray:domainlist];
     
     DomainCard *mainCard = [[DomainCard alloc] initWithFrame:[self makeCardFrame]]; //[DomainCard createWithDomain:dominio];
+    
     mainCard.tag = numSchede * 1000;
     mainCard.domini = [Utils ordinaByDescriptor:listaDomini];
     [mainCard render];
     
-    [self removeDomainLoader];
+    //[self removeDomainLoader];
     [self addCardToStoryboard:mainCard];
 }
 
 -(void) domainNotReceived:(NSString *) error {
     NSLog(@"domainNotReceived");
     
-    [self removeDomainLoader];
+    [self removeHUD];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
                                                         message:error
                                                         delegate:nil
@@ -772,7 +889,7 @@
     
     NSLog(@"domainCategoriesReceived");
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self showSuccessHUD:@""];
     
     //creo card
     DomainCategoryCard *card = [[DomainCategoryCard alloc] initWithFrame:[self makeCardFrame]];
@@ -783,30 +900,36 @@
     [self addCardToStoryboard:card];
     
     UIColor *colore = [Utils colorFromHexString:card.dominio.color];
-    [self.navigationController.navigationBar setBarTintColor:colore];
+    [self updateNavBarColor:colore];
     
     NSString *newTitle = [[NSLocalizedString(@"THESAPP", @"ThesApp") stringByAppendingString:@" - "] stringByAppendingString:card.dominio.localization];
     
     [titleButton setTitle:newTitle];
 }
 
+-(void) updateNavBarColor:(UIColor *) colore {
+    if (colore != nil)
+    [self.navigationController.navigationBar setBarTintColor:colore];
+}
+
 -(void) domainCategoriesNotReceived:(NSString *) error {
+    
     NSLog(@"domainCategoriesNotReceived");
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    [self removeHUD];
     
     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
-                                                        message:error
+                                                        message:NSLocalizedString(error, @"categorie non trovate")
                                                         delegate:nil
                                                         cancelButtonTitle:@"OK"
                                                         otherButtonTitles:nil] show];
 }
 
 -(void) domainCategoryReceived:(Categoria *) category fromDomain:(Domain *) dominio {
-
     NSLog(@"domainCategoryReceived");
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
-    NSLog(@"creo card per categoria");
+    [self showSuccessHUD:@""];
+    
     CategoryCard *card = [category createCategoryCardWithFrame:[self makeCardFrame]];
     card.tag = numSchede * 1000;
     [card render];
@@ -817,13 +940,41 @@
     
     NSLog(@"domainCategoryNotReceived");
     
-    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
-                                                      message:error
-                                                     delegate:nil
-                                            cancelButtonTitle:@"OK"
-                                            otherButtonTitles:nil] show];
+    [self removeHUD];
     
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WARNING", @"attenzione")
+                                                        message:error
+                                                        delegate:nil
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil] show];
+}
+
+#pragma mark - HUD methods
+
+-(void) showHUDProgress:(NSString *) stringa {
+    HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    HUD.delegate = self;
+    HUD.labelText = NSLocalizedString(stringa, @"avviso");
+    HUD.mode = MBProgressHUDModeIndeterminate;
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+}
+
+-(void) removeHUD {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [HUD hide:YES];
+}
+
+-(void) showSuccessHUD:(NSString *) testo {
+    HUD.labelText = testo;
+    HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    HUD.mode = MBProgressHUDModeCustomView;
+    [HUD hide:YES afterDelay:0.1];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+}
+
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+    [HUD removeFromSuperview];
+    HUD = nil;
 }
 
 @end

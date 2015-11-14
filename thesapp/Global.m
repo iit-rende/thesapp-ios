@@ -21,6 +21,7 @@
         {
             single = [Global new];
             single.activeDomain = [Domain new];
+            single.linguaInUso = nil;
         }
     }
     

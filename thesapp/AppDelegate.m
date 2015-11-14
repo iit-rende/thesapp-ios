@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "ScrollerViewController.h"
 #import "SideMenuTableViewController.h"
+#import "Global.h"  
 
 @interface AppDelegate ()
 @property(nonatomic, strong) void (^registrationHandler)
@@ -16,11 +17,19 @@
 @property(nonatomic, assign) BOOL connectedToGCM;
 @property(nonatomic, strong) NSString* registrationToken;
 @property(nonatomic, assign) BOOL subscribedToTopic;
+
+@property(nonatomic, assign) BOOL isItalian;
 @end
 
-NSString *const SubscriptionTopic = @"/topics/TEST_TOPIC";
+NSString *const SubscriptionTopicIT = @"/topics/IOS_TOPIC_IT";
+NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
 
 @implementation AppDelegate
+
+-(NSString *) getTopicsByLanguage {
+    if (self.isItalian) return SubscriptionTopicIT;
+    return SubscriptionTopicEN;
+}
 
 +(CGFloat) getSidemenuWidth {
     if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) return 350;
@@ -29,22 +38,38 @@ NSString *const SubscriptionTopic = @"/topics/TEST_TOPIC";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+    [Global singleton].linguaInUso = [Utils getCurrentLanguage];
     
-    NSString *linguaDevice = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+    NSLog(@"lingua trovata = %@", [Global singleton].linguaInUso);
     
-    NSString *linguaTrovata = [[NSUserDefaults standardUserDefaults] stringForKey:@"language"];
-    
-    NSLog(@"linguaTrovata prima = %@", linguaTrovata);
-    
+    if ([Global singleton].linguaInUso == nil) {
+        
+        NSString *lingua = [Utils getDeviceLanguage];
+        NSLog(@"lingua device = %@", lingua);
+        [Utils saveLanguage:lingua];
+    }
+
     //registro opzioni
-    NSDictionary *userDefaultsDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-                                          linguaDevice, @"language", nil];
     
-    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    //NSString *linguaDevice = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+    //NSString *linguaTrovata = [[NSUserDefaults standardUserDefaults] stringForKey:@"language"];
     
-    NSString *linguaTrovata1 = [[NSUserDefaults standardUserDefaults] stringForKey:@"language"];
+    //NSDictionary *userDefaultsDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          //linguaDevice, @"language", nil];
     
-    NSLog(@"linguaTrovata dopo = %@", linguaTrovata1);
+    //[[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    
+   // NSString *linguaTrovata1 = [[NSUserDefaults standardUserDefaults] stringForKey:@"language"];
+   // NSLog(@"linguaTrovata dopo = %@", linguaTrovata1);
+    
+    self.isItalian = [[Global singleton].linguaInUso isEqualToString:@"it"];
+    
+    if (self.isItalian) {
+        NSLog(@"italiano");
+    }
+    else
+        NSLog(@"inglese");
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
@@ -59,6 +84,8 @@ NSString *const SubscriptionTopic = @"/topics/TEST_TOPIC";
         [[UITableViewCell appearance] setLayoutMargins:UIEdgeInsetsZero];
         [[UITableViewCell appearance] setPreservesSuperviewLayoutMargins:NO];
     }
+    
+    [[UINavigationBar appearance]setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
@@ -153,21 +180,21 @@ NSString *const SubscriptionTopic = @"/topics/TEST_TOPIC";
     // topic
     if (_registrationToken && _connectedToGCM) {
         [[GCMPubSub sharedInstance] subscribeWithToken:_registrationToken
-                                                 topic:SubscriptionTopic
+                                                 topic:[self getTopicsByLanguage]
                                                options:nil
                                                handler:^(NSError *error) {
                                                    if (error) {
                                                        // Treat the "already subscribed" error more gently
                                                        if (error.code == 3001) {
                                                            NSLog(@"Already subscribed to %@",
-                                                                 SubscriptionTopic);
+                                                                 [self getTopicsByLanguage]);
                                                        } else {
                                                            NSLog(@"Subscription failed: %@",
                                                                  error.localizedDescription);
                                                        }
                                                    } else {
                                                        self.subscribedToTopic = true;
-                                                       NSLog(@"Subscribed to %@", SubscriptionTopic);
+                                                       NSLog(@"Subscribed to %@", [self getTopicsByLanguage]);
                                                    }
                                                }];
     }
@@ -261,7 +288,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
     // [START_EXCLUDE]
     [[NSNotificationCenter defaultCenter] postNotificationName:_messageKey
                                                         object:nil
-                                                      userInfo:userInfo];
+                                                        userInfo:userInfo];
     
     handler(UIBackgroundFetchResultNewData); //UIBackgroundFetchResultNoData
 

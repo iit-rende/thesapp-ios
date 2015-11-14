@@ -1,0 +1,38 @@
+/* 
+  strings.strings
+  ThesApp
+
+  Created by Paolo Burzacca on 18/05/15.
+  Copyright (c) 2015 IIT Cnr. All rights reserved.
+*/
+
+
+"CANCEL" = "Cancel";
+"NARROWER_TERMS" = "Narrower terms";
+"BROADER_TERMS" = "Broader terms";
+"RELATED_TERMS" = "Related terms";
+"TERMS" = "Terms";
+"DOMAIN" = "Domains";
+"LOCALIZATIONS" = "Localizations";
+"CATEGORIES" = "Categories";
+"CHOSE_CAT" = "Choose category";
+"CHOSE_DOMAIN" = "Choose domain";
+"DOWNLOAD_DOMAINS" = "Downloading domains...";
+"DOMAIN_SEARCH" = "Searching domains...";
+"CATEGORY_SEARCH" = "Searching category ...";
+"CATEGORIES_SEARCH" = "Searching categories...";
+"TERM_SEARCH" = "Searching term...";
+"SEARCH_PLACEHOLDER" = "Search a term";
+"COULD_INTEREST" = "Could be interesting";
+"SINOMINI" = "Synonimous";
+"DESCRIPTION" = "Description";
+"BROWSE_THESAURUS" = "Browse Thesaurus";
+"THESAPP" = "ThesApp";
+"WARNING" = "Warning";
+"TERM_NOT_FOUND" = "Term not found";
+"NO_CATEGORIES_FOUND" = "No categories found for this domain";
+"FILTER_FOR_CATEGORY" = "FILTER FOR CATEGORY";
+"USE_ALL_CATEGORY" = "USE ALL CATEGORY";
+"NO_RESULTS" = "No results";
+"NO_TERM_FOUND" = "No terms founds";
+"RETRY"  = "Retry";

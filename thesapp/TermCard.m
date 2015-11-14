@@ -13,6 +13,7 @@
 #define PADDING_BTN 8
 #define BTN_HEIGHT 40
 #define DESC_HEIGHT 30
+#define HEADER_MARGIN_BOTTOM 30
 #define LABEL_HEIGHT 20
 #define SECTION_BOTTOM_PADDING 15
 #define TITLE_PADDING_BOTTOM 5
@@ -202,18 +203,26 @@
     
     //wrapper.backgroundColor = [UIColor whiteColor];
     
-    //TEMP
-    //wrapper.backgroundColor = [UIColor cyanColor];
-    //self.backgroundColor = [UIColor blackColor];
-    
     float size = wrapper.frame.size.width;
     float altezza = wrapper.frame.size.height - header.frame.size.height;
+    
+    titolo.text = self.termine.descriptor.descriptor;
+    [titolo sizeToFit];
+    
+    float titoloTop = titolo.frame.origin.y + titolo.frame.size.height;
+    
+    //cambio altezza header in base a titolo
+    header.frame = CGRectMake(
+                              header.frame.origin.x,
+                              header.frame.origin.y,
+                              header.frame.size.width,
+                              titoloTop + HEADER_MARGIN_BOTTOM);
     
     colDx = [[UIView alloc] initWithFrame:CGRectMake(0, header.frame.size.height, size, altezza)];
     
     colDx.backgroundColor = [UIColor clearColor];
     
-    if(orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight) {
+    if (orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight) {
     
         //orizzontale
         
@@ -228,7 +237,6 @@
             NSLog(@"y = %f", colDx.frame.origin.y);
             
             colSx = [[UIView alloc] initWithFrame:CGRectMake(0, header.frame.size.height, COL_WIDTH, wrapper.frame.size.height)];
-            
             
             colSx.clipsToBounds = YES; //sennò va fuori a destra, forse taglia sotto però
             
@@ -247,8 +255,6 @@
             [self drawLefTree];
             
         }
-        else NSLog(@"IPHONE ORIZZONTALE");
-        
     }
     
     [wrapper addSubview:colDx];
@@ -262,17 +268,8 @@
     
     //////////////////////////////////////////////////////////////
     //title label
-    titolo.text = self.termine.descriptor.descriptor;
-    [titolo sizeToFit];
     
     lingua = self.termine.language;
-    
-    //top = [self getHeaderHeightAndPadding];
-  
-    //////////////////////////////////////////////////////////////
-    //description textview
-    
-    top = paddingLeft * 2;
     
     //float descrizione_padding_top = 0; //paddingLeft + top;
     
@@ -326,6 +323,11 @@
             Etichetta *lbl = [Etichetta createCategoriaLabel:catTitle withFrame:lblFrame];
             //lbl.lingua = language;
             
+            if (lbl.frame.size.width > size) {
+                [lbl adaptSizeToMax:wrapper.frame.size.width];
+                titleLabelHeight += 10;
+            }
+            
             left = [self getLabelLeft:lbl];
 
             [lbl addTarget:self action:@selector(categoryClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -359,6 +361,11 @@
             Etichetta *lbl = [Etichetta createAltraLinguaLabel:catTitle withFrame:lblFrame];
             lbl.lingua = language;
             
+            if (lbl.frame.size.width > size) {
+                [lbl adaptSizeToMax:wrapper.frame.size.width];
+                titleLabelHeight += 10;
+            }
+            
             left = [self getLabelLeft:lbl];
             
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
@@ -391,6 +398,11 @@
             Etichetta *lbl = [Etichetta createTermineSinonimo:catTitle withFrame:lblFrame];
             //lbl.lingua = language;
             
+            if (lbl.frame.size.width > size) {
+                [lbl adaptSizeToMax:wrapper.frame.size.width];
+                titleLabelHeight += 10;
+            }
+            
             left = [self getLabelLeft:lbl];
             
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
@@ -421,8 +433,13 @@
             if (catTitle == nil) continue;
             
             Etichetta *lbl = [Etichetta createTerminePiuGenericoLabel:catTitle withFrame:lblFrame];
-            //lbl.lingua = language;
+        
+            if (lbl.frame.size.width > size) {
+                [lbl adaptSizeToMax:wrapper.frame.size.width];
+                titleLabelHeight += 10;
+            }
             
+            NSLog(@"creo etichetta %@ con larghezza = %f", catTitle, lbl.frame.size.width);
             NSLog(@"aggiungo termine più generico %@ in lingua %@", catTitle, language);
             
             left = [self getLabelLeft:lbl];
@@ -457,6 +474,11 @@
             Etichetta *lbl = [Etichetta createTerminePiuSpecificoLabel:catTitle withFrame:lblFrame];
             //lbl.lingua = language;
             
+            if (lbl.frame.size.width > size) {
+                [lbl adaptSizeToMax:wrapper.frame.size.width];
+                titleLabelHeight += 10;
+            }
+            
             left = [self getLabelLeft:lbl];
             
             [lbl addTarget:self action:@selector(openLocalizedTerm:) forControlEvents:UIControlEventTouchUpInside];
@@ -488,6 +510,10 @@
             
             Etichetta *lbl = [Etichetta createTermineCorrelatoLabel:catTitle withFrame:lblFrame];
             //lbl.lingua = language;
+            if (lbl.frame.size.width > size) {
+                [lbl adaptSizeToMax:size];
+                titleLabelHeight += 10;
+            }
             
             left = [self getLabelLeft:lbl];
             

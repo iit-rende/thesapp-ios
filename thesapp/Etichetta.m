@@ -66,6 +66,16 @@
     [self sizeToFit];
 }
 
+-(void) adaptSizeToMax:(float) maxSize {
+    
+    CGRect newFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y, maxSize - 20, self.frame.size.height + 10);
+    
+    self.titleLabel.numberOfLines = 0;
+    self.titleLabel.textAlignment = NSTextAlignmentLeft;
+    self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [self setFrame:newFrame];
+}
+
 +(Etichetta *) createTermineLabel:(NSString *) title withFrame:(CGRect) frame {
     
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
@@ -118,7 +128,12 @@
 +(Etichetta *) createTerminePiuGenericoLabel:(NSString *) title withFrame:(CGRect)frame {
     Etichetta *lbl = [Etichetta buttonWithType:UIButtonTypeCustom];
     [lbl setColor:[Utils getPiuGenericoColor]];
+    
     [lbl initLabel:title withFrame:frame];
+
+    //[lbl sizeToFit];
+    //CGSize maxSize = CGSizeMake(320, 100);
+    //[lbl sizeThatFits:maxSize];
     return lbl;
 }
 
