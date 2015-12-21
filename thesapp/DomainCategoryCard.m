@@ -7,6 +7,7 @@
 //
 
 #import "DomainCategoryCard.h"
+#import "CategoryTableViewCell.h"
 #define ROW_HEIGHT 44
 
 @implementation DomainCategoryCard
@@ -27,6 +28,10 @@
     //return [super getName];
 }
 
+-(NSString *) getPrefix {
+    return @"DC_";
+}
+
 -(void) render {
     
     NSLog(@"[DomainCategoryCard] render, ci sono %d categorie", (int) categorie.count);
@@ -44,11 +49,12 @@
         
         tableHeight = categorie.count * ROW_HEIGHT;
         NSLog(@"altezza tabella = %f (%d * %d)", tableHeight, (int)categorie.count, ROW_HEIGHT);
-        tabellaCategorie.bounces = NO;
-        tabellaCategorie.bouncesZoom = NO;
-        tabellaCategorie.showsVerticalScrollIndicator = NO;
-        tabellaCategorie.showsHorizontalScrollIndicator = NO;
-        tabellaCategorie.backgroundColor = [UIColor purpleColor];
+        
+        //tabellaCategorie.bounces = NO;
+        //tabellaCategorie.bouncesZoom = NO;
+        //tabellaCategorie.showsVerticalScrollIndicator = NO;
+        //tabellaCategorie.showsHorizontalScrollIndicator = NO;
+        //tabellaCategorie.backgroundColor = [UIColor purpleColor];
         
         //IOS 7
         if ([tabellaCategorie respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -70,6 +76,19 @@
         tabellaCategorie = [[UITableView alloc] initWithFrame:tabellaFrame style:UITableViewStylePlain];
         tabellaCategorie.delegate = self;
         tabellaCategorie.dataSource = self;
+        tabellaCategorie.scrollEnabled = YES;
+        tabellaCategorie.bounces = NO;
+        tabellaCategorie.bouncesZoom = NO;
+        tabellaCategorie.userInteractionEnabled = YES;
+        tabellaCategorie.showsVerticalScrollIndicator = NO;
+        tabellaCategorie.showsHorizontalScrollIndicator = NO;
+        tabellaCategorie.allowsSelection = YES;
+        tabellaCategorie.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        tabellaCategorie.separatorInset = UIEdgeInsetsZero;
+    
+        UINib *nib = [UINib nibWithNibName:@"CategoryTableViewCell" bundle:nil];
+        [tabellaCategorie registerNib:nib forCellReuseIdentifier:@"categoryTableViewCell"];
+        
         //[tabellaCategorie sizeToFit];
         
         float width = wrapper.frame.size.width;
@@ -78,42 +97,76 @@
         CGRect nuovoFrame = CGRectMake(wrapper.frame.origin.x, wrapper.frame.origin.y, width, height);
         //CGRect nuovoFrame = CGRectMake(0,0, width, height);
         //self.frame = nuovoFrame;
-        tabellaCategorie.scrollEnabled = YES;
-        tabellaCategorie.bounces = NO;
+        
+
+        //tabellaCategorie.delaysContentTouches = YES;
+        //tabellaCategorie.canCancelContentTouches = YES;
         
         wrapper.frame = nuovoFrame;
         self.contentSize = nuovoFrame.size;
         //self.clipsToBounds = YES;
-        tabellaCategorie.delaysContentTouches = YES;
-        tabellaCategorie.canCancelContentTouches = YES;
         
         //tableWrapper.backgroundColor = [UIColor blueColor];
         
         //[tableWrapper addSubview:tabellaCategorie];
         [wrapper addSubview:tabellaCategorie];
         
-        [tabellaCategorie reloadData];
-        NSLog(@"TABELLA RICARICATA");
-        
+        [tabellaCategorie performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     }
+}
+
+-(void) reloadData {
+        [tabellaCategorie reloadData];
 }
 
 #pragma mark - Table View Methods
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"[DCC] shouldHighlightRowAtIndexPath");
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"[DCC] didHighlightRowAtIndexPath");
+    
+    NSLog(@"[DCC] didSelectRowAtIndexPath");
+    NSDictionary *cat = [categorie objectAtIndex:(int) indexPath.row];
+    NSString *term = [cat objectForKey:@"descriptor"];
+    
+    [self.controller getDomainCategory:term fromDomain:self.dominio];
+}
+
+- (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"[DCC] didUnhighlightRowAtIndexPath");
+}
+
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+    NSLog(@"[DCC] willSelectRowAtIndexPath");
     return indexPath;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"cliccato su riga %d", (int) indexPath.row);
-    
-    NSDictionary *cat = [categorie objectAtIndex:(int) indexPath.row];
-    NSString *term = [cat objectForKey:@"descriptor"];
-    
-    NSLog(@"cliccato su %@", term);
 
-    [self.controller getDomainCategory:term fromDomain:self.dominio];
+
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Remove seperator inset
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    // Prevent the cell from inheriting the Table View's margin settings
+    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+        [cell setPreservesSuperviewLayoutMargins:NO];
+    }
+    
+    // Explictly set your cell's layout margins
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -122,26 +175,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"categoryTableViewCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
+    CategoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     NSDictionary *categoria = [categorie objectAtIndex: [indexPath row]];
     
     if (categoria != nil) {
         NSString *value =  [categoria objectForKey:@"descriptor"];
-        cell.textLabel.text = value;
+        cell.testo.text = value;
     }
-    
-    if ([cell respondsToSelector:@selector(layoutMargins)]) {
-        cell.layoutMargins = UIEdgeInsetsZero;
-        cell.preservesSuperviewLayoutMargins = NO;
-    }
-    
     return cell;
     
 }
@@ -150,8 +192,7 @@
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView
- numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return categorie.count;
 }
 

@@ -26,6 +26,10 @@
     return @"Domain List";
 }
 
+-(NSString *) getPrefix {
+    return @"D_";
+}
+
 /*
 +(DomainCard *) createWithDomain:(Domain *) dominio {
     DomainCard *card = [DomainCard new];
@@ -38,9 +42,6 @@
     
     lingua = [Utils getCurrentLanguage];
     
-    //self.backgroundColor = [UIColor whiteColor];
-    //self.clipsToBounds = YES;
-    
     NSString *sec_title = NSLocalizedString(@"CHOSE_DOMAIN", @"Scegli dominio");
     [self addCardTitle:sec_title];
     
@@ -50,7 +51,6 @@
         
         tableHeight = domini.count * ROW_HEIGHT;
         NSLog(@"altezza = %f", tableHeight);
-       
         
         float y = [self getHeaderHeightAndPadding];
         
@@ -64,14 +64,13 @@
         tabellaDomini.bouncesZoom = NO;
         tabellaDomini.showsVerticalScrollIndicator = NO;
         tabellaDomini.showsHorizontalScrollIndicator = NO;
-        tabellaDomini.backgroundColor = [UIColor magentaColor];
+        //tabellaDomini.backgroundColor = [UIColor magentaColor];
         tabellaDomini.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         tabellaDomini.separatorColor = [UIColor lightGrayColor];
+        //tabellaDomini.scrollEnabled = NO;
         
         //tabellaDomini.backgroundColor = [UIColor redColor];
-        
-        tabellaDomini.scrollEnabled = NO;
-        
+    
         UINib *nib = [UINib nibWithNibName:@"DominioTableViewCell" bundle:nil];
         [tabellaDomini registerNib:nib forCellReuseIdentifier:@"domainCell"];
         
@@ -84,7 +83,6 @@
 #pragma mark - Table View Methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"cliccato su riga %d", (int) indexPath.row);
     
     Domain *dominio = [domini objectAtIndex: [indexPath row]];
     
@@ -112,8 +110,7 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView
-heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return ROW_HEIGHT;
 }
 

@@ -29,7 +29,7 @@
 -(void) viewWillAppear:(BOOL)animated {
     NSLog(@"[SEQ] menu apparso");
     
-    self.barContainer.backgroundColor = [UIColor orangeColor];
+    lingua = [Utils getCurrentLanguage];    
     
     if (listaDomini.count > 0) {
         
@@ -150,8 +150,9 @@
     [super viewDidLoad];
     
     float totalWidth = [AppDelegate getSidemenuWidth];
+
     
-    lingua = [Utils getCurrentLanguage];
+    NSLog(@"lingua = %@", lingua);
     
     self.barContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, totalWidth, 64)];
     //self.barContainer.tintColor = [Utils getDefaultColor];
@@ -195,6 +196,8 @@
     indice = 0;
     
     manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager.requestSerializer setValue:lingua forHTTPHeaderField:@"accept-language"];
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
@@ -480,7 +483,7 @@
     //[Utils setCurrentDomain:dominio];
     //svc.dominioScelto = dominio;
     
-    [[Global singleton] setDominio:dominio];
+    //[[Global singleton] setDominio:dominio];
     
     NSLog(@"cambio colore picker in %@", chosenDomain.color);
     filter.backgroundColor = [Utils colorFromHexString:chosenDomain.color];
@@ -498,7 +501,7 @@
 #pragma mark - Picker View Delegates
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
-    NSLog(@"cliccato su riga %d", (int) row);
+
     Domain *dominio = [listaDomini objectAtIndex:row];
     
     if (dominio == nil) return;
@@ -741,7 +744,9 @@
     
     NSString *requestString = [[[[Utils getServerBaseAddress] stringByAppendingString:suffix] stringByAppendingString:testo] stringByAppendingString:domain];
     
-    NSLog(@"requestString = %@", requestString);
+    NSLog(@"search requestString [%@] = %@", lingua, requestString);
+    
+    [manager.requestSerializer setValue:lingua forHTTPHeaderField:@"accept-language"];
     
     [manager GET:requestString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -868,8 +873,6 @@
                 suggestions = semantics;
                 
                 if (suggestions.count > 0) {
-                    
-                    //self.tableView.backgroundColor = [UIColor orangeColor];
                     
                     suggestionTableView.hidden = NO;
                     suggestionTitle.hidden = NO;

@@ -9,5 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @protocol CardName <NSObject>
-    -(NSString *) getName;
+    - (NSString *) getName;
+    - (NSString *) getPrefix;
+    - (NSString *) getKey;
+    - (void) render;
+    - (UIColor *) getBarColor;
 @end

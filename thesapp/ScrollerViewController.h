@@ -22,10 +22,23 @@
 #import "PopoverMenuControls.h"
 #import "MBProgressHUD.h"
 
-@interface ScrollerViewController : UIViewController<UIScrollViewDelegate, CardController, TimelineDelegate, UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate, PopoverMenuControls, MBProgressHUDDelegate>
+typedef NS_ENUM(NSInteger, InterfaceOrientationType) {
+    InterfaceOrientationTypePortrait,
+    InterfaceOrientationTypeLandscape
+};
+
+typedef NS_ENUM(NSInteger, CardType)
+{
+    DomainTile = 1,
+    DomainCategoryTile,
+    CategoryTile,
+    TermTile
+};
+
+@interface ScrollerViewController : UIViewController<UIScrollViewDelegate, CardController, TimelineDelegate, UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate, PopoverMenuControls, MBProgressHUDDelegate, UIAlertViewDelegate>
 {
     int pageIndex, totPages, xOffset, numSchede;
-    float larghezza, altezza, padding, topPadding, screenWidth, scrollWidth;
+    float larghezza, altezza, padding, topPadding, screenWidth; //, scrollWidth;
     AFHTTPRequestOperationManager *manager;
     MMDrawerController *parent;
     MBProgressHUD *HUD;
@@ -38,13 +51,18 @@
     UIButton *retryBtn;
     UIActivityIndicatorView *loader;
     UIBarButtonItem *titleButton;
+    NSString *tempDomain;
 }
+
+
+
++ (InterfaceOrientationType)orientation;
 
 //-(void) getSingleTerm:(NSString *)term withDomain:(Domain *) dominio andLanguage:(NSString *)lang;
 
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
-@property (nonatomic, strong) IBOutlet UIView *topView;
+//@property (nonatomic, strong) IBOutlet UIView *topView;
 @property (nonatomic, strong) NSMutableArray *listaDomini;
 //@property (nonatomic, strong) Domain *dominioScelto;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *search;

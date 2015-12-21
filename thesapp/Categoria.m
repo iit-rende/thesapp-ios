@@ -20,7 +20,11 @@
     cat.domain = dominio;
     NSArray *terms = [dict objectForKey:@"terms"];
     
-    if (terms.count == 0) NSLog(@"NESSUN TERMINE TROVATO");
+    if (terms.count == 0) {
+     
+        NSLog(@"NESSUN TERMINE TROVATO");
+        return cat;
+    }
     
     NSLog(@"termini scaricati = %@", [terms description]);
     cat.terms = [[NSMutableDictionary alloc] init];

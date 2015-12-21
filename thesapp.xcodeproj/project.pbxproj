@@ -12,6 +12,8 @@
 		CD18CF011BF63417007AC605 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CD18CF001BF63417007AC605 /* GoogleService-Info.plist */; };
 		CD25C3341B29B82F00C0EE91 /* filter_list.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3331B29B82F00C0EE91 /* filter_list.png */; };
 		CD25C3361B29BA3600C0EE91 /* up_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */; };
+		CD3CA8081BF9514000212199 /* CategoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3CA8071BF9514000212199 /* CategoryTableViewCell.m */; };
+		CD3CA80A1BF951F200212199 /* CategoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD3CA8091BF951F200212199 /* CategoryTableViewCell.xib */; };
 		CD3DD1521B3169D20082A337 /* Localization.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3DD1511B3169D20082A337 /* Localization.m */; };
 		CD5FFC5C1BB13988009D2235 /* Repository.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5FFC5B1BB13988009D2235 /* Repository.m */; };
 		CD8936541B32B6410016439D /* DominioTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8936521B32B6410016439D /* DominioTableViewCell.m */; };
@@ -28,7 +30,6 @@
 		CDA071A31B2065B700BD6CCF /* DomainCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071921B2065B700BD6CCF /* DomainCard.m */; };
 		CDA071A41B2065B700BD6CCF /* DomainCategoryCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071941B2065B700BD6CCF /* DomainCategoryCard.m */; };
 		CDA071A51B2065B700BD6CCF /* Etichetta.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071961B2065B700BD6CCF /* Etichetta.m */; };
-		CDA071A61B2065B700BD6CCF /* GenericCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071981B2065B700BD6CCF /* GenericCard.m */; };
 		CDA071A71B2065B700BD6CCF /* GenericScrollCard.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA0719A1B2065B700BD6CCF /* GenericScrollCard.m */; };
 		CDA071AB1B2065D000BD6CCF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA071AA1B2065D000BD6CCF /* AppDelegate.m */; };
 		CDA071C81B20661500BD6CCF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDA071AC1B20661400BD6CCF /* Main.storyboard */; };
@@ -80,6 +81,9 @@
 		CD18CF001BF63417007AC605 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CD25C3331B29B82F00C0EE91 /* filter_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filter_list.png; sourceTree = "<group>"; };
 		CD25C3351B29BA3600C0EE91 /* up_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up_arrow_white.png; sourceTree = "<group>"; };
+		CD3CA8061BF9514000212199 /* CategoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryTableViewCell.h; sourceTree = "<group>"; };
+		CD3CA8071BF9514000212199 /* CategoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryTableViewCell.m; sourceTree = "<group>"; };
+		CD3CA8091BF951F200212199 /* CategoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryTableViewCell.xib; sourceTree = "<group>"; };
 		CD3DD1501B3169D20082A337 /* Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localization.h; sourceTree = "<group>"; };
 		CD3DD1511B3169D20082A337 /* Localization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Localization.m; sourceTree = "<group>"; };
 		CD5FFC5A1BB13988009D2235 /* Repository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Repository.h; sourceTree = "<group>"; };
@@ -112,8 +116,6 @@
 		CDA071941B2065B700BD6CCF /* DomainCategoryCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DomainCategoryCard.m; sourceTree = "<group>"; };
 		CDA071951B2065B700BD6CCF /* Etichetta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Etichetta.h; sourceTree = "<group>"; };
 		CDA071961B2065B700BD6CCF /* Etichetta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Etichetta.m; sourceTree = "<group>"; };
-		CDA071971B2065B700BD6CCF /* GenericCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericCard.h; sourceTree = "<group>"; };
-		CDA071981B2065B700BD6CCF /* GenericCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericCard.m; sourceTree = "<group>"; };
 		CDA071991B2065B700BD6CCF /* GenericScrollCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericScrollCard.h; sourceTree = "<group>"; };
 		CDA0719A1B2065B700BD6CCF /* GenericScrollCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericScrollCard.m; sourceTree = "<group>"; };
 		CDA071A91B2065D000BD6CCF /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -226,8 +228,6 @@
 				CDA071921B2065B700BD6CCF /* DomainCard.m */,
 				CDA071931B2065B700BD6CCF /* DomainCategoryCard.h */,
 				CDA071941B2065B700BD6CCF /* DomainCategoryCard.m */,
-				CDA071971B2065B700BD6CCF /* GenericCard.h */,
-				CDA071981B2065B700BD6CCF /* GenericCard.m */,
 				CDA071991B2065B700BD6CCF /* GenericScrollCard.h */,
 				CDA0719A1B2065B700BD6CCF /* GenericScrollCard.m */,
 				CDA071831B20659B00BD6CCF /* TermCard.xib */,
@@ -313,6 +313,9 @@
 				CD8936511B32B6410016439D /* DominioTableViewCell.h */,
 				CD8936521B32B6410016439D /* DominioTableViewCell.m */,
 				CD8936531B32B6410016439D /* DominioTableViewCell.xib */,
+				CD3CA8061BF9514000212199 /* CategoryTableViewCell.h */,
+				CD3CA8071BF9514000212199 /* CategoryTableViewCell.m */,
+				CD3CA8091BF951F200212199 /* CategoryTableViewCell.xib */,
 			);
 			name = "Custom Controls";
 			sourceTree = "<group>";
@@ -526,6 +529,7 @@
 				CD12B0141BB6F012009DC3B2 /* Icon.png in Resources */,
 				CD8936551B32B6410016439D /* DominioTableViewCell.xib in Resources */,
 				CDCB24A21B2064850087A5BE /* Images.xcassets in Resources */,
+				CD3CA80A1BF951F200212199 /* CategoryTableViewCell.xib in Resources */,
 				CDA071821B20659100BD6CCF /* CustomCollectionViewCell.xib in Resources */,
 				CD25C3341B29B82F00C0EE91 /* filter_list.png in Resources */,
 				CD18CF011BF63417007AC605 /* GoogleService-Info.plist in Resources */,
@@ -602,7 +606,6 @@
 				CDB3F57B1B341A220031182E /* TitoloLabel.m in Sources */,
 				CDA071A51B2065B700BD6CCF /* Etichetta.m in Sources */,
 				CDA071D01B20661500BD6CCF /* Term.m in Sources */,
-				CDA071A61B2065B700BD6CCF /* GenericCard.m in Sources */,
 				CDA071CB1B20661500BD6CCF /* NSString+Levenshtein.m in Sources */,
 				CD3DD1521B3169D20082A337 /* Localization.m in Sources */,
 				CD5FFC5C1BB13988009D2235 /* Repository.m in Sources */,
@@ -625,6 +628,7 @@
 				CDD790BB1B5E4E73001AC21F /* Global.m in Sources */,
 				CDA0719F1B2065B700BD6CCF /* DEMOCustomAutoCompleteObject.m in Sources */,
 				CDEC0CD71BF6A8540007DEB7 /* SettingsViewController.m in Sources */,
+				CD3CA8081BF9514000212199 /* CategoryTableViewCell.m in Sources */,
 				CD8936541B32B6410016439D /* DominioTableViewCell.m in Sources */,
 				CDA071811B20659100BD6CCF /* CustomCollectionViewCell.m in Sources */,
 			);

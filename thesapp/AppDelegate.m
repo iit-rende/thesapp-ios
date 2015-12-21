@@ -12,24 +12,13 @@
 #import "Global.h"  
 
 @interface AppDelegate ()
-@property(nonatomic, strong) void (^registrationHandler)
-(NSString *registrationToken, NSError *error);
+@property(nonatomic, strong) void (^registrationHandler) (NSString *registrationToken, NSError *error);
 @property(nonatomic, assign) BOOL connectedToGCM;
 @property(nonatomic, strong) NSString* registrationToken;
 @property(nonatomic, assign) BOOL subscribedToTopic;
-
-@property(nonatomic, assign) BOOL isItalian;
 @end
 
-NSString *const SubscriptionTopicIT = @"/topics/IOS_TOPIC_IT";
-NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
-
 @implementation AppDelegate
-
--(NSString *) getTopicsByLanguage {
-    if (self.isItalian) return SubscriptionTopicIT;
-    return SubscriptionTopicEN;
-}
 
 +(CGFloat) getSidemenuWidth {
     if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) return 350;
@@ -38,7 +27,6 @@ NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
     [Global singleton].linguaInUso = [Utils getCurrentLanguage];
     
     NSLog(@"lingua trovata = %@", [Global singleton].linguaInUso);
@@ -46,11 +34,12 @@ NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
     if ([Global singleton].linguaInUso == nil) {
         
         NSString *lingua = [Utils getDeviceLanguage];
+        
         NSLog(@"lingua device = %@", lingua);
+        
         [Utils saveLanguage:lingua];
+        [Global singleton].linguaInUso = lingua;
     }
-
-    //registro opzioni
     
     //NSString *linguaDevice = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
     //NSString *linguaTrovata = [[NSUserDefaults standardUserDefaults] stringForKey:@"language"];
@@ -63,14 +52,24 @@ NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
    // NSString *linguaTrovata1 = [[NSUserDefaults standardUserDefaults] stringForKey:@"language"];
    // NSLog(@"linguaTrovata dopo = %@", linguaTrovata1);
     
-    self.isItalian = [[Global singleton].linguaInUso isEqualToString:@"it"];
-    
-    if (self.isItalian) {
+    if ([[Global singleton] isItalian]) {
         NSLog(@"italiano");
     }
-    else
-        NSLog(@"inglese");
+    else NSLog(@"inglese");
     
+    //UIPageControl *pageControl = [UIPageControl appearance];
+    //pageControl.pageIndicatorTintColor = [UIColor blueColor];
+    //pageControl.currentPageIndicatorTintColor = [UIColor redColor];
+    //pageControl.backgroundColor = [UIColor whiteColor];
+    
+    [self initAppStyle];
+    [self initMMDrawer];
+    [self initGCMNotifications];
+    
+    return YES;
+}
+
+-(void) initAppStyle {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     //IOS 7
@@ -86,14 +85,10 @@ NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
     }
     
     [[UINavigationBar appearance]setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    
-    UIPageControl *pageControl = [UIPageControl appearance];
-    pageControl.pageIndicatorTintColor = [UIColor blueColor];
-    pageControl.currentPageIndicatorTintColor = [UIColor redColor];
-    pageControl.backgroundColor = [UIColor whiteColor];
-    
+}
+
+-(void) initMMDrawer {
     UIStoryboard * st =  [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
     NSString *ScrollerViewControllerID = @"mainNavID";
@@ -104,10 +99,10 @@ NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
     SideMenuTableViewController *side = (SideMenuTableViewController *) [st instantiateViewControllerWithIdentifier:SideMenuTableViewControllerID];
     
     MMDrawerController *drawerController = [[MMDrawerController alloc]
-                                             initWithCenterViewController:svc
-                                             leftDrawerViewController:nil
-                                             rightDrawerViewController:side];
-
+                                            initWithCenterViewController:svc
+                                            leftDrawerViewController:nil
+                                            rightDrawerViewController:side];
+    
     //drawerController.view.clipsToBounds = YES;
     
     float menuWidth = [AppDelegate getSidemenuWidth];
@@ -118,8 +113,9 @@ NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
     [drawerController setRestorationIdentifier:@"MMDrawer"];
     
     self.window.rootViewController = drawerController;
-    
-    //notifiche push
+}
+
+-(void) initGCMNotifications {
     
     // Register for remote notifications
     UIUserNotificationType allNotificationTypes =
@@ -132,10 +128,13 @@ NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
     // [START_EXCLUDE]
     _registrationKey = @"onRegistrationCompleted";
     _messageKey = @"onMessageReceived";
+    
     // Configure the Google context: parses the GoogleService-Info.plist, and initializes
     // the services that have entries in the file
+    
     NSError* configureError;
     [[GGLContext sharedInstance] configureWithError:&configureError];
+    
     if (configureError != nil) {
         NSLog(@"Error configuring the Google context: %@", configureError);
     }
@@ -156,14 +155,23 @@ NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
     _registrationHandler = ^(NSString *registrationToken, NSError *error){
         if (registrationToken != nil) {
             weakSelf.registrationToken = registrationToken;
-            NSLog(@"Registration Token: %@", registrationToken);
-            [weakSelf subscribeToTopic];
+            
+            NSLog(@"Token di registrazione: %@", registrationToken);
+            
+            NSString *topic = [[Global singleton] getTopicName];
+            if (topic != nil) {
+                [weakSelf subscribeToTopic:topic];
+            }
+            
             NSDictionary *userInfo = @{@"registrationToken":registrationToken};
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:weakSelf.registrationKey
                                                                 object:nil
                                                               userInfo:userInfo];
         } else {
+            
             NSLog(@"Registration to GCM failed with error: %@", error.localizedDescription);
+            
             NSDictionary *userInfo = @{@"error":error.localizedDescription};
             [[NSNotificationCenter defaultCenter] postNotificationName:weakSelf.registrationKey
                                                                 object:nil
@@ -171,51 +179,79 @@ NSString *const SubscriptionTopicEN = @"/topics/IOS_TOPIC_EN";
         }
     };
     
-    
-    return YES;
 }
 
-- (void)subscribeToTopic {
-    // If the app has a registration token and is connected to GCM, proceed to subscribe to the
-    // topic
+- (void)subscribeToTopic:(NSString *) topic {
+    
+    if (topic == nil) return;
+    
     if (_registrationToken && _connectedToGCM) {
         [[GCMPubSub sharedInstance] subscribeWithToken:_registrationToken
-                                                 topic:[self getTopicsByLanguage]
+                                                 topic:topic
                                                options:nil
                                                handler:^(NSError *error) {
                                                    if (error) {
-                                                       // Treat the "already subscribed" error more gently
+                                                       
                                                        if (error.code == 3001) {
-                                                           NSLog(@"Already subscribed to %@",
-                                                                 [self getTopicsByLanguage]);
+                                                           NSLog(@"Già iscritto a %@", topic);
+                                                           NSLog(@"[errore finto = %@]", error.localizedDescription);
+                                                           
                                                        } else {
-                                                           NSLog(@"Subscription failed: %@",
-                                                                 error.localizedDescription);
+                                                           NSLog(@"Iscrizione fallita: %@", error.localizedDescription);
                                                        }
                                                    } else {
+                                                       
                                                        self.subscribedToTopic = true;
-                                                       NSLog(@"Subscribed to %@", [self getTopicsByLanguage]);
+                                                       NSLog(@"Iscritto al topic %@", topic);
+                                                       
                                                    }
                                                }];
     }
 }
 
+-(void) unsubscribeTopic:(NSString *) oldTopic andSubcribeTopic:(NSString *) newTopic {
+    
+    if (oldTopic == nil) return;
+    
+    if (_registrationToken == nil) {
+        NSLog(@"esco, token mancante");
+        return;
+    }
+    
+    NSLog(@"oldTopic = %@", oldTopic);
+    
+    [[GCMPubSub sharedInstance] unsubscribeWithToken:_registrationToken topic:oldTopic options:nil handler:^(NSError *error) {
+        
+        if (!error) {
+            
+            NSLog(@"Disiscritto da topic %@", oldTopic);
+            self.subscribedToTopic = NO;
+
+            NSLog(@"ora mi sottoscrivo a %@", newTopic);
+            [self subscribeToTopic:newTopic];
+        }
+        else {
+            NSLog(@"errore = %@", error.localizedDescription);
+        }
+        
+    }];
+}
+
 #pragma mark - GCM Delegate methods
 
 -(void) didDeleteMessagesOnServer {
-
+    NSLog(@"[GCM] didDeleteMessagesOnServer");
 }
 
 -(void) willSendDataMessageWithID:(NSString *)messageID error:(NSError *)error {
-    
+    NSLog(@"[GCM] willSendDataMessageWithID con id = %@", messageID);
 }
 
 -(void) didSendDataMessageWithID:(NSString *)messageID {
-    
+    NSLog(@"[GCM] didSendDataMessageWithID con id = %@", messageID);
 }
 
--(void)application:(UIApplication *)application
-didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // [END receive_apns_token]
     // [START get_gcm_reg_token]
     
@@ -229,9 +265,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     _registrationOptions = @{
                              kGGLInstanceIDRegisterAPNSOption:deviceToken,
-                             kGGLInstanceIDAPNSServerTypeSandboxOption:@YES,
+                             kGGLInstanceIDAPNSServerTypeSandboxOption:@NO,
                              };
-    
     
     [[GGLInstanceID sharedInstance] tokenWithAuthorizedEntity:_gcmSenderID
                                                         scope:kGGLInstanceIDScopeGCM
@@ -255,8 +290,7 @@ didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
 }
 
 // [START ack_message_reception]
-- (void)application:(UIApplication *)application
-didReceiveRemoteNotification:(NSDictionary *)userInfo {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"1] Notification received: %@", userInfo);
     
     if(application.applicationState != UIApplicationStateActive ){
@@ -331,16 +365,26 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
 {
     NSLog(@"applicationDidBecomeActive");
     
-    // Connect to the GCM server to receive non-APNS notifications
+    application.applicationIconBadgeNumber = 0;
+    
     [[GCMService sharedInstance] connectWithHandler:^(NSError *error) {
+        
         if (error) {
-            NSLog(@"Could not connect to GCM: %@", error.localizedDescription);
+            
+            NSLog(@"Impossibile connettersi a GCM: %@", error.localizedDescription);
+            
         } else {
             _connectedToGCM = true;
-            NSLog(@"Connected to GCM");
-            // [START_EXCLUDE]
-            [self subscribeToTopic];
-            // [END_EXCLUDE]
+            
+            NSLog(@"CONNESSO A GCM");
+            
+            NSString *topic = [[Global singleton] getTopicName];
+            if (topic != nil) {
+                [self subscribeToTopic:topic];
+            }
+            else {
+                NSLog(@"topic non trovato, non mi iscrivo");
+            }
         }
     }];
 }

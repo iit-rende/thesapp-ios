@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="64" width="1000" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="geD-yw-Ddv">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="geD-yw-Ddv">
                                 <rect key="frame" x="0.0" y="0.0" width="1000" height="800"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -31,6 +31,7 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="geD-yw-Ddv" firstAttribute="width" secondItem="gh5-5B-2Y2" secondAttribute="width" id="3a5-Jb-XiJ"/>
                             <constraint firstItem="geD-yw-Ddv" firstAttribute="top" secondItem="I3k-dq-hv0" secondAttribute="bottom" id="Gxr-25-gdC"/>
                             <constraint firstItem="flM-dJ-VgF" firstAttribute="top" secondItem="geD-yw-Ddv" secondAttribute="bottom" id="HO6-gq-hy4"/>
                             <constraint firstItem="geD-yw-Ddv" firstAttribute="top" secondItem="gh5-5B-2Y2" secondAttribute="topMargin" id="Wu6-7T-qMZ"/>

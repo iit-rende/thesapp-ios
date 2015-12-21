@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Global.h"
+#import "AppDelegate.h"
 
 @interface SettingsViewController : UITableViewController
 {
     NSIndexPath *lastSelectedIndexPath;
     NSArray *lingue, *locali;
     int lingua;
+    AppDelegate *appDelegate;
 }
 @end

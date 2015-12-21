@@ -29,6 +29,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -71,16 +73,34 @@
     
     //int altrariga = (riga) ? 0 : 1;
     
-    NSLog(@"cella = %@", lastSelectedCell);
     NSLog(@"testo = %@", lastSelectedCell.textLabel.text);
     lastSelectedCell.accessoryType = UITableViewCellAccessoryNone;
     
     lastSelectedIndexPath = indexPath;
     
-    NSString *locale = locali[indexPath.row];
+    NSString *locale;
+    
+    NSString *vecchioTopic = [[Global singleton] getTopicName];
+    
+    NSLog(@"vecchiotopic = %@", vecchioTopic);
+    
+    if (vecchioTopic != nil && appDelegate != nil) {
+
+        
+        locale = locali[indexPath.row];
+        NSString *newTopic = [[Global singleton] getTopicByLanguage:locale];
+        
+        NSLog(@"unsubscribeTopic e subriscre to %@", newTopic);
+        
+        [appDelegate unsubscribeTopic:vecchioTopic andSubcribeTopic:newTopic];
+    }
     
     [Utils saveLanguage:locale];
-
+    
+    [[Global singleton] setNewTopicName];
+    
+    //NSString *nuovoTopic = [[Global singleton] getTopicName];
+    //if (nuovoTopic != nil && appDelegate != nil) [appDelegate subscribeToTopic:nuovoTopic];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{

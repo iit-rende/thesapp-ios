@@ -18,7 +18,8 @@
 @property(nonatomic, readonly, strong) NSString *gcmSenderID;
 @property(nonatomic, readonly, strong) NSDictionary *registrationOptions;
 
-+(CGFloat) getSidemenuWidth;
++ (CGFloat) getSidemenuWidth;
+- (void) subscribeToTopic:(NSString *) topic;
+- (void) unsubscribeTopic:(NSString *) oldTopic andSubcribeTopic:(NSString *) newTopic;
 
 @end
-

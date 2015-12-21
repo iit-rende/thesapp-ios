@@ -13,7 +13,6 @@
 @class TermCard;
 @class Term;
 
-
 @interface TermCard : GenericScrollCard
 {
     @private

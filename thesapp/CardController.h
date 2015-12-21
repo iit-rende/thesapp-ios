@@ -10,10 +10,11 @@
 
 @protocol CardController <NSObject>
 
-- (void) goBack;
-- (void) addCategoryCard:(NSString *) catName withDomain:(Domain *) dom;
+- (void) addCategoryCard:(NSString *) catName withDomain:(Domain *) dom inLanguage:(NSString *)lang;
 - (void) getTerm:(NSString *) term inLanguage:(NSString *) lang;
 - (void) getDominio:(Domain *) dominio;
 - (void) getDomainCategory:(NSString *) categoria fromDomain:(Domain *) dominio;
 
+@optional
+- (void) goBack;
 @end

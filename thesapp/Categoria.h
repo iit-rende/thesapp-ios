@@ -17,6 +17,7 @@
 @property (nonatomic, strong) Descriptor *descriptor;
 @property (nonatomic, strong) Domain *domain;
 @property (nonatomic, strong) NSMutableDictionary *terms;
+@property (nonatomic, strong) NSString *selectedLanguage;
 
 +(Categoria *) createFromJson:(NSDictionary *) dict;
 

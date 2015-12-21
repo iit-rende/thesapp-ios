@@ -31,7 +31,7 @@
     
     NSLog(@"[CategoryCard] render");
     
-    lingua = [Utils getCurrentLanguage];
+    lingua = (self.categoria.selectedLanguage != nil) ? self.categoria.selectedLanguage : [Utils getCurrentLanguage];
     
     /*
      TEMP
@@ -44,6 +44,7 @@
     */
     
     self.backgroundColor = [UIColor whiteColor];
+    
     self.clipsToBounds = NO;
     
     titolo.text = self.categoria.descriptor.descriptor;
@@ -57,6 +58,7 @@
                               header.frame.origin.y,
                               header.frame.size.width,
                               titoloTop + 20);
+    
     
     //categorie
     top = [self getHeaderHeightAndPadding];
@@ -156,6 +158,10 @@
 -(NSString *) getName {
     if (self.categoria != nil) return self.categoria.descriptor.descriptor;
     return @"categoria generica";
+}
+
+-(NSString *) getPrefix {
+    return @"C_";
 }
 
 @end

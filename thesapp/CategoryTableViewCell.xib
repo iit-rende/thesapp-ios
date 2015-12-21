@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="categoryTableViewCell" rowHeight="44" id="AbG-8q-eTF" customClass="CategoryTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AbG-8q-eTF" id="hHq-hG-3w9">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="titolo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qrm-wP-eDq">
+                        <rect key="frame" x="8" y="6" width="304" height="30"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="LEJ-uA-8cL"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="LEJ-uA-8cL"/>
+                            </mask>
+                        </variation>
+                    </label>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstItem="Qrm-wP-eDq" firstAttribute="leading" secondItem="hHq-hG-3w9" secondAttribute="leadingMargin" id="10V-sX-Xx4"/>
+                    <constraint firstItem="Qrm-wP-eDq" firstAttribute="trailing" secondItem="hHq-hG-3w9" secondAttribute="trailingMargin" id="4Ao-nO-yPS"/>
+                    <constraint firstItem="Qrm-wP-eDq" firstAttribute="top" secondItem="hHq-hG-3w9" secondAttribute="topMargin" id="Wff-yT-1HZ"/>
+                    <constraint firstItem="Qrm-wP-eDq" firstAttribute="bottom" secondItem="hHq-hG-3w9" secondAttribute="bottomMargin" id="XuL-w4-fvF"/>
+                    <constraint firstItem="Qrm-wP-eDq" firstAttribute="trailing" secondItem="hHq-hG-3w9" secondAttribute="trailingMargin" id="Yfc-T4-u6q"/>
+                    <constraint firstItem="Qrm-wP-eDq" firstAttribute="leading" secondItem="hHq-hG-3w9" secondAttribute="leadingMargin" id="oMk-xS-gO5"/>
+                    <constraint firstItem="Qrm-wP-eDq" firstAttribute="top" secondItem="hHq-hG-3w9" secondAttribute="topMargin" id="tAI-gL-Xyk"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="Wff-yT-1HZ"/>
+                        <exclude reference="Yfc-T4-u6q"/>
+                        <exclude reference="oMk-xS-gO5"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <animations/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <outlet property="testo" destination="Qrm-wP-eDq" id="x3p-BO-OPc"/>
+            </connections>
+            <point key="canvasLocation" x="353" y="202"/>
+        </tableViewCell>
+    </objects>
+</document>

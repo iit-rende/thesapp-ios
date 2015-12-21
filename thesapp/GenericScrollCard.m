@@ -1,5 +1,5 @@
 //
-//  GenericCard.m
+//  GenericScrollCard.m
 //  ThesApp
 //
 //  Created by Paolo Burzacca on 20/05/15.
@@ -42,9 +42,16 @@
     titleLabelHeight = TITLE_HEIGHT;
 }
 
+- (NSString *) getKey {
+    return [[self getPrefix] stringByAppendingString:[self getName]];
+}
+
 -(void) prepare {
     
      NSLog(@"[GenericScrollCard] prepare");
+    
+    
+    self.backgroundColor = [UIColor purpleColor]; //TEMP
     
     [self initVars];
     
@@ -65,7 +72,10 @@
     
     CGRect wrapperFrame = CGRectMake(x, 0, width, height);
     wrapper = [[UIView alloc] initWithFrame:wrapperFrame];
-    wrapper.backgroundColor = [UIColor greenColor];
+
+    wrapper.backgroundColor = [UIColor whiteColor];
+    
+    
     [self addSubview:wrapper];
      
     fullWidth = wrapper.frame.size.width;
@@ -142,8 +152,16 @@
     return @"generico";
 }
 
+-(UIColor *) getBarColor {
+    if (self.dominio != nil) {
+        return [Utils colorFromHexString:self.dominio.color];
+    }
+    
+    return nil;
+}
+
 -(void) categoryClick:(Etichetta *) btn {
-    NSLog(@"categoryClick su %@", self.dominio.descriptor);
+    NSLog(@"categoryClick su label %@ [dominio %@]", self.dominio.descriptor, btn.titleLabel.text);
     
     if (btn.testo == nil) {
         NSLog(@"testo nullo, esco");
@@ -154,9 +172,14 @@
         return;
     }
     
-    NSLog(@"continuo..");
+    //lingua = [[Global singleton] linguaInUso];
     
-    [self.controller addCategoryCard:btn.testo withDomain:self.dominio];
+    NSString *lang =  (btn.lingua != nil) ? btn.lingua : lingua;
+    
+    NSLog(@"lingua bottone = %@", btn.lingua);
+    NSLog(@"lingua corrente = %@", lingua);
+    
+    [self.controller addCategoryCard:btn.testo withDomain:self.dominio inLanguage:lang];
 }
 
 -(void) openLocalizedTerm:(Etichetta *) btn {
@@ -192,7 +215,11 @@
     UILabel *catTitle = [[UILabel alloc] initWithFrame:catTitleFrame];
     catTitle.textColor = [UIColor darkGrayColor];
     catTitle.font = [catTitle.font fontWithSize:TITOLI_FONT_SIZE];
-    NSString *tradotto = NSLocalizedString(title, @"");
+    
+    //NSString *tradotto = NSLocalizedString(title, @"");
+    
+    NSString *tradotto = [[Global singleton] getLocalizedString:title forLanguage:lingua];
+    
     catTitle.text = (tradotto != nil) ? tradotto : title;
     [wrapper addSubview:catTitle];
     top += titleLabelHeight + TITLE_PADDING_BOTTOM;

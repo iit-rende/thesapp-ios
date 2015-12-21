@@ -49,7 +49,10 @@
     UILabel *catTitle = [[UILabel alloc] initWithFrame:catTitleFrame];
     catTitle.textColor = [UIColor darkGrayColor];
     catTitle.font = [catTitle.font fontWithSize:TITOLI_FONT_SIZE];
-    NSString *tradotto = NSLocalizedString(title, @"");
+   
+    NSString *tradotto = [[Global singleton] getLocalizedString:title forLanguage:lingua];
+    //NSString *tradotto = NSLocalizedString(title, @"");
+    
     catTitle.text = (tradotto != nil) ? tradotto : title;
     
     [colDx addSubview:catTitle];
@@ -68,17 +71,27 @@
     NSLog(@"######################");
     
     if (top > colDx.frame.size.height) {
+        
         float header_height = header.frame.size.height;
         
         float wrapperNewHeight = top + header_height;
         wrapper.frame = CGRectMake(wrapper.frame.origin.x, wrapper.frame.origin.y, wrapper.frame.size.width, wrapperNewHeight);
         
-        colDx.frame = CGRectMake(colDx.frame.origin.x, colDx.frame.origin.y, colDx.frame.size.width, top);
+        float colDxY = colDx.frame.origin.y;
+        
+        colDx.frame = CGRectMake(colDx.frame.origin.x, colDxY, colDx.frame.size.width, top);
+        
+        NSLog(@"[colDxY] = %f", colDxY);
         
         NSLog(@"nuova wrapper height = %f", wrapperNewHeight);
         
         CGSize nuovaSize = CGSizeMake(self.contentSize.width, wrapperNewHeight);
         self.contentSize = nuovaSize;
+    }
+    else {
+        
+        NSLog(@"colDxY QUI");
+        
     }
     
 }
@@ -91,7 +104,11 @@
     UILabel *catTitle = [[UILabel alloc] initWithFrame:catTitleFrame];
     catTitle.textColor = [UIColor darkGrayColor];
     catTitle.font = [catTitle.font fontWithSize:TITOLI_FONT_SIZE];
-    catTitle.text = NSLocalizedString(@"BROWSE_THESAURUS", @"naviga thesaurus");
+    
+    //lingua = [[Global singleton] linguaInUso];
+    //NSLog(@"LINGUA QUI = %@", lingua);
+    
+    catTitle.text = [[Global singleton] getLocalizedString:@"BROWSE_THESAURUS" forLanguage:lingua];
     
     [colSx addSubview:catTitle];
     
@@ -194,12 +211,18 @@
 
 -(void) render {
     
+    NSLog(@"[TermCard] render");
+    
     if (self.termine == nil) {
-        NSLog(@"termine mancante");
         return;
     }
     
+    //TEMP
+    top = PADDING_BTN;
+    
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    lingua = self.termine.language;
     
     //wrapper.backgroundColor = [UIColor whiteColor];
     
@@ -218,7 +241,11 @@
                               header.frame.size.width,
                               titoloTop + HEADER_MARGIN_BOTTOM);
     
-    colDx = [[UIView alloc] initWithFrame:CGRectMake(0, header.frame.size.height, size, altezza)];
+    float colDxTOP = header.frame.size.height;
+    
+    NSLog(@"colDxTOP = %f", colDxTOP);
+    
+    colDx = [[UIView alloc] initWithFrame:CGRectMake(0, colDxTOP, size, altezza)];
     
     colDx.backgroundColor = [UIColor clearColor];
     
@@ -231,12 +258,12 @@
         if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
             NSLog(@"IPAD ORIZZONTALE");
             
-            colDx.frame = CGRectMake(size / 2, header.frame.size.height, COL_WIDTH , wrapper.frame.size.height);
+            colDx.frame = CGRectMake(size / 2, colDxTOP, COL_WIDTH , wrapper.frame.size.height);
             
             NSLog(@"x = %f", colDx.frame.origin.x);
             NSLog(@"y = %f", colDx.frame.origin.y);
             
-            colSx = [[UIView alloc] initWithFrame:CGRectMake(0, header.frame.size.height, COL_WIDTH, wrapper.frame.size.height)];
+            colSx = [[UIView alloc] initWithFrame:CGRectMake(0, colDxTOP, COL_WIDTH, wrapper.frame.size.height)];
             
             colSx.clipsToBounds = YES; //sennò va fuori a destra, forse taglia sotto però
             
@@ -256,6 +283,9 @@
             
         }
     }
+    else {
+
+    }
     
     [wrapper addSubview:colDx];
     
@@ -269,7 +299,7 @@
     //////////////////////////////////////////////////////////////
     //title label
     
-    lingua = self.termine.language;
+
     
     //float descrizione_padding_top = 0; //paddingLeft + top;
     
@@ -304,6 +334,8 @@
     
     //////////////////////////////////////////////////////////////
     //categorie
+    
+    NSLog(@"[TOP 1] = %f", top);
 
     NSLog(@"ci sono %d categorie", (int) self.termine.categories.count);
     
@@ -314,6 +346,9 @@
         float left = 0;
         
         for (NSDictionary *categoria in self.termine.categories) {
+            
+            NSLog(@"CATEGRY = %@", [categoria description]);
+            
             CGRect lblFrame = CGRectMake(BTN_PADDING_LEFT + left, top, 50, LABEL_HEIGHT);
             NSString *catTitle = [categoria objectForKey:@"descriptor"];
             //NSString *language = [categoria objectForKey:@"language"];
@@ -562,6 +597,10 @@
 -(NSString *) getName {
     if (self.termine != nil) return self.termine.descriptor.descriptor;
     return @"termine generico";
+}
+
+-(NSString *) getPrefix {
+    return @"T_";
 }
 
 - (void)commonInit

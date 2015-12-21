@@ -1,5 +1,5 @@
 //
-//  GenericCard.h
+//  GenericScrollCard.h
 //  ThesApp
 //
 //  Created by Paolo Burzacca on 20/05/15.
@@ -13,6 +13,7 @@
 #import "CardName.h"
 #import "CardController.h"
 #import "Utils.h"
+#import "Global.h"
 
 @interface GenericScrollCard : UIScrollView<CardName>
 {
@@ -34,4 +35,5 @@
 -(void) categoryClick:(Etichetta *) btn;
 -(float) getHeaderHeightAndPadding;
 -(void) prepare;
+-(NSString *) getKey;
 @end

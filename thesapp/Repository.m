@@ -42,7 +42,7 @@
     
     if (manager == nil) return;
     
-    NSLog(@"termRequest = %@", termRequest);
+    NSLog(@"termRequest = %@ con lingua %@", termRequest, lang);
     
     [manager.requestSerializer setValue:lang forHTTPHeaderField:@"accept-language"];
     
@@ -121,48 +121,59 @@
  getCategoriesByDomain
  */
 
--(void) getCategoriesByDomain:(Domain *) dominio forLanguage:(NSString *) linguaggio {
+-(BOOL) getCategoriesByDomain:(Domain *) dominio forLanguage:(NSString *) linguaggio {
 
     NSLog(@"[REPOSITORY] getCategoriesByDomain per lingua = %@", linguaggio);
     
-    if (dominio == nil) return;
+    if (dominio == nil) return NO;
     
-    if (dominio.descriptor == nil) return;
+    if (dominio.descriptor == nil) return NO;
     
     NSString *domainPath = [[Utils getServerBaseAddress] stringByAppendingString:@"/hierarchy?domain="];
     NSString *termine = [Utils WWWFormEncoded:dominio.descriptor];
     
-    if (termine == nil) return;
+    if (termine == nil) return NO;
     
     domainPath = [domainPath stringByAppendingString:termine];
     
     [manager.requestSerializer setValue:linguaggio forHTTPHeaderField:@"accept-language"];
     
+    if (self.timelineDelegate == nil) {
+        NSLog(@"delegato nullo");
+    }
+    else NSLog(@"delegato non nullo");
+    
     [manager GET:domainPath parameters:nil
      
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             
+             NSLog(@"SUCCESS");
              NSDictionary *json = (NSDictionary *)responseObject;
              
              NSArray *categorie  = [json objectForKey:@"categories"];
              
              if (categorie == nil) {
                  [self.timelineDelegate domainCategoriesNotReceived:@"Errore nel reperire le categorie"];
+                 NSLog(@"SUCCESS 1");
                  return;
              }
              
              if (categorie.count > 0) {
+                 NSLog(@"SUCCESS 2");
                  [self.timelineDelegate domainCategoriesReceived:categorie forDomain:dominio];
              }
              else {
+                 NSLog(@"SUCCESS 3");
                  [self.timelineDelegate domainCategoriesNotReceived:@"NO_CATEGORIES_FOUND"];
              }
          }
      
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"FAILURE");
              [self.timelineDelegate domainCategoriesNotReceived:error.localizedDescription];
          }
      ];
+    
+    return YES;
 }
 
 -(void) getDomainCategory:(NSString *) categoria fromDomain:(Domain *) dominio forLanguage:(NSString *) lingua {
@@ -203,15 +214,24 @@
              
              if (json != nil) {
                  Categoria *cat = [Categoria createFromJson:json];
+                 cat.selectedLanguage = lingua;
+                 
                  if (cat != nil) {
-                     [self.timelineDelegate domainCategoryReceived:cat fromDomain:dominio];
+                     
+                     if (cat.terms.count == 0) {
+                         NSLog(@"QUI");
+                         [self.timelineDelegate domainCategoryNotReceived:@"CAT_WITH_NO_TERMS"];                         
+                     }
+                     else {
+                         [self.timelineDelegate domainCategoryReceived:cat fromDomain:dominio];
+                     }
                  }
                  else {
-                     [self.timelineDelegate domainCategoryNotReceived:@"Categoria non trovata"];
+                     
+                     [self.timelineDelegate domainCategoryNotReceived:@"CAT_NOT_FOUND"];
                  }
+                 
              }
-             else
-                 [self.timelineDelegate domainCategoryNotReceived:@"Il server ha risposto in maniera incomprensibile"];
          }
      
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {

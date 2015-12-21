@@ -7,7 +7,7 @@
 */
 
 
-"CANCEL" = "Annulla";
+
 "NARROWER_TERMS" = "Termini più specifici";
 "BROADER_TERMS" = "Termini più generici";
 "RELATED_TERMS" = "Termini correlati";
@@ -15,6 +15,10 @@
 "DOMAIN" = "Dominio";
 "LOCALIZATIONS" = "Traduzioni";
 "CATEGORIES" = "Categorie";
+"SINOMINI" = "Sinonimi";
+"DESCRIPTION" = "Descrizione";
+
+
 "CHOSE_CAT" = "Scegli una categoria";
 "CHOSE_DOMAIN" = "Scegli un dominio";
 "DOWNLOAD_DOMAINS" = "Scarico i domini...";
@@ -24,8 +28,8 @@
 "CATEGORIES_SEARCH" = "Ricerca categoria in corso...";
 "TERM_SEARCH" = "Ricerca termine in corso...";
 "COULD_INTEREST" = "Potrebbero interessarti";
-"SINOMINI" = "Sinonimi";
-"DESCRIPTION" = "Descrizione";
+
+"CANCEL" = "Annulla";
 "BROWSE_THESAURUS" = "Naviga il Thesaurus";
 "THESAPP" = "ThesApp";
 "WARNING" = "Attenzione";
@@ -34,5 +38,7 @@
 "FILTER_FOR_CATEGORY" = "FILTRA PER CATEGORIA";
 "USE_ALL_CATEGORY" = "USA TUTTE LE CATEGORIE";
 "NO_TERM_FOUND" = "Nessun termine trovato";
+"CAT_NOT_FOUND" = "Categoria non trovata";
+"CAT_WITH_NO_TERMS" = "La categoria non contiene alcun termine";
 "NO_RESULTS" = "Nessun risultato";
 "RETRY"  = "Riprova";
